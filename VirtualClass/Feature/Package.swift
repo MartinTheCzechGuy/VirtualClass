@@ -8,8 +8,8 @@ let package = Package(
     platforms: [.iOS(.v14)],
     products: [
         .library(
-            name: "Feature",
-            targets: ["Feature"]
+            name: "Login",
+            targets: ["Login"]
         ),
     ],
     dependencies: [
@@ -18,12 +18,14 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Feature",
-            dependencies: []
+            name: "Login",
+            dependencies: [
+                .product(name: "InstanceProvider", package: "Infrastructure"),
+            ]
         ),
         .testTarget(
             name: "FeatureTests",
-            dependencies: ["Feature"]
+            dependencies: ["Login"]
         ),
     ]
 )

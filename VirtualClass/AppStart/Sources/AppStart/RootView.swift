@@ -7,6 +7,7 @@
 
 import InstanceProvider
 import SwiftUI
+import Login
 
 public struct RootView: View {
     
@@ -19,7 +20,6 @@ public struct RootView: View {
     public var body: some View {
         let instanceProvider: InstanceProvider = appStart.startApp()
         
-        Text("Hello world")
-//        instanceProvider.resolve(CitySearchView.self)
+        instanceProvider.resolve(LoginView.self)
     }
 }
