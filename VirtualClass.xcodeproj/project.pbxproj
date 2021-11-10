@@ -8,17 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		5B30982A273C4EFA00BB6E15 /* VirtualClassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B309829273C4EFA00BB6E15 /* VirtualClassApp.swift */; };
-		5B30982C273C4EFA00BB6E15 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B30982B273C4EFA00BB6E15 /* ContentView.swift */; };
 		5B30982E273C4EFB00BB6E15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B30982D273C4EFB00BB6E15 /* Assets.xcassets */; };
 		5B309831273C4EFB00BB6E15 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B309830273C4EFB00BB6E15 /* Preview Assets.xcassets */; };
+		5B30983D273C4F7200BB6E15 /* AppStart in Frameworks */ = {isa = PBXBuildFile; productRef = 5B30983C273C4F7200BB6E15 /* AppStart */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5B309826273C4EFA00BB6E15 /* VirtualClass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualClass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B309829273C4EFA00BB6E15 /* VirtualClassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualClassApp.swift; sourceTree = "<group>"; };
-		5B30982B273C4EFA00BB6E15 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5B30982D273C4EFB00BB6E15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5B309830273C4EFB00BB6E15 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5B309837273C4F1F00BB6E15 /* AppStart */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppStart; sourceTree = "<group>"; };
+		5B309838273C4F3900BB6E15 /* Feature */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Feature; sourceTree = "<group>"; };
+		5B309839273C4F4700BB6E15 /* Generic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic; sourceTree = "<group>"; };
+		5B30983A273C4F5900BB6E15 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Infrastructure; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B30983D273C4F7200BB6E15 /* AppStart in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,6 +41,7 @@
 			children = (
 				5B309828273C4EFA00BB6E15 /* VirtualClass */,
 				5B309827273C4EFA00BB6E15 /* Products */,
+				5B30983B273C4F7200BB6E15 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,8 +56,11 @@
 		5B309828273C4EFA00BB6E15 /* VirtualClass */ = {
 			isa = PBXGroup;
 			children = (
+				5B309837273C4F1F00BB6E15 /* AppStart */,
+				5B309838273C4F3900BB6E15 /* Feature */,
+				5B309839273C4F4700BB6E15 /* Generic */,
+				5B30983A273C4F5900BB6E15 /* Infrastructure */,
 				5B309829273C4EFA00BB6E15 /* VirtualClassApp.swift */,
-				5B30982B273C4EFA00BB6E15 /* ContentView.swift */,
 				5B30982D273C4EFB00BB6E15 /* Assets.xcassets */,
 				5B30982F273C4EFB00BB6E15 /* Preview Content */,
 			);
@@ -65,6 +73,13 @@
 				5B309830273C4EFB00BB6E15 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5B30983B273C4F7200BB6E15 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +98,9 @@
 			dependencies = (
 			);
 			name = VirtualClass;
+			packageProductDependencies = (
+				5B30983C273C4F7200BB6E15 /* AppStart */,
+			);
 			productName = VirtualClass;
 			productReference = 5B309826273C4EFA00BB6E15 /* VirtualClass.app */;
 			productType = "com.apple.product-type.application";
@@ -137,7 +155,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B30982C273C4EFA00BB6E15 /* ContentView.swift in Sources */,
 				5B30982A273C4EFA00BB6E15 /* VirtualClassApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +360,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5B30983C273C4F7200BB6E15 /* AppStart */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppStart;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5B30981E273C4EFA00BB6E15 /* Project object */;
 }
