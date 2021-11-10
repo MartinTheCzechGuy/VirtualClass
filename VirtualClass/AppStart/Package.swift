@@ -20,7 +20,9 @@ let package = Package(
     targets: [
         .target(
             name: "AppStart",
-            dependencies: []
+            dependencies: [
+                .product(name: "InstanceProvider", package: "Infrastructure"),
+            ]
         ),
         .testTarget(
             name: "AppStartTests",

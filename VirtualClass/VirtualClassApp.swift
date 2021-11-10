@@ -10,9 +10,12 @@ import SwiftUI
 
 @main
 struct VirtualClassApp: App {
+    
+    private let appStart = AppStart()
+
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(appStart: appStart)
         }
     }
 }
