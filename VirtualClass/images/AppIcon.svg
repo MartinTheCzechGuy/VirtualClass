@@ -1,0 +1,14 @@
+
+<svg width="499px" height="499px" viewBox="0 0 499 499" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" stroke="#000000" stroke-width="20" fill="#FFFFFF" x="10" y="10" width="479" height="479" rx="80"></rect>
+            <text id="V" font-family="Helvetica" font-size="150" font-weight="normal" fill="#000000">
+                <tspan x="199" y="411">V</tspan>
+            </text>
+            <text id="C" font-family="Helvetica" font-size="300" font-weight="normal" fill="#000000">
+                <tspan x="141" y="312">C</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

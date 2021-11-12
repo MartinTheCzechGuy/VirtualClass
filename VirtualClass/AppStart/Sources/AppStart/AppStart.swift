@@ -1,12 +1,13 @@
 import InstanceProvider
 import Swinject
-import Login
+import Auth
 
 public struct AppStart {
     
     private var assemblies: [Assembly] = [
         InstanceProviderAssembly(),
-        LoginAssembly()
+        MainViewAssembly(),
+        AuthAssembly()
     ]
     
     public init() {}

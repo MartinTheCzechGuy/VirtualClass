@@ -8,8 +8,8 @@ let package = Package(
     platforms: [.iOS(.v14)],
     products: [
         .library(
-            name: "Generic",
-            targets: ["Generic"]
+            name: "UserProfileUseCases",
+            targets: ["UserProfileUseCases"]
         ),
     ],
     dependencies: [
@@ -17,12 +17,15 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Generic",
-            dependencies: []
+            name: "UserProfileUseCases",
+            dependencies: [
+                .product(name: "InstanceProvider", package: "Infrastructure"),
+                .product(name: "Database", package: "Infrastructure"),
+            ]
         ),
         .testTarget(
             name: "GenericTests",
-            dependencies: ["Generic"]
+            dependencies: ["UserProfileUseCases"]
         ),
     ]
 )

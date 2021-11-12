@@ -22,7 +22,8 @@ let package = Package(
             name: "AppStart",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
-                .product(name: "Login", package: "Feature"),
+                .product(name: "Auth", package: "Feature"),
+                .product(name: "Dashboard", package: "Feature"),
             ]
         ),
         .testTarget(

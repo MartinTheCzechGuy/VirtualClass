@@ -11,6 +11,7 @@
 		5B30982E273C4EFB00BB6E15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B30982D273C4EFB00BB6E15 /* Assets.xcassets */; };
 		5B309831273C4EFB00BB6E15 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B309830273C4EFB00BB6E15 /* Preview Assets.xcassets */; };
 		5B30983D273C4F7200BB6E15 /* AppStart in Frameworks */ = {isa = PBXBuildFile; productRef = 5B30983C273C4F7200BB6E15 /* AppStart */; };
+		5B30983F273C579400BB6E15 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B30983E273C579400BB6E15 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		5B309838273C4F3900BB6E15 /* Feature */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Feature; sourceTree = "<group>"; };
 		5B309839273C4F4700BB6E15 /* Generic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generic; sourceTree = "<group>"; };
 		5B30983A273C4F5900BB6E15 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Infrastructure; sourceTree = "<group>"; };
+		5B30983E273C579400BB6E15 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5B309840273C581300BB6E15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5B95A199273D791900A65DDB /* VirtualClass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VirtualClass.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,11 +60,14 @@
 		5B309828273C4EFA00BB6E15 /* VirtualClass */ = {
 			isa = PBXGroup;
 			children = (
+				5B95A199273D791900A65DDB /* VirtualClass.entitlements */,
 				5B309837273C4F1F00BB6E15 /* AppStart */,
 				5B309838273C4F3900BB6E15 /* Feature */,
 				5B309839273C4F4700BB6E15 /* Generic */,
 				5B30983A273C4F5900BB6E15 /* Infrastructure */,
 				5B309829273C4EFA00BB6E15 /* VirtualClassApp.swift */,
+				5B30983E273C579400BB6E15 /* LaunchScreen.storyboard */,
+				5B309840273C581300BB6E15 /* Info.plist */,
 				5B30982D273C4EFB00BB6E15 /* Assets.xcassets */,
 				5B30982F273C4EFB00BB6E15 /* Preview Content */,
 			);
@@ -143,6 +150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B30983F273C579400BB6E15 /* LaunchScreen.storyboard in Resources */,
 				5B309831273C4EFB00BB6E15 /* Preview Assets.xcassets in Resources */,
 				5B30982E273C4EFB00BB6E15 /* Assets.xcassets in Resources */,
 			);
@@ -283,15 +291,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VirtualClass/VirtualClass.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualClass/Preview Content\"";
 				DEVELOPMENT_TEAM = B7YY5P957V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VirtualClass/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -313,15 +324,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VirtualClass/VirtualClass.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualClass/Preview Content\"";
 				DEVELOPMENT_TEAM = B7YY5P957V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VirtualClass/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

@@ -2,6 +2,60 @@
   "object": {
     "pins": [
       {
+        "package": "CombineExt",
+        "repositoryURL": "https://github.com/CombineCommunity/CombineExt.git",
+        "state": {
+          "branch": null,
+          "revision": "0880829102152185190064fd17847a7c681d2127",
+          "version": "1.5.1"
+        }
+      },
+      {
+        "package": "swift-case-paths",
+        "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
+        "state": {
+          "branch": null,
+          "revision": "d226d167bd4a68b51e352af5655c92bce8ee0463",
+          "version": "0.7.0"
+        }
+      },
+      {
+        "package": "core",
+        "repositoryURL": "https://github.com/Qase/swift-core.git",
+        "state": {
+          "branch": "master",
+          "revision": "9496f8c2783e34c7eb92d03a7146a616c412cb70",
+          "version": null
+        }
+      },
+      {
+        "package": "core-database",
+        "repositoryURL": "https://github.com/Qase/swift-core-database",
+        "state": {
+          "branch": "master",
+          "revision": "a838454a720ce8eb77c0be6339d0bd8a1ba735cf",
+          "version": null
+        }
+      },
+      {
+        "package": "Overture",
+        "repositoryURL": "https://github.com/pointfreeco/swift-overture.git",
+        "state": {
+          "branch": null,
+          "revision": "7977acd7597f413717058acc1e080731249a1d7e",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "package": "overture-operators",
+        "repositoryURL": "https://github.com/Qase/swift-overture-operators.git",
+        "state": {
+          "branch": "master",
+          "revision": "e859d04918bbbdae5032c1ee08682b304b4d8e9e",
+          "version": null
+        }
+      },
+      {
         "package": "Swinject",
         "repositoryURL": "https://github.com/Swinject/Swinject.git",
         "state": {
