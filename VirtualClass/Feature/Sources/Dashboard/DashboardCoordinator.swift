@@ -20,6 +20,9 @@ public final class DashboardCoordinator: ObservableObject {
     @Published var personalInfoViewModel: PersonalInfoViewModel?
     @Published var classListViewModel: ClassListViewModel?
     
+    public let didLogout: AnyPublisher<Void, Never>
+    let navigateToLogout = PassthroughSubject<Void, Never>()
+    
     private var bag = Set<AnyCancellable>()
     
     public init(
@@ -30,6 +33,7 @@ public final class DashboardCoordinator: ObservableObject {
         self.userAccountCoordinator = userAccountCoordinator
         self.classOverviewViewModel = classOverviewViewModel
         self.calendarViewModel = calendarViewModel
+        self.didLogout = navigateToLogout.eraseToAnyPublisher()
         
         setupBindings()
     }

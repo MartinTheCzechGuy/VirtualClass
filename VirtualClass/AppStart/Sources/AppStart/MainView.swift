@@ -19,7 +19,8 @@ public struct MainView: View {
     }
     
     public var body: some View {
-        if mainCoordinator.dashboardCoordinator != nil {
+        switch mainCoordinator.activeScreen {
+        case .dashboard:
             instanceProvider.resolve(DashboardView.self)
                 .onChange(of: scenePhase) { phase in
                     switch phase {
@@ -35,28 +36,10 @@ public struct MainView: View {
                         print("[APP STATE] - Catched aditional unknown phase")
                     }
                 }
-        } else {
-            instanceProvider.resolve(WelcomeView.self)
-                .fullScreenCover(item: $mainCoordinator.loginViewModel) { _ in
-                    instanceProvider.resolve(LoginView.self)
-                }
-                .fullScreenCover(item: $mainCoordinator.registrationViewModel) { _ in
-                    instanceProvider.resolve(RegistrationView.self)
-                }
+        case .auth:
+            instanceProvider.resolve(AuthView.self)
                 .preferredColorScheme(.dark)
         }
-       
-    }
-}
-
-enum Tab: String {
-    case home = "home"
-    case calendar = "calendar"
-    case account = "account"
-}
-
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView(mainCoordinator: .init(welcomeViewModel: .init()))
+        
     }
 }

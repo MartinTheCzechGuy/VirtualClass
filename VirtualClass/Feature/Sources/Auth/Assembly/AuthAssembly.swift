@@ -26,5 +26,9 @@ public class AuthAssembly: Assembly {
         
         container.autoregister(LoginViewModel.self, initializer: LoginViewModel.init)
             .inObjectScope(.container)
+        
+        
+        container.autoregister(AuthView.self, initializer: AuthView.init)
+        container.autoregister(AuthCoordinator.self, initializer: AuthCoordinator.init)
     }
 }

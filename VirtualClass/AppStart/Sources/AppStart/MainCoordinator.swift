@@ -12,111 +12,56 @@ import InstanceProvider
 
 public final class MainCoordinator: ObservableObject  {
     
-    @Published var welcomeViewModel: WelcomeViewModel
-    @Published var loginViewModel: LoginViewModel?
-    @Published var registrationViewModel: RegistrationViewModel?
-    @Published var dashboardCoordinator: DashboardCoordinator?
-        
-    private var bag = Set<AnyCancellable>()
-    private var loginBag = Set<AnyCancellable>()
-    private var registrationBag = Set<AnyCancellable>()
+    enum ActiveScreen {
+        case auth
+        case dashboard
+    }
     
-    init(welcomeViewModel: WelcomeViewModel) {
-        self.welcomeViewModel = welcomeViewModel
+    @Published var activeScreen: ActiveScreen = .auth
+    
+    #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
+    @Published var authCoordinator: AuthCoordinator
+    @Published var dashboardCoordinator: DashboardCoordinator?
+    
+    private var bag = Set<AnyCancellable>()
+    private var dashboardBag = Set<AnyCancellable>()
+    
+    init(authCoordinator: AuthCoordinator) {
+        self.authCoordinator = authCoordinator
         
         setupBindings()
     }
     
     private func setupBindings() {
-        welcomeViewModel.navigateToLogin
+        authCoordinator.authSuccessful
             .sink(
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
-                    self.loginViewModel = instanceProvider.resolve(LoginViewModel.self)
+                    self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
+                    self.activeScreen = .dashboard
                 }
             )
             .store(in: &bag)
         
-        welcomeViewModel.navigateToRegistration
+        $dashboardCoordinator
+            .compactMap { $0 }
             .sink(
-                receiveValue: { [weak self] viewModel in
+                receiveValue: { [weak self] dashboardCoordinator in
                     guard let self = self else { return }
                     
-                    self.registrationViewModel = instanceProvider.resolve(RegistrationViewModel.self)
+                    self.dashboardBag.removeAll()
+                    
+                    dashboardCoordinator.didLogout
+                        .sink(receiveValue: { [weak self] _ in
+                            guard let self = self else { return }
+                            
+                            self.dashboardCoordinator = nil
+                            self.activeScreen = .auth
+                        })
+                        .store(in: &self.dashboardBag)
                 }
             )
             .store(in: &bag)
-        
-        $loginViewModel
-            .sink(
-                receiveValue: { [weak self] viewModel in
-                    guard let self = self else { return }
-                    
-                    self.loginBag.removeAll()
-                    
-                    viewModel?.navigateToWelcomeScreen
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.loginViewModel = nil
-                        })
-                        .store(in: &self.loginBag)
-                    
-                    viewModel?.navigateToDashboard
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.loginViewModel = nil
-                            self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
-                        })
-                        .store(in: &self.loginBag)
-                    
-                    viewModel?.navigateToRegistration
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.loginViewModel = nil
-                            self.registrationViewModel = instanceProvider.resolve(RegistrationViewModel.self)
-                        })
-                        .store(in: &self.loginBag)
-                }
-            )
-            .store(in: &bag)
-        
-            $registrationViewModel
-                .sink(receiveValue: { [weak self] viewModel in
-                    guard let self = self else { return }
-                    
-                    self.registrationBag.removeAll()
-                    
-                    viewModel?.navigateToDashboard
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.registrationViewModel = nil
-                            self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
-                        })
-                        .store(in: &self.registrationBag)
-                    
-                    viewModel?.navigateToWelcomeScreen
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.registrationViewModel = nil
-                        })
-                        .store(in: &self.registrationBag)
-                    
-                    viewModel?.navigateToSignIn
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.registrationViewModel = nil
-                            self.loginViewModel = instanceProvider.resolve(LoginViewModel.self)
-                        })
-                        .store(in: &self.registrationBag)
-                    
-                })
-                .store(in: &bag)
     }
 }

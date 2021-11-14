@@ -16,8 +16,7 @@ public class MainViewAssembly: Assembly {
     public func assemble(container: Container) {
         container.autoregister(MainView.self, initializer: MainView.init)
         
-        container.register(MainCoordinator.self) { resolver in
-            MainCoordinator(welcomeViewModel: resolver.resolve(WelcomeViewModel.self)!)
-        }
+        container.autoregister(MainCoordinator.self, initializer: MainCoordinator.init)
+            .inObjectScope(.container)
     }
 }
