@@ -7,7 +7,6 @@
 
 import InstanceProvider
 import SwiftUI
-import Auth
 
 public struct RootView: View {
     
@@ -18,8 +17,8 @@ public struct RootView: View {
     }
     
     public var body: some View {
-        let instanceProvider: InstanceProvider = appStart.startApp()
+        appStart.startApp()
         
-        instanceProvider.resolve(MainView.self)
+        return instanceProvider.resolve(MainView.self)
     }
 }

@@ -22,6 +22,8 @@ public final class WelcomeViewModel: ObservableObject {
     public init() {
         self.navigateToLogin = signInTap.print("😍").eraseToAnyPublisher()
         self.navigateToRegistration = signUpTap.eraseToAnyPublisher()
+        
+        print("Welcome view model init")
     }
     
     deinit {

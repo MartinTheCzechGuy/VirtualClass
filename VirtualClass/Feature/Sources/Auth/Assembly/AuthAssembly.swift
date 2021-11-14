@@ -7,6 +7,7 @@
 
 import Swinject
 import SwinjectAutoregistration
+import UserSDK
 
 public class AuthAssembly: Assembly {
 
@@ -17,16 +18,13 @@ public class AuthAssembly: Assembly {
         container.autoregister(RegistrationView.self, initializer: RegistrationView.init)
         container.autoregister(WelcomeView.self, initializer: WelcomeView.init)
         
-        container.register(WelcomeViewModel.self) { resolver in
-            WelcomeViewModel()
-        }
+        container.autoregister(WelcomeViewModel.self, initializer: WelcomeViewModel.init)
+            .inObjectScope(.container)
         
-        container.register(RegistrationViewModel.self) { resolver in
-            RegistrationViewModel()
-        }
+        container.autoregister(RegistrationViewModel.self, initializer: RegistrationViewModel.init)
+            .inObjectScope(.container)
         
-        container.register(LoginViewModel.self) { resolver in
-            LoginViewModel()
-        }
+        container.autoregister(LoginViewModel.self, initializer: LoginViewModel.init)
+            .inObjectScope(.container)
     }
 }

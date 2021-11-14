@@ -16,9 +16,8 @@ extension ClassEntity {
         return NSFetchRequest<ClassEntity>(entityName: "ClassEntity")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var name: String?
-
+    @NSManaged public var id: UUID
+    @NSManaged public var name: String
 }
 
 extension ClassEntity : Identifiable {

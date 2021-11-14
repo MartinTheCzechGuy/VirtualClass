@@ -6,6 +6,7 @@
 //
 
 import Combine
+import UserSDK
 
 public final class PersonalInfoViewModel: ObservableObject {
     
@@ -14,7 +15,11 @@ public final class PersonalInfoViewModel: ObservableObject {
     
     let navigateToUserAccount: AnyPublisher<Void, Never>
     
-    public init() {
+    private let updateUserProfileUseCase: UpdateUserProfileUseCaseType
+    
+    public init(updateUserProfileUseCase: UpdateUserProfileUseCaseType) {
+        self.updateUserProfileUseCase = updateUserProfileUseCase
+        
         self.navigateToUserAccount = goBackTap
             .merge(with: saveChangesTap)
             .eraseToAnyPublisher()

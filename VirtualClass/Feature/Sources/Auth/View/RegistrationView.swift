@@ -5,7 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 public struct RegistrationView: View {
@@ -38,33 +38,33 @@ public struct RegistrationView: View {
                             imageSystemName: "person",
                             title: "FULL NAME",
                             fieldType: .text,
-                            value: $name,
-                            animation: animation
+                            value: $name
                         )
                         
                         AppTextField(
                             imageSystemName: "envelope",
                             title: "EMAIL",
                             fieldType: .text,
-                            value: $email,
-                            animation: animation
+                            value: $email
                         )
                         
                         AppTextField(
                             imageSystemName: "lock",
                             title: "PASSWORD",
                             fieldType: .secure,
-                            value: $password,
-                            animation: animation
+                            value: $password
                         )
                         
                         AppTextField(
                             imageSystemName: "lock",
                             title: "PASSWORD AGAIN",
                             fieldType: .secure,
-                            value: $repeatedPassword,
-                            animation: animation
+                            value: $repeatedPassword
                         )
+                    }
+                    
+                    if let status = viewModel.registrationInvalidStatus {
+                        TextFieldErrorCaptionView(status: status)
                     }
                                         
                     VStack(spacing: 20) {
@@ -107,19 +107,11 @@ public struct RegistrationView: View {
                     .padding()
                     .padding(.bottom, 10)
                 }
+                .padding()
+                .padding(.horizontal)
             }
         }
-    }
-}
-
-struct RegistrationView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            RegistrationView(viewModel: .init())
-                .previewDevice("iPhone 13")
-            RegistrationView(viewModel: .init())
-                .previewDevice("iPhone 8")
-        }
+        .preferredColorScheme(.dark)
     }
 }
 

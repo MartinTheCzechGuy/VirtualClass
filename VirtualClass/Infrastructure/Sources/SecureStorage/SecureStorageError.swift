@@ -7,8 +7,12 @@
 
 import Foundation
 
-enum SecureStoreError: Error {
+public enum SecureStorageError: Error {
     case stringConversionError
     case dataConversionError
-    case unhandledError(message: String)
+    case errorCreatingNewItem
+    case unhandledQueryResult
+    case errorUpdatingExistingItem
+    case errorDeletingItem
+    case unknownError(message: String)
 }

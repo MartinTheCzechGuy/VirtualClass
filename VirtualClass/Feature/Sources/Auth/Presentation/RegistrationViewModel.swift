@@ -6,8 +6,12 @@
 //
 
 import Combine
+import Foundation
+import UserSDK
 
 public final class RegistrationViewModel: ObservableObject {
+    
+    @Published var registrationInvalidStatus: TextFieldErrorCaptionView.Status? = nil
     
     let goBackTap = PassthroughSubject<Void, Never>()
     let registerTap = PassthroughSubject<RegistrationData, Never>()
@@ -16,19 +20,64 @@ public final class RegistrationViewModel: ObservableObject {
     public let navigateToDashboard: AnyPublisher<Void, Never>
     public let navigateToWelcomeScreen: AnyPublisher<Void, Never>
     public let navigateToSignIn: AnyPublisher<Void, Never>
+    
+    private let tada = PassthroughSubject<Void, Never>()
+    
+    private var bag = Set<AnyCancellable>()
 
-    public init() {
+    private let handleRegistrationUseCase: HandleUserRegistrationUseCaseType
+    
+    public init(handleRegistrationUseCase: HandleUserRegistrationUseCaseType) {
+        self.handleRegistrationUseCase = handleRegistrationUseCase
         self.navigateToWelcomeScreen = goBackTap.eraseToAnyPublisher()
         self.navigateToSignIn = alreadyHaveAccountTap.eraseToAnyPublisher()
+        self.navigateToDashboard = tada.eraseToAnyPublisher()
         
         let registrationResult = registerTap
-            .map { _ in true }
+            .compactMap { [weak self] registrationForm -> RegistrationValidationResult? in
+                self?.handleRegistrationUseCase.register(
+                    form: .init(
+                        email: registrationForm.email,
+                        password1: registrationForm.password1,
+                        password2: registrationForm.password2,
+                        name: registrationForm.name
+                    )
+                )
+            }
             .share()
         
-        self.navigateToDashboard = registrationResult
-            .filter { $0 }
-            .map{ _ in return }
-            .eraseToAnyPublisher()
+        registrationResult
+            .compactMap { evaluationResult -> TextFieldErrorCaptionView.Status? in
+                switch evaluationResult {
+                case .passwordsDontMatch:
+                    return .nonMatchingPasswords
+                case .invalidPassword:
+                    return .invalidPassword
+                case .invalidEmail:
+                    return .invalidEmail
+                case .emailAlreadyUsed:
+                    return .emailAlreadytaken
+                case .validData:
+                    return nil
+                case .errorStoringCredentials:
+                    return .errorStoringCredentials
+                }
+            }
+            .assign(to: \.registrationInvalidStatus, on: self)
+            .store(in: &bag)
+        
+        registrationResult
+            .compactMap { evaluationResult -> Void? in
+                guard case .validData = evaluationResult else {
+                    return nil
+                }
+                
+                return ()
+            }
+            .sink(receiveValue: { [weak self] _ in
+                self?.tada.send()
+            })
+            .store(in: &bag)
     }
 }
 

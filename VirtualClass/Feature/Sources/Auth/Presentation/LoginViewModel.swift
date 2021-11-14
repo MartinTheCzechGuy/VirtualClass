@@ -7,10 +7,13 @@
 
 import Combine
 import Foundation
+import UserSDK
 
 public final class LoginViewModel: ObservableObject {
     
-    @Published var invalidCredentials = false
+    @Published var email: String = ""
+    @Published var password: String = ""
+    @Published var registrationInvalidStatus: TextFieldErrorCaptionView.Status? = nil
     
     let registerNewAccountTap = PassthroughSubject<Void, Never>()
     let loginTap = PassthroughSubject<(email: String, password: String), Never>()
@@ -22,30 +25,53 @@ public final class LoginViewModel: ObservableObject {
     public let navigateToDashboard: AnyPublisher<Void, Never>
     public let navigateToRegistration: AnyPublisher<Void, Never>
     
-    public init() {
+    private let tada = PassthroughSubject<Void, Never>()
+    
+    private let handleLoginUseCase: HandleUserLoginUseCaseType
+    
+    public init(handleLoginUseCase: HandleUserLoginUseCaseType) {
+        self.handleLoginUseCase = handleLoginUseCase
         self.navigateToWelcomeScreen = goBackTap.eraseToAnyPublisher()
         self.navigateToRegistration = registerNewAccountTap.eraseToAnyPublisher()
+        self.navigateToDashboard = tada.eraseToAnyPublisher()
 
-        let passwordEvaluation = loginTap
-            .compactMap { email, password -> Bool? in
-                return email.isEmpty && password.isEmpty
+        let loginEvaluation = loginTap
+            .compactMap { [weak self] email, password -> LoginValidationResult? in
+                guard let self = self else { return nil }
+                
+                return self.handleLoginUseCase.login(email: email, password: password)                
             }
             .share()
         
-        self.navigateToDashboard =  passwordEvaluation
-            .filter { areCredentialsOk in
-                areCredentialsOk
+        loginEvaluation
+            .compactMap { validationResult -> Void? in
+                if case .validData = validationResult { return () }; return nil
             }
-            .map { _ in return }
-            .eraseToAnyPublisher()
-            
+            .sink(
+                receiveValue: { [weak self] _ in
+                    self?.tada.send()
+                }
+            )
+            .store(in: &bag)
         
-        passwordEvaluation
-            .filter { areCredentialsOk in
-                !areCredentialsOk
+        loginEvaluation
+            .compactMap { evaluationResult -> TextFieldErrorCaptionView.Status? in
+                switch evaluationResult {
+                case .invalidPassword:
+                    return .invalidPassword
+                case .invalidEmail:
+                    return .invalidEmail
+                case .invalidCredentials:
+                    return .invalidCredentials
+                case .validData:
+                    return nil
+                case .errorLoadingData:
+                    return .errorStoringCredentials
+                case .accountDoesNotExist:
+                    return .unknownEmail
+                }
             }
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.invalidCredentials, on: self)
+            .assign(to: \.registrationInvalidStatus, on: self)
             .store(in: &bag)
     }
 }

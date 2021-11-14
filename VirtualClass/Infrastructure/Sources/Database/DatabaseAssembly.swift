@@ -12,10 +12,8 @@ public class DatabaseAssembly: Assembly {
 
     public init() { }
 
-    public func assemble(container: Container) {
-//        container.register(UserEntityDatabaseInteracting.self, name: "UserEntityDBInteracting") { resolver in
-//            return UserEntityDatabaseInteracting(name: <#T##String#>, bundle: <#T##Bundle#>, inMemory: <#T##Bool#>)
-//        }
-//        .implements(DatabaseInteracting.self)
+    public func assemble(container: Container) {        
+        container.autoregister(UserDBRepositoryType.self, initializer: UserDBRepository.init)
+//        container.autoregister(ClassDBRepositoryType.self, initializer: ClassDBRepository.init)
     }
 }

@@ -1,21 +1,62 @@
-import InstanceProvider
-import Swinject
 import Auth
+import BasicLocalStorage
+import Calendar
+import Classes
+import Dashboard
+import Database
+import InstanceProvider
+import UserSDK
+import UserAccount
+import SecureStorage
+import Swinject
+
+let instanceProvider: InstanceProvider = {
+    let assemblies: [Assembly] = [
+        InstanceProviderAssembly(),
+        MainViewAssembly(),
+        AuthAssembly(),
+        UserSDKAssembly(),
+        DatabaseAssembly(),
+        BasicStorageAssembly(),
+        SecureStorageAssembly(),
+        ClassesAssembly(),
+        CalendarAssembly(),
+        DashboardAssembly(),
+        UserAccountAssembly()
+    ]
+    
+    let assembler = Assembler()
+    assembler.apply(assemblies: assemblies)
+
+    return assembler.resolver.resolve(InstanceProvider.self)!
+}()
 
 public struct AppStart {
     
-    private var assemblies: [Assembly] = [
-        InstanceProviderAssembly(),
-        MainViewAssembly(),
-        AuthAssembly()
-    ]
-    
     public init() {}
     
-    func startApp<Instance>() -> Instance {
-        let assembler = Assembler()
-        assembler.apply(assemblies: assemblies)
+    func startApp() {
+        print("tada")
         
-        return assembler.resolver.resolve(Instance.self)!
     }
 }
+
+//public struct AppStart {
+//
+//    private var appAssemblies: [Assembly] = [
+//        LoggerAssembly(),
+//        InstanceProviderAssembly(),
+//        CounterAssembly(),
+//        CounterSelectionAssembly(),
+//        CounterPreferencesAssembly()
+//    ]
+//
+//    public init() { }
+//
+//    public func startApp<Instance>() -> Instance {
+//        let assembler = Assembler()
+//        assembler.apply(assemblies: appAssemblies)
+//        return assembler.resolver.resolve(Instance.self)!
+//    }
+//}
+

@@ -6,8 +6,8 @@
 //
 
 public protocol SecureStorage {
-    func getValue(for userAccount: String) throws -> String?
-    func setValue(_ value: String, for userAccount: String) throws
-    func removeValue(for userAccount: String) throws
-    func removeAllValues() throws
+    func getValue(for userAccount: String) -> Result<String?, SecureStorageError>
+    func setValue(_ value: String, for userAccount: String) -> Result<Void, SecureStorageError>
+    func removeValue(for userAccount: String) -> Result<Void, SecureStorageError>
+    func removeAllValues() -> Result<Void, SecureStorageError>
 }

@@ -20,10 +20,6 @@ let package = Package(
             targets: ["Classes"]
         ),
         .library(
-            name: "SharedFeatures",
-            targets: ["SharedFeatures"]
-        ),
-        .library(
             name: "Dashboard",
             targets: ["Dashboard"]
         ),
@@ -41,27 +37,22 @@ let package = Package(
             name: "Auth",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
-                "SharedFeatures"
+                .product(name: "Common", package: "Infrastructure"),
+                .product(name: "UserSDK", package: "Generic"),
             ]
         ),
         .target(
             name: "Calendar",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
-                "SharedFeatures"
+                .product(name: "Common", package: "Infrastructure"),
             ]
         ),
         .target(
             name: "Classes",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
-                "SharedFeatures"
-            ]
-        ),
-        .target(
-            name: "SharedFeatures",
-            dependencies: [
-                .product(name: "InstanceProvider", package: "Infrastructure"),
+                .product(name: "Common", package: "Infrastructure"),
             ]
         ),
         .target(
@@ -77,8 +68,9 @@ let package = Package(
             name: "UserAccount",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
-                "SharedFeatures",
-                "Classes"
+                .product(name: "Common", package: "Infrastructure"),
+                .product(name: "UserSDK", package: "Generic"),
+                "Classes",
             ]
         ),
         .testTarget(

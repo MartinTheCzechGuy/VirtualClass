@@ -5,7 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 public struct PersonalInfoView: View {
@@ -46,18 +46,15 @@ public struct PersonalInfoView: View {
                 imageSystemName: "envelope",
                 title: "EMAIL",
                 fieldType: .text,
-                value: $email,
-                animation: animation
+                value: $email
             )
             
             AppTextField(
                 imageSystemName: "person",
                 title: "NAME",
                 fieldType: .text,
-                value: $name,
-                animation: animation
+                value: $name
             )
-            
             
             Spacer(minLength: 0)
             
@@ -73,11 +70,5 @@ public struct PersonalInfoView: View {
             
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
-    }
-}
-
-struct PersonalInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonalInfoView(viewModel: PersonalInfoViewModel())
     }
 }

@@ -15,8 +15,7 @@ public class CalendarAssembly: Assembly {
     public func assemble(container: Container) {
         container.autoregister(CalendarView.self, initializer: CalendarView.init)
                 
-        container.register(CalendarViewModel.self) { resolver in
-            CalendarViewModel()
-        }
+        container.autoregister(CalendarViewModel.self, initializer: CalendarViewModel.init)
+            .inObjectScope(.container)
     }
 }

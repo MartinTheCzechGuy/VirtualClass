@@ -16,6 +16,6 @@ extension DatabaseModelConverter where DatabaseModel == ClassEntity, DomainModel
 
 extension DomainModelConverter where DatabaseModel == ClassEntity, DomainModel == DomainClassModel {
     static let live: Self = .init { classEntity in
-        DomainClassModel(id: classEntity.id!, name: classEntity.name!)
+        DomainClassModel(id: classEntity.id, name: classEntity.name)
     }
 }

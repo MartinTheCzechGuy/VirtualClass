@@ -1,5 +1,5 @@
 //
-//  RootCoordinator.swift
+//  MainCoordinator.swift
 //  
 //
 //  Created by Martin on 12.11.2021.
@@ -8,9 +8,10 @@
 import Auth
 import Combine
 import Dashboard
+import InstanceProvider
 
 public final class MainCoordinator: ObservableObject  {
-        
+    
     @Published var welcomeViewModel: WelcomeViewModel
     @Published var loginViewModel: LoginViewModel?
     @Published var registrationViewModel: RegistrationViewModel?
@@ -32,7 +33,7 @@ public final class MainCoordinator: ObservableObject  {
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
-                    self.loginViewModel = LoginViewModel()
+                    self.loginViewModel = instanceProvider.resolve(LoginViewModel.self)
                 }
             )
             .store(in: &bag)
@@ -42,7 +43,7 @@ public final class MainCoordinator: ObservableObject  {
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
-                    self.registrationViewModel = RegistrationViewModel()
+                    self.registrationViewModel = instanceProvider.resolve(RegistrationViewModel.self)
                 }
             )
             .store(in: &bag)
@@ -67,11 +68,7 @@ public final class MainCoordinator: ObservableObject  {
                             guard let self = self else { return }
                             
                             self.loginViewModel = nil
-                            self.dashboardCoordinator = DashboardCoordinator(
-                                userAccountCoordinator: .init(userAccountViewModel: .init()),
-                                classOverviewViewModel: .init(),
-                                calendarViewModel: .init()
-                            )
+                            self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
                         })
                         .store(in: &self.loginBag)
                     
@@ -80,7 +77,7 @@ public final class MainCoordinator: ObservableObject  {
                             guard let self = self else { return }
                             
                             self.loginViewModel = nil
-                            self.registrationViewModel = RegistrationViewModel()
+                            self.registrationViewModel = instanceProvider.resolve(RegistrationViewModel.self)
                         })
                         .store(in: &self.loginBag)
                 }
@@ -98,11 +95,7 @@ public final class MainCoordinator: ObservableObject  {
                             guard let self = self else { return }
                             
                             self.registrationViewModel = nil
-                            self.dashboardCoordinator = DashboardCoordinator(
-                                userAccountCoordinator: .init(userAccountViewModel: .init()),
-                                classOverviewViewModel: .init(),
-                                calendarViewModel: .init()
-                            )
+                            self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
                         })
                         .store(in: &self.registrationBag)
                     
@@ -119,7 +112,7 @@ public final class MainCoordinator: ObservableObject  {
                             guard let self = self else { return }
                             
                             self.registrationViewModel = nil
-                            self.loginViewModel = LoginViewModel()
+                            self.loginViewModel = instanceProvider.resolve(LoginViewModel.self)
                         })
                         .store(in: &self.registrationBag)
                     

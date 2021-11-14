@@ -16,6 +16,10 @@ class SwinjectInstanceProvider: InstanceProvider {
     }
 
     func resolve<Instance>(_ type: Instance.Type) -> Instance {
-        resolver.resolve(type)!
+        guard let instance = resolver.resolve(type) else {
+            fatalError("Could not resolve an instance of \(type) -> check if you registered it correctly.")
+        }
+        
+        return instance
     }
 }

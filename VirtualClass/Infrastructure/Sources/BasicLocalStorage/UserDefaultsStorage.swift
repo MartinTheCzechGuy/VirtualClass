@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol LocalKeyValueStorage {
-    func read<T>(objectForKey key: String) -> T?
-    func set(_ value: Any?, for key: String)
-    func delete(objectForKey: String)
+public protocol LocalKeyValueStorage {
+    func read<T>(objectForKey key: LocalKeyValueStorageKeys) -> T?
+    func set(_ value: Any?, for key: LocalKeyValueStorageKeys)
+    func delete(objectForKey: LocalKeyValueStorageKeys)
     func clearStorage()
 }
 
@@ -22,27 +22,27 @@ final class UserDefaultsStorage {
     
     private let defaults: UserDefaults
     
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults) {
         self.defaults = defaults
     }
 }
 
 extension UserDefaultsStorage: LocalKeyValueStorage {
     
-    func set(_ value: Any?, for key: String) {
-        defaults.set(value, forKey: key)
+    func set(_ value: Any?, for key: LocalKeyValueStorageKeys) {
+        defaults.set(value, forKey: key.rawValue)
     }
     
-    func read<T>(objectForKey key: String) -> T? {
-        guard let value = defaults.object(forKey: key) as? T else {
+    func read<T>(objectForKey key: LocalKeyValueStorageKeys) -> T? {
+        guard let value = defaults.object(forKey: key.rawValue) as? T else {
             return nil
         }
         
         return value
     }
     
-    func delete(objectForKey key: String) {
-        defaults.removeObject(forKey: key)
+    func delete(objectForKey key: LocalKeyValueStorageKeys) {
+        defaults.removeObject(forKey: key.rawValue)
     }
     
     func clearStorage() {

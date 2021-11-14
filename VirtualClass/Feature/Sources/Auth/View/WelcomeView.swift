@@ -5,7 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 public struct WelcomeView: View {
@@ -61,7 +61,7 @@ public struct WelcomeView: View {
                 }
             }
         }
-//            .preferredColorScheme(.dark)
+            .preferredColorScheme(.dark)
     }
 }
 

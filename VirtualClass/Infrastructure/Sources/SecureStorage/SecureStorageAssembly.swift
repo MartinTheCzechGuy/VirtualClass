@@ -13,6 +13,8 @@ public class SecureStorageAssembly: Assembly {
     public init() { }
 
     public func assemble(container: Container) {
-        
+        container.autoregister(SecureStorage.self) {
+            KeychainStorage(secureStoreQueryable: UserPassword(service: "VirtualClass", accessGroup: nil))
+        }
     }
 }

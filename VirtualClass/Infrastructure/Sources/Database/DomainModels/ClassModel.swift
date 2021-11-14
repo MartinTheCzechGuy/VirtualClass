@@ -7,12 +7,18 @@
 
 import Foundation
 
-struct DomainClassModel {
-    let id: UUID
-    let name: String
+public struct DomainClassModel {
+    public let id: UUID
+    public let name: String
+    
+    public init(id: UUID, name: String) {
+        self.id = id
+        self.name = name
+    }
 }
 
 extension DomainClassModel: Identifiable {}
 
 extension DomainClassModel: Equatable {}
 
+extension DomainClassModel: Hashable {}

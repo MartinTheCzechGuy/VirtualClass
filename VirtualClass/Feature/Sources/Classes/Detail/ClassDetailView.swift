@@ -5,7 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 struct ClassDetailView: View {

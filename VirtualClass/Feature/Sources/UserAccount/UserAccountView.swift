@@ -5,7 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 public struct UserAccountView: View {
@@ -62,7 +62,7 @@ public struct UserAccountView: View {
                         Spacer()
                         
                         Button(
-                            action: { print("logout pressed") },
+                            action: { viewModel.logoutTap.send() },
                             label: {
                                 Text("Log out")
                             }
@@ -78,17 +78,6 @@ public struct UserAccountView: View {
             }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationBarHidden(true)
-        }
-    }
-}
-
-struct UserAccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            UserAccountView(viewModel: UserAccountViewModel())
-                .previewDevice("iPhone 13")
-            UserAccountView(viewModel: UserAccountViewModel())
-                .previewDevice("iPhone 8")
         }
     }
 }

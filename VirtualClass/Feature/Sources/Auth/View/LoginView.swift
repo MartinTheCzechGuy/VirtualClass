@@ -5,18 +5,13 @@
 //  Created by Martin on 10.11.2021.
 //
 
-import SharedFeatures
+import Common
 import SwiftUI
 
 public struct LoginView: View {
     
     @ObservedObject var viewModel: LoginViewModel
-    
-    @State var email = ""
-    @State var password = ""
-    
-    @Namespace var animation
-    
+        
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
     }
@@ -35,22 +30,24 @@ public struct LoginView: View {
                     imageSystemName: "envelope",
                     title: "EMAIL",
                     fieldType: .text,
-                    value: $email,
-                    animation: animation
+                    value: $viewModel.email
                 )
                 
                 AppTextField(
                     imageSystemName: "lock",
                     title: "PASSWORD",
                     fieldType: .secure,
-                    value: $password,
-                    animation: animation
+                    value: $viewModel.password
                 )
-                    .padding(.top, 5)
+                .padding(.top, 5)
+                                
+                if let status = viewModel.registrationInvalidStatus {
+                    TextFieldErrorCaptionView(status: status)
+                }
                 
                 VStack(spacing: 20) {
                     Button(
-                        action: { viewModel.loginTap.send((email: email, password: password)) },
+                        action: { viewModel.loginTap.send((email: viewModel.email, password: viewModel.password)) },
                         label: {
                             Text("Login")
                         }
@@ -78,7 +75,7 @@ public struct LoginView: View {
                         .foregroundColor(.white)
                     
                     Button(
-                        action: { viewModel.registerNewAccountTap.send() },
+                        action: { withAnimation { viewModel.registerNewAccountTap.send() } },
                         label: {
                             Text("Sign up")
                                 .fontWeight(.heavy)
@@ -88,17 +85,9 @@ public struct LoginView: View {
                 }
                 .padding()
             }
-        }
-    }
-}
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            LoginView(viewModel: LoginViewModel())
-                .previewDevice("iPhone 13")
-            LoginView(viewModel: LoginViewModel())
-                .previewDevice("iPhone 8")
+            .padding()
+            .padding(.horizontal)
+            .preferredColorScheme(.dark)
         }
     }
 }

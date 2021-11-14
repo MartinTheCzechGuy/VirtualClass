@@ -10,32 +10,23 @@ import Dashboard
 import SwiftUI
 
 public struct MainView: View {
-        
-    @Environment(\.scenePhase) var scenePhase
     
+    @Environment(\.scenePhase) var scenePhase
     @ObservedObject var mainCoordinator: MainCoordinator
     
     init(mainCoordinator: MainCoordinator) {
         self.mainCoordinator = mainCoordinator
     }
-        
+    
     public var body: some View {
-        if let dashboardCoordinator = mainCoordinator.dashboardCoordinator {
-            DashboardView(coordinator: dashboardCoordinator)
-        } else {
-            WelcomeView(viewModel: mainCoordinator.welcomeViewModel)
-                .fullScreenCover(item: $mainCoordinator.loginViewModel) { viewModel in
-                    LoginView(viewModel: viewModel)
-                }
-                .fullScreenCover(item: $mainCoordinator.registrationViewModel) { viewModel in
-                    RegistrationView(viewModel: viewModel)
-                }
+        if mainCoordinator.dashboardCoordinator != nil {
+            instanceProvider.resolve(DashboardView.self)
                 .onChange(of: scenePhase) { phase in
                     switch phase {
                     case .background:
                         print("[APP STATE] - going into background")
                         // tady bys mohl ukladat stav do DB kdyz jdes do pozadi
-        //                databaseInteracting.save
+                        //                databaseInteracting.save
                     case .inactive:
                         print("[APP STATE] - going into inactive")
                     case .active:
@@ -44,9 +35,17 @@ public struct MainView: View {
                         print("[APP STATE] - Catched aditional unknown phase")
                     }
                 }
+        } else {
+            instanceProvider.resolve(WelcomeView.self)
+                .fullScreenCover(item: $mainCoordinator.loginViewModel) { _ in
+                    instanceProvider.resolve(LoginView.self)
+                }
+                .fullScreenCover(item: $mainCoordinator.registrationViewModel) { _ in
+                    instanceProvider.resolve(RegistrationView.self)
+                }
                 .preferredColorScheme(.dark)
-
         }
+       
     }
 }
 

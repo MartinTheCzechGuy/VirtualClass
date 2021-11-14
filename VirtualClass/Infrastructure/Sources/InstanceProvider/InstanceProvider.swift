@@ -6,5 +6,5 @@
 //
 
 public protocol InstanceProvider {
-    func resolve<Instance>(_ ofType: Instance.Type) -> Instance
+    func resolve<Instance>(_ type: Instance.Type) -> Instance
 }

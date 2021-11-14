@@ -20,10 +20,10 @@ extension KeychainStorage: SecureStorage {
     
     // updates password for specified account
     // if it cannot add / update password, it throws an error
-    public func setValue(_ value: String, for userAccount: String) throws {
+    public func setValue(_ value: String, for userAccount: String) -> Result<Void, SecureStorageError> {
         // encode String into Data
         guard let password = value.data(using: .utf8) else {
-            throw SecureStoreError.stringConversionError
+            return .failure(.stringConversionError)
         }
         
         // create a query and append the account to it
@@ -43,23 +43,27 @@ extension KeychainStorage: SecureStorage {
             status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
             
             if status != errSecSuccess {
-                throw error(from: status)
-            }
+                return .failure(.errorUpdatingExistingItem)
+            }            
             // if it cannot find the item, password for that account does not exists. Add the new item by invoking SecItemAdd
         case errSecItemNotFound:
             query[String(kSecValueData)] = password
             
             status = SecItemAdd(query as CFDictionary, nil)
+            
             if status != errSecSuccess {
-                throw error(from: status)
+                return .failure(.errorCreatingNewItem)
             }
+            
         default:
-            throw error(from: status)
+            return .failure(.unhandledQueryResult)
         }
+        
+        return .success(())
     }
     
     // získá heslo pro specifický account, když se něco podělá, hází erorr
-    public func getValue(for userAccount: String) throws -> String? {
+    public func getValue(for userAccount: String) -> Result<String?, SecureStorageError> {
         // keychain API pracuje Core Foundation (Obj-C) typy, proto je musíš mapovat do Swiftu a zpět
         
         // klíče jsou typu CFString -> ty je používáš jako klíče v dictionary a mapuješ je na String
@@ -92,18 +96,18 @@ extension KeychainStorage: SecureStorage {
             let passwordData = queriedItem[String(kSecValueData)] as? Data,
             let password = String(data: passwordData, encoding: .utf8)
             else {
-              throw SecureStoreError.dataConversionError
+                return .failure(.dataConversionError)
           }
-          return password
+            return .success(password)
         // pokud item nenajdu, vracím nil
         case errSecItemNotFound:
-          return nil
+            return .success(nil)
         default:
-          throw error(from: status)
+            return .failure(.unhandledQueryResult)
         }
     }
     
-    public func removeValue(for userAccount: String) throws {
+    public func removeValue(for userAccount: String) -> Result<Void, SecureStorageError> {
         // vytvářím query
         var query = secureStoreQueryable.query
         query[String(kSecAttrAccount)] = userAccount
@@ -111,22 +115,25 @@ extension KeychainStorage: SecureStorage {
         // provádím query / mažu heslo
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
-          throw error(from: status)
+            return .failure(.errorDeletingItem)
         }
+        
+        return .success(())
     }
     
-    public func removeAllValues() throws {
+    public func removeAllValues() -> Result<Void, SecureStorageError> {
         let query = secureStoreQueryable.query
           
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
-          throw error(from: status)
+            return .failure(.errorDeletingItem)
         }
-
+        
+        return .success(())
     }
     
-    private func error(from status: OSStatus) -> SecureStoreError {
+    private func error(from status: OSStatus) -> SecureStorageError {
       let message = SecCopyErrorMessageString(status, nil) as String? ?? NSLocalizedString("Unhandled Error", comment: "")
-      return SecureStoreError.unhandledError(message: message)
+      return SecureStorageError.unknownError(message: message)
     }
 }

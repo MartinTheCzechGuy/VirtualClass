@@ -16,9 +16,9 @@ extension UserEntity {
         return NSFetchRequest<UserEntity>(entityName: "UserEntity")
     }
 
-    @NSManaged public var name: String?
-    @NSManaged public var id: UUID?
-
+    @NSManaged public var name: String
+    @NSManaged public var id: UUID
+    @NSManaged public var email: String
 }
 
 extension UserEntity : Identifiable {
