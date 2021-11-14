@@ -7,64 +7,38 @@
 
 import Calendar
 import Classes
+import InstanceProvider
 import UserAccount
 import SwiftUI
 
 public struct DashboardView: View {
     
     @ObservedObject var coordinator: DashboardCoordinator
+
+    private let instanceProvider: InstanceProvider
     
-    public init(coordinator: DashboardCoordinator) {
+    public init(coordinator: DashboardCoordinator, instanceProvider: InstanceProvider) {
         self.coordinator = coordinator
+        self.instanceProvider = instanceProvider
     }
     
     public var body: some View {
-        if let classSearchVM = coordinator.classSearchViewModel {
+        TabView {
+            instanceProvider.resolve(ClassesCardOverviewView.self)
+                .tabItem {
+                    Label("", systemImage: "house")
+                }
             
-            ClassSearchView(viewModel: classSearchVM)
-                .preferredColorScheme(.light)
+            instanceProvider.resolve(CalendarView.self)
+                .tabItem {
+                    Label("", systemImage: "calendar")
+                }
             
-        } else if let personalInfoVM = coordinator.personalInfoViewModel {
-            
-            PersonalInfoView(viewModel: personalInfoVM)
-                .preferredColorScheme(.light)
-            
-        } else if let classListViewModel = coordinator.classListViewModel {
-            
-            ClassListView(viewModel: classListViewModel)
-                .preferredColorScheme(.dark)
-            
-        } else {
-            
-            TabView {
-                ClassesCardOverviewView(viewModel: coordinator.classOverviewViewModel)
-                    .tabItem {
-                        Label("", systemImage: "house")
-                    }
-                
-                CalendarView(viewModel: coordinator.calendarViewModel)
-                    .tabItem {
-                        Label("", systemImage: "calendar")
-                    }
-                
-                UserAccountView(viewModel: coordinator.userAccountCoordinator.userAccountViewModel)
-                    .tabItem {
-                        Label("", systemImage: "person")
-                    }
-            }
-            .preferredColorScheme(.light)
+            instanceProvider.resolve(UserAccountView.self)
+                .tabItem {
+                    Label("", systemImage: "person")
+                }
         }
+        .preferredColorScheme(.light)
     }
 }
-
-//struct DashboardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DashboardView(
-//            coordinator: .init(
-//                userAccountCoordinator: .init(userAccountViewModel: .init()),
-//                classOverviewViewModel: .init(),
-//                calendarViewModel: .init()
-//            )
-//        )
-//    }
-//}

@@ -20,7 +20,7 @@ public final class WelcomeViewModel: ObservableObject {
     private var bag = Set<AnyCancellable>()
         
     public init() {
-        self.navigateToLogin = signInTap.print("😍").eraseToAnyPublisher()
+        self.navigateToLogin = signInTap.eraseToAnyPublisher()
         self.navigateToRegistration = signUpTap.eraseToAnyPublisher()
         
         print("Welcome view model init")

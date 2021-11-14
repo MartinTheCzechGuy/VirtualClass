@@ -8,15 +8,27 @@
 import Foundation
 
 public struct UserProfile {
-    let id: UUID
-    let name: String
-    let email: String
-    let classes: Set<Class>
+    public let id: UUID
+    public let name: String
+    public let email: String
+    public let classes: Set<Class>
+    
+    public init(
+        id: UUID,
+        name: String,
+        email: String,
+        classes: Set<Class>
+    ) {
+        self.id = id
+        self.name = name
+        self.email = email
+        self.classes = classes
+    }
 }
 
 public struct Class {
-    let id: UUID
-    let name: String
+    public let id: UUID
+    public let name: String
 }
 
 extension Class: Hashable { }

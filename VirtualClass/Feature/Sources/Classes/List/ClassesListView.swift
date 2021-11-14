@@ -23,6 +23,20 @@ public struct ClassListView: View {
                 }
             }
             .navigationTitle("My Classes")
+            .navigationBarItems(leading:
+                HStack {
+                    Image(systemName: "arrow.backward")
+                        .foregroundColor(Color.black)
+                        .onTapGesture {
+                            withAnimation {
+                                viewModel.goBackTap.send()
+                            }
+                        }
+                    
+                    Spacer(minLength: 0)
+                }
+                .padding()
+            )
         }
     }
 }

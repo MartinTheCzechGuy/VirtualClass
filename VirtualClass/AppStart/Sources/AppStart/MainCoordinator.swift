@@ -20,8 +20,8 @@ public final class MainCoordinator: ObservableObject  {
     @Published var activeScreen: ActiveScreen = .auth
     
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
-    @Published var authCoordinator: AuthCoordinator
-    @Published var dashboardCoordinator: DashboardCoordinator?
+    @Published private var authCoordinator: AuthCoordinator
+    @Published private var dashboardCoordinator: DashboardCoordinator?
     
     private var bag = Set<AnyCancellable>()
     private var dashboardBag = Set<AnyCancellable>()

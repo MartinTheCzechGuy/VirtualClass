@@ -11,18 +11,17 @@ import Classes
 import UserAccount
 
 public final class DashboardCoordinator: ObservableObject {
+        
+    // Actions
+    public let didLogout: AnyPublisher<Void, Never>
+    
+    // Private
     
     @Published var classOverviewViewModel: ClassesCardOverviewViewModel
     @Published var userAccountCoordinator: UserAccountCoordinator
     @Published var calendarViewModel: CalendarViewModel
     
-    @Published var classSearchViewModel: ClassSearchViewModel?
-    @Published var personalInfoViewModel: PersonalInfoViewModel?
-    @Published var classListViewModel: ClassListViewModel?
-    
-    public let didLogout: AnyPublisher<Void, Never>
-    let navigateToLogout = PassthroughSubject<Void, Never>()
-    
+    private let didLogoutSubject = PassthroughSubject<Void, Never>()
     private var bag = Set<AnyCancellable>()
     
     public init(
@@ -33,22 +32,16 @@ public final class DashboardCoordinator: ObservableObject {
         self.userAccountCoordinator = userAccountCoordinator
         self.classOverviewViewModel = classOverviewViewModel
         self.calendarViewModel = calendarViewModel
-        self.didLogout = navigateToLogout.eraseToAnyPublisher()
+        self.didLogout = didLogoutSubject.eraseToAnyPublisher()
         
         setupBindings()
     }
     
     private func setupBindings() {
-        userAccountCoordinator.$classSearchViewModel
-            .assign(to: \.classSearchViewModel, on: self)
-            .store(in: &bag)
-        
-        userAccountCoordinator.$personalInfoViewModel
-            .assign(to: \.personalInfoViewModel, on: self)
-            .store(in: &bag)
-        
-        userAccountCoordinator.$classListViewModel
-            .assign(to: \.classListViewModel, on: self)
+        userAccountCoordinator.didLogout
+            .sink(receiveValue: { [weak self] in
+                self?.didLogoutSubject.send()
+            })
             .store(in: &bag)
     }
 }

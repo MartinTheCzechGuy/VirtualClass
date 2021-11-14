@@ -11,7 +11,7 @@ public struct ClassesCardOverviewView: View {
     
     @ObservedObject var viewModel: ClassesCardOverviewViewModel
     
-    public init(viewModel: ClassesCardOverviewViewModel) {
+    init(viewModel: ClassesCardOverviewViewModel) {
         self.viewModel = viewModel
     }
     

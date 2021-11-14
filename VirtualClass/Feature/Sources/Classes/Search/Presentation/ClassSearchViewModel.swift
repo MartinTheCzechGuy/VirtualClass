@@ -17,24 +17,43 @@ public final class ClassSearchViewModel: ObservableObject {
     ]
     @Published var showError = false
     
+    // MARK: - Outputs
+    
     let goBackTap = PassthroughSubject<Void, Never>()
     let addSelectedTap = PassthroughSubject<Void, Never>()
     
-    public let navigateToUserAccount: AnyPublisher<Void, Never>
+    // MARK: - Actions
     
+    public let navigateToUserAccount: AnyPublisher<Void, Never>
+    public let navigateToClassOverview: AnyPublisher<Void, Never>
+    
+    // MARK: - Private
+    
+    private let userAccountUpdated = PassthroughSubject<Void, Never>()
     private var bag: Set<AnyCancellable> = []
     
     public init() {
         self.navigateToUserAccount = goBackTap.eraseToAnyPublisher()
+        self.navigateToClassOverview = userAccountUpdated.eraseToAnyPublisher()
         
-        addSelectedTap
+        let addClassesResult = addSelectedTap
             .compactMap { [weak self] _ -> [SearchedClass]? in
                 guard let self = self else { return nil }
                 
                 return self.searchResult.filter { $0.isSelected }
             }
-            .sink(receiveValue: { selectedClasses in
-                print("mam selected \(selectedClasses.count) classes")
+            .compactMap { [weak self] selectedClasses -> Result<Void, Error>? in
+                guard let self = self else { return nil }
+
+                #warning("TODO - uloz zmeny")
+                return .success(())
+            }
+            .share()
+        
+        addClassesResult
+            .compactMap(\.success)
+            .sink(receiveValue: { [weak self] _ in
+                self?.userAccountUpdated.send()
             })
             .store(in: &bag)
     }

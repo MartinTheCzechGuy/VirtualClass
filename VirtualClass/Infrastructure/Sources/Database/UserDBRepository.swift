@@ -17,6 +17,7 @@ public protocol UserDBRepositoryType {
     func create(domainModel: DomainUserModel) -> Result<Void, DatabaseError>
     func createOrUpdate(domainModel: DomainUserModel) -> Result<Void, DatabaseError>
     func load(withID id: UUID) -> Result<DomainUserModel?, DatabaseError>
+    func load(withEmail email: String) -> Result<DomainUserModel?, DatabaseError>
     func loadAll() -> Result<[DomainUserModel], DatabaseError>
     func update(_ domainModel: DomainUserModel) -> Result<Void, DatabaseError>
     func delete(withID id: UUID) -> Result<Void, DatabaseError>
@@ -100,6 +101,10 @@ final class UserDBRepository: UserDBRepositoryType {
 //            .mapErrorToDomain()
         
         return .success(DBVole.first(where: { $0.id == id }))
+    }
+    
+    func load(withEmail email: String) -> Result<DomainUserModel?, DatabaseError> {
+        return .success(DBVole.first(where: { $0.email == email }))
     }
     
     func loadAll() -> Result<[DomainUserModel], DatabaseError> {

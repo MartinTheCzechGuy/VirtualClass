@@ -7,6 +7,7 @@
 
 import Swinject
 import SwinjectAutoregistration
+import UserSDK
 
 public class UserAccountAssembly: Assembly {
 
@@ -14,9 +15,10 @@ public class UserAccountAssembly: Assembly {
 
     public func assemble(container: Container) {
         container.autoregister(PersonalInfoView.self, initializer: PersonalInfoView.init)
-        container.autoregister(PersonalInfoView.self, initializer: PersonalInfoView.init)
-        
-        container.autoregister(UserAccountViewModel.self, initializer: UserAccountViewModel.init)
+        container.autoregister(UserProfileView.self, initializer: UserProfileView.init)
+        container.autoregister(UserAccountView.self, initializer: UserAccountView.init)
+
+        container.autoregister(UserProfileViewModel.self, initializer: UserProfileViewModel.init)
             .inObjectScope(.container)
         container.autoregister(PersonalInfoViewModel.self, initializer: PersonalInfoViewModel.init)
             .inObjectScope(.container)

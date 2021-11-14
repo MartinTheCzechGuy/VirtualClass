@@ -8,28 +8,54 @@
 import Classes
 import Combine
 import InstanceProvider
+import UserSDK
 
 public final class UserAccountCoordinator: ObservableObject {
     
-    @Published public var userAccountViewModel: UserAccountViewModel
-    @Published public var classSearchViewModel: ClassSearchViewModel?
-    @Published public var personalInfoViewModel: PersonalInfoViewModel?
-    @Published public var classListViewModel: ClassListViewModel?
+    enum ActiveScreen: Identifiable {
+        case classSearch
+        case personalInfo
+        case classList
+        
+        var id: Self {
+            self
+        }
+    }
+    
+    // Inputs
+    @Published var activeScreen: ActiveScreen? = nil
+
+    // Outputs
+    let didLogoutSubject = PassthroughSubject<Void, Never>()
+    
+    // Actions
+    public let didLogout: AnyPublisher<Void, Never>
+    public let navigateToUserProfile: AnyPublisher<Void, Never>
+    
+    // Private
+    #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
+    @Published private var userAccountViewModel: UserProfileViewModel
+    @Published private var classSearchViewModel: ClassSearchViewModel?
+    @Published private var personalInfoViewModel: PersonalInfoViewModel?
+    @Published private var classListViewModel: ClassListViewModel?
+    
+    private let navigateToUserProfileSubject = PassthroughSubject<Void, Never>()
     
     private var bag = Set<AnyCancellable>()
-    
     private var classSearchBag = Set<AnyCancellable>()
     private var personalInfoBag = Set<AnyCancellable>()
-    private var classOverviewBag = Set<AnyCancellable>()
+    private var classListBag = Set<AnyCancellable>()
     
     private let instanceProvider: InstanceProvider
     
     public init(
-        userAccountViewModel: UserAccountViewModel,
+        userAccountViewModel: UserProfileViewModel,
         instanceProvider: InstanceProvider
     ) {
         self.userAccountViewModel = userAccountViewModel
         self.instanceProvider = instanceProvider
+        self.didLogout = didLogoutSubject.eraseToAnyPublisher()
+        self.navigateToUserProfile = navigateToUserProfileSubject.eraseToAnyPublisher()
         
         setupBindings()
     }
@@ -40,22 +66,27 @@ public final class UserAccountCoordinator: ObservableObject {
                 guard let self = self else { return }
                 
                 self.classSearchViewModel = self.instanceProvider.resolve(ClassSearchViewModel.self)
+                self.activeScreen = .classSearch
             })
             .store(in: &bag)
         
         userAccountViewModel.navigateToPersonalInfo
-            .sink(receiveValue: { [weak self] _ in
+            .sink(receiveValue: { [weak self] userAccount in
                 guard let self = self else { return }
                 
+                let personalInfo = UserPersonalInfo(name: userAccount.name, email: userAccount.email)
+                
                 self.personalInfoViewModel = self.instanceProvider.resolve(PersonalInfoViewModel.self)
+                self.activeScreen = .personalInfo
             })
             .store(in: &bag)
         
-        userAccountViewModel.navigateToClassOverview
+        userAccountViewModel.navigateToClassList
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
                 self.classListViewModel = self.instanceProvider.resolve(ClassListViewModel.self)
+                self.activeScreen = .classList
             })
             .store(in: &bag)
         
@@ -69,6 +100,16 @@ public final class UserAccountCoordinator: ObservableObject {
                     viewModel?.navigateToUserAccount
                         .sink(receiveValue: {
                             self.classSearchViewModel = nil
+                            self.activeScreen = .none
+                        })
+                        .store(in: &self.classSearchBag)
+                    
+                    viewModel?.navigateToClassOverview
+                        .sink(receiveValue: {
+                            self.classSearchViewModel = nil
+                            self.activeScreen = .none
+                            
+                            #warning("TODO - swap tab bar na class overview")
                         })
                         .store(in: &self.classSearchBag)
                 }
@@ -85,6 +126,7 @@ public final class UserAccountCoordinator: ObservableObject {
                     viewModel?.navigateToUserAccount
                         .sink(receiveValue: {
                             self.personalInfoViewModel = nil
+                            self.activeScreen = .none
                         })
                         .store(in: &self.personalInfoBag)
                 }
@@ -101,8 +143,9 @@ public final class UserAccountCoordinator: ObservableObject {
                     viewModel?.navigateToUserAccount
                         .sink(receiveValue: {
                             self.classListViewModel = nil
+                            self.activeScreen = .none
                         })
-                        .store(in: &self.classOverviewBag)
+                        .store(in: &self.classListBag)
                 }
             )
             .store(in: &bag)

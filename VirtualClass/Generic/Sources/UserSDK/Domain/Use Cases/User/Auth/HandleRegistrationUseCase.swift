@@ -63,9 +63,10 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
         
         print("Found all used emails")
         
-        guard !isEmailUsed else {
-            return .emailAlreadyUsed
-        }
+        #warning("TODO - put me back into action.")
+//        guard !isEmailUsed else {
+//            return .emailAlreadyUsed
+//        }
         
         print("email is not taken")
         

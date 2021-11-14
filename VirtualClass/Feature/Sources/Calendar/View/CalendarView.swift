@@ -11,7 +11,7 @@ public struct CalendarView: View {
     
     @ObservedObject var viewModel: CalendarViewModel
     
-    public init(viewModel: CalendarViewModel) {
+    init(viewModel: CalendarViewModel) {
         self.viewModel = viewModel
     }
     

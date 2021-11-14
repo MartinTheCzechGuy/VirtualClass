@@ -55,6 +55,12 @@ extension UserProfileRepository: UserProfileRepositoryType {
             .mapError(UserRepositoryError.databaseError)
     }
     
+    func load(userWithEmail email: String) -> Result<UserProfile?, UserRepositoryError> {
+        database.load(withEmail: email)
+            .mapUserToDomain()
+            .mapError(UserRepositoryError.databaseError)
+    }
+    
     func loadAll() -> Result<[UserProfile], UserRepositoryError> {
         database.loadAll()
             .mapUsersToDomain()

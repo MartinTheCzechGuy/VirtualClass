@@ -18,6 +18,7 @@ public class UserSDKAssembly: Assembly {
         // MARK: - User Auth
         
         container.autoregister(UserAuthRepositoryType.self, initializer: UserAuthRepository.init)
+            .inObjectScope(.container)
         
         container.autoregister(CheckValidPasswordUseCaseType.self, initializer: CheckValidPasswordUseCase.init)
         container.autoregister(CheckValidEmailUseCaseType.self, initializer: CheckValidEmailUseCase.init)
@@ -30,7 +31,12 @@ public class UserSDKAssembly: Assembly {
         // MARK: User Profile
         
         container.autoregister(UserProfileRepositoryType.self, initializer: UserProfileRepository.init)
+            .inObjectScope(.container)
         
         container.autoregister(UpdateUserProfileUseCaseType.self, initializer: UpdateUserProfileUseCase.init)
+            .inObjectScope(.container)
+        
+        container.autoregister(GetUserProfileUseCaseType.self, initializer: GetUserProfileUseCase.init)
+        container.autoregister(GetLoggedInUserUseCaseType.self, initializer: GetLoggedInUserUseCase.init)
     }
 }

@@ -27,6 +27,15 @@ var DBVole: [DomainUserModel] = [
             .init(id: UUID(), name: "Právo")
         ]
     ),
+    DomainUserModel(
+        id: UUID(),
+        name: "Adam Lančaric",
+        email: "adam@google.com",
+        classes: [
+            .init(id: UUID(), name: "Matematika"),
+            .init(id: UUID(), name: "Právo")
+        ]
+    ),
 ]
 
 //public protocol ClassDBRepositoryType {

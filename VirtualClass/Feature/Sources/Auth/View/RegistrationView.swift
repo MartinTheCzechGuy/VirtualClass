@@ -110,6 +110,7 @@ public struct RegistrationView: View {
                 .padding()
                 .padding(.horizontal)
             }
+            .padding()
         }
         .preferredColorScheme(.dark)
     }
