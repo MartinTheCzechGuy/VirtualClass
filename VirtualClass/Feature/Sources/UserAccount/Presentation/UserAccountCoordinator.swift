@@ -73,9 +73,7 @@ public final class UserAccountCoordinator: ObservableObject {
         userAccountViewModel.navigateToPersonalInfo
             .sink(receiveValue: { [weak self] userAccount in
                 guard let self = self else { return }
-                
-                let personalInfo = UserPersonalInfo(name: userAccount.name, email: userAccount.email)
-                
+
                 self.personalInfoViewModel = self.instanceProvider.resolve(PersonalInfoViewModel.self)
                 self.activeScreen = .personalInfo
             })
@@ -91,25 +89,18 @@ public final class UserAccountCoordinator: ObservableObject {
             .store(in: &bag)
         
         $classSearchViewModel
+            .compactMap { $0 }
             .sink(
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
                     self.classSearchBag.removeAll()
                     
-                    viewModel?.navigateToUserAccount
+                    viewModel.goBackTap
+                        .merge(with: viewModel.classedAddedSuccessfully)
                         .sink(receiveValue: {
                             self.classSearchViewModel = nil
                             self.activeScreen = .none
-                        })
-                        .store(in: &self.classSearchBag)
-                    
-                    viewModel?.navigateToClassOverview
-                        .sink(receiveValue: {
-                            self.classSearchViewModel = nil
-                            self.activeScreen = .none
-                            
-                            #warning("TODO - swap tab bar na class overview")
                         })
                         .store(in: &self.classSearchBag)
                 }

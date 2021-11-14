@@ -24,7 +24,7 @@ public struct DashboardView: View {
     
     public var body: some View {
         TabView {
-            instanceProvider.resolve(ClassesCardOverviewView.self)
+            instanceProvider.resolve(HomeView.self)
                 .tabItem {
                     Label("", systemImage: "house")
                 }

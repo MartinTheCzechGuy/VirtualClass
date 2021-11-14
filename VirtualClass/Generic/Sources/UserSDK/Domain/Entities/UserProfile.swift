@@ -26,7 +26,7 @@ public struct UserProfile {
     }
 }
 
-public struct Class {
+public struct Class: Identifiable {
     public let id: UUID
     public let name: String
 }

@@ -5,6 +5,7 @@
 //  Created by Martin on 11.11.2021.
 //
 
+import Combine
 import Foundation
 
 public final class ClassesCardOverviewViewModel: ObservableObject {
@@ -49,13 +50,16 @@ public final class ClassesCardOverviewViewModel: ObservableObject {
         )
     ]
     
-    @Published var selectedClass: Class?
+    // MARK: - ViewModel to Coordinator
+    let classCardTap: AnyPublisher<Class, Never>
+    let addClassButtonTap: AnyPublisher<Void, Never>
     
-    convenience init(selectedClass: Class?) {
-        self.init()
-        
-        self.selectedClass = selectedClass
+    // MARK: - Private
+    let classCardTapSubject = PassthroughSubject<Class, Never>()
+    let adddClassSubject = PassthroughSubject<Void, Never>()
+    
+    public init() {
+        self.classCardTap = classCardTapSubject.eraseToAnyPublisher()
+        self.addClassButtonTap = adddClassSubject.eraseToAnyPublisher()
     }
-    
-    public init() {}
 }

@@ -10,6 +10,8 @@ import Foundation
 
 public final class ClassSearchViewModel: ObservableObject {
     
+    // MARK: - View Model to View
+    
     @Published var className = ""
     @Published var searchResult: [SearchedClass] = [
         .init(name: "tada", ident: "ident", description: "", nextClass: Date(), room: "", faculty: "", currentlyStudied: false, isSelected: false),
@@ -17,26 +19,26 @@ public final class ClassSearchViewModel: ObservableObject {
     ]
     @Published var showError = false
     
-    // MARK: - Outputs
+    // MARK: - View to View Model
     
-    let goBackTap = PassthroughSubject<Void, Never>()
-    let addSelectedTap = PassthroughSubject<Void, Never>()
+    let goBackTapSubject = PassthroughSubject<Void, Never>()
+    let addSelectedTapSubject = PassthroughSubject<Void, Never>()
     
-    // MARK: - Actions
+    // MARK: - View Model to Coordinator
     
-    public let navigateToUserAccount: AnyPublisher<Void, Never>
-    public let navigateToClassOverview: AnyPublisher<Void, Never>
+    public let goBackTap: AnyPublisher<Void, Never>
+    public let classedAddedSuccessfully: AnyPublisher<Void, Never>
     
     // MARK: - Private
     
-    private let userAccountUpdated = PassthroughSubject<Void, Never>()
+    private let classedAddedSuccessfullySubject = PassthroughSubject<Void, Never>()
     private var bag: Set<AnyCancellable> = []
     
     public init() {
-        self.navigateToUserAccount = goBackTap.eraseToAnyPublisher()
-        self.navigateToClassOverview = userAccountUpdated.eraseToAnyPublisher()
+        self.goBackTap = goBackTapSubject.eraseToAnyPublisher()
+        self.classedAddedSuccessfully = classedAddedSuccessfullySubject.eraseToAnyPublisher()
         
-        let addClassesResult = addSelectedTap
+        let addClassesResult = addSelectedTapSubject
             .compactMap { [weak self] _ -> [SearchedClass]? in
                 guard let self = self else { return nil }
                 
@@ -53,7 +55,7 @@ public final class ClassSearchViewModel: ObservableObject {
         addClassesResult
             .compactMap(\.success)
             .sink(receiveValue: { [weak self] _ in
-                self?.userAccountUpdated.send()
+                self?.classedAddedSuccessfullySubject.send()
             })
             .store(in: &bag)
     }

@@ -18,7 +18,6 @@ public struct ClassesCardOverviewView: View {
     public var body: some View {
         ZStack {
             VStack {
-                
                 Text("Classes overview")
                     .font(.title.bold())
                     .padding()
@@ -37,7 +36,7 @@ public struct ClassesCardOverviewView: View {
                             )
                                 .onTapGesture {
                                     withAnimation {
-                                        viewModel.selectedClass = data
+                                        viewModel.classCardTapSubject.send(data)
                                     }
                                 }
                         }
@@ -50,7 +49,7 @@ public struct ClassesCardOverviewView: View {
                 Spacer(minLength: 0 )
                 
                 Button(action: {
-                    print("Stisknul jsi button")
+                    viewModel.adddClassSubject.send()
                 }) {
                     Image(systemName: "plus")
                         .imageScale(.large)
@@ -64,9 +63,6 @@ public struct ClassesCardOverviewView: View {
                 Spacer()
                     .frame(height: 50)
             }
-        }
-        .fullScreenCover(item: $viewModel.selectedClass) { _ in
-            ClassDetailView(viewModel: viewModel)
         }
     }
 }

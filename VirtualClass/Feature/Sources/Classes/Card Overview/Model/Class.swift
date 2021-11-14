@@ -17,3 +17,5 @@ struct Class: Identifiable {
     let faculty: String
     let currentlyStudied: Bool
 }
+
+extension Class: Hashable { }

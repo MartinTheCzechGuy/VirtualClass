@@ -23,7 +23,7 @@ public struct ClassSearchView: View {
                     .foregroundColor(Color.black)
                     .onTapGesture {
                         withAnimation {
-                            viewModel.goBackTap.send()
+                            viewModel.goBackTapSubject.send()
                         }
                     }
                 
@@ -61,7 +61,7 @@ public struct ClassSearchView: View {
             Spacer(minLength: 0)
             
             Button(
-                action: { viewModel.addSelectedTap.send() },
+                action: { viewModel.addSelectedTapSubject.send() },
                 label: {
                     Text("Add selected")
                 }
