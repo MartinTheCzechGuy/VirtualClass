@@ -20,14 +20,21 @@ public final class AuthCoordinator: ObservableObject {
         }
     }
     
+    // MARK: - Coordinator to Coordinator View
+    
     @Published var activeScreen: ActiveScreen? = nil
     
-    #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
+    // MARK: - Coordinator to Root Coordinator
+    
+    public let authSuccessful: AnyPublisher<Void, Never>
+    
+    // MARK: - Private
+    
+#warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var welcomeViewModel: WelcomeViewModel
     @Published private var loginViewModel: LoginViewModel?
     @Published private var registrationViewModel: RegistrationViewModel?
     
-    public let authSuccessful: AnyPublisher<Void, Never>
     private let navigateToDashboardSubject = PassthroughSubject<Void, Never>()
     
     private let instanceProvider: InstanceProvider
@@ -45,7 +52,7 @@ public final class AuthCoordinator: ObservableObject {
     }
     
     private func setupBindings() {
-        welcomeViewModel.navigateToLogin
+        welcomeViewModel.actions.loginTap
             .sink(
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
@@ -56,7 +63,7 @@ public final class AuthCoordinator: ObservableObject {
             )
             .store(in: &bag)
         
-        welcomeViewModel.navigateToRegistration
+        welcomeViewModel.actions.registrationTap
             .sink(
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }

@@ -18,12 +18,12 @@ public enum UserRepositoryError: Error {
 
 final class UserProfileRepository {
     
-    private let database: UserDBRepositoryType
+    private let database: StudentDBRepositoryType
     private let keyValueLocalStorage: LocalKeyValueStorage
     private let secureStorage: SecureStorage
     
     init(
-        database: UserDBRepositoryType,
+        database: StudentDBRepositoryType,
         keyValueLocalStorage: LocalKeyValueStorage,
         secureStorage: SecureStorage
     ) {
@@ -35,15 +35,25 @@ final class UserProfileRepository {
 
 extension UserProfileRepository: UserProfileRepositoryType {
     func update(_ user: UserProfile) -> Result<Void, UserRepositoryError> {
-        var classes = Set<DomainClassModel>()
-        user.classes.forEach { classes.insert(DomainClassModel(id: $0.id, name: $0.name)) }
+        var classes = Set<Course>()
+        user.classes.forEach { classes.insert(
+            Course(
+                ident: $0.ident,
+                name: $0.name,
+                events: [],
+                classRoom: .init(id: UUID(), name: "tada"),
+                faculty: .facultyOne,
+                teachers: [],
+                students: [])
+        )
+        }
         
         return database.update(
-            DomainUserModel(
+            Student(
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                classes: classes
+                courses: []
             )
         )
             .mapError(UserRepositoryError.databaseError)
@@ -76,7 +86,7 @@ extension UserProfileRepository: UserProfileRepositoryType {
     }
 }
 
-extension Result where Success == DomainUserModel? {
+extension Result where Success == Student? {
     func mapUserToDomain() -> Result<UserProfile?, Failure> {
         map { domainModel in
             guard let domainModel = domainModel else {
@@ -84,7 +94,7 @@ extension Result where Success == DomainUserModel? {
             }
             
             var classes = Set<Class>()
-            domainModel.classes.forEach { classes.insert(Class(id: $0.id, name: $0.name)) }
+            //            domainModel.classes.forEach { classes.insert(Class(id: $0.id, name: $0.name)) }
             
             return UserProfile(
                 id: domainModel.id,
@@ -96,12 +106,12 @@ extension Result where Success == DomainUserModel? {
     }
 }
 
-extension Result where Success == [DomainUserModel] {
+extension Result where Success == [Student] {
     func mapUsersToDomain() -> Result<[UserProfile], Failure> {
         map {
             $0.map {
                 var classes = Set<Class>()
-                $0.classes.forEach { classes.insert(Class(id: $0.id, name: $0.name)) }
+                //                $0.classes.forEach { classes.insert(Class(id: $0.id, name: $0.name)) }
                 
                 return UserProfile(id: $0.id, name: $0.name, email: $0.email, classes: classes)
             }

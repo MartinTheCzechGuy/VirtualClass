@@ -27,6 +27,7 @@ public class UserSDKAssembly: Assembly {
         container.autoregister(HandleUserRegistrationUseCaseType.self, initializer: HandleUserRegistrationUseCase.init)
         container.autoregister(HandleLogOutUseCaseType.self, initializer: HandleLogOutUseCase.init)
         container.autoregister(IsEmailUsedUseCasetype.self, initializer: IsEmailUsedUseCase.init)
+        container.autoregister(IsUserLoggedInUseCaseType.self, initializer: IsUserLoggedInUseCase.init)
 
         // MARK: User Profile
         

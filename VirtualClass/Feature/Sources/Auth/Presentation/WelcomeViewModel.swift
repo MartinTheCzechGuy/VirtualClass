@@ -6,27 +6,25 @@
 //
 
 import Combine
-import Foundation
 
 public final class WelcomeViewModel: ObservableObject {
     
-    #warning("TODO: tohle je v podstate duplikatni kod, ve smyslu, ze by si mohl v coordinatoru rovnou poslouchat signInTap, ale nemel bys ... nejak to schovat to Actions etc struktur?")
+    // MARK: - View to View Model
+    
     let signInTap = PassthroughSubject<Void, Never>()
     let signUpTap = PassthroughSubject<Void, Never>()
     
-    public let navigateToLogin: AnyPublisher<Void, Never>
-    public let navigateToRegistration: AnyPublisher<Void, Never>
-
-    private var bag = Set<AnyCancellable>()
-        
-    public init() {
-        self.navigateToLogin = signInTap.eraseToAnyPublisher()
-        self.navigateToRegistration = signUpTap.eraseToAnyPublisher()
-        
-        print("Welcome view model init")
+    // MARK: - View Model to Coordinaotr
+    
+    public struct Action {
+        let loginTap: AnyPublisher<Void, Never>
+        let registrationTap: AnyPublisher<Void, Never>
     }
     
-    deinit {
-        print("Welcome view model deinit")
-    }
+    public lazy var actions: Action = Action(
+        loginTap: signInTap.eraseToAnyPublisher(),
+        registrationTap: signUpTap.eraseToAnyPublisher()
+    )
+                
+    public init() {}
 }

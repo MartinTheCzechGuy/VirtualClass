@@ -17,12 +17,12 @@ public enum UserAuthRepositoryError: Error {
 
 final class UserAuthRepository {
 
-    private let database: UserDBRepositoryType
+    private let database: StudentDBRepositoryType
     private let keyValueLocalStorage: LocalKeyValueStorage
     private let secureStorage: SecureStorage
     
     init(
-        database: UserDBRepositoryType,
+        database: StudentDBRepositoryType,
         keyValueLocalStorage: LocalKeyValueStorage,
         secureStorage: SecureStorage
     ) {
@@ -34,8 +34,8 @@ final class UserAuthRepository {
 
 extension UserAuthRepository: UserAuthRepositoryType {
     
-    var isLoggedIn: Bool {
-        keyValueLocalStorage.read(objectForKey: .userEmail) != nil
+    var loggedInUserEmail: String? {
+        keyValueLocalStorage.read(objectForKey: .userEmail)
     }
     
     func store(credentials: Credentials) -> Result<Void, UserAuthRepositoryError> {

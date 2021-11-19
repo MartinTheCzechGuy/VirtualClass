@@ -43,11 +43,15 @@ extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
         
         print("email is valid")
         
-        guard userAuthRepository.isLoggedIn else {
+        guard let loggedInUserEmail = userAuthRepository.loggedInUserEmail else {
             return .accountDoesNotExist
         }
         
         print("mám email z user defaults")
+        
+        guard loggedInUserEmail == email else {
+            return .invalidCredentials
+        }
         
         guard let savedPassword = userAuthRepository.storedPassword(for: email).success else {
             return .errorLoadingData

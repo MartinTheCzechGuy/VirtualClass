@@ -7,7 +7,7 @@
 
 protocol UserAuthRepositoryType {
     func store(credentials: Credentials) -> Result<Void, UserAuthRepositoryError>
-    var isLoggedIn: Bool { get }
+    var loggedInUserEmail: String? { get }
     func storedPassword(for email: String) -> Result<String?, UserAuthRepositoryError>
     func logout() -> Result<Void, UserAuthRepositoryError>
 }

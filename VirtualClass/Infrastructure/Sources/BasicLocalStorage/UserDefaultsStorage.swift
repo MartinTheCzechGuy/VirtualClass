@@ -22,7 +22,7 @@ final class UserDefaultsStorage {
     
     private let defaults: UserDefaults
     
-    init(defaults: UserDefaults) {
+    init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
     }
 }

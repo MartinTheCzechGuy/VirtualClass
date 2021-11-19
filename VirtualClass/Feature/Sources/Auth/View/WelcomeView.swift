@@ -61,17 +61,6 @@ public struct WelcomeView: View {
                 }
             }
         }
-            .preferredColorScheme(.dark)
-    }
-}
-
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            WelcomeView(viewModel: WelcomeViewModel())
-                .previewDevice("iPhone 13")
-            WelcomeView(viewModel: WelcomeViewModel())
-                .previewDevice("iPhone 8")
-        }
+        .preferredColorScheme(.dark)
     }
 }

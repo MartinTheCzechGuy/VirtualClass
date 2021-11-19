@@ -26,9 +26,15 @@ public struct UserProfile {
     }
 }
 
-public struct Class: Identifiable {
-    public let id: UUID
+public struct Class {
+    public let ident: String
     public let name: String
+}
+
+extension Class: Identifiable {
+    public var id: String {
+        ident
+    }
 }
 
 extension Class: Hashable { }

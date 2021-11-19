@@ -9,6 +9,7 @@ import Auth
 import Combine
 import Dashboard
 import InstanceProvider
+import UserSDK
 
 public final class MainCoordinator: ObservableObject  {
     
@@ -17,7 +18,11 @@ public final class MainCoordinator: ObservableObject  {
         case dashboard
     }
     
-    @Published var activeScreen: ActiveScreen = .auth
+    // MARK: - Coordinator to Coordinator View
+    
+    @Published var activeScreen: ActiveScreen
+    
+    // MARK: Private
     
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var authCoordinator: AuthCoordinator
@@ -26,8 +31,12 @@ public final class MainCoordinator: ObservableObject  {
     private var bag = Set<AnyCancellable>()
     private var dashboardBag = Set<AnyCancellable>()
     
-    init(authCoordinator: AuthCoordinator) {
+    private let isUserLoggedInUseCase: IsUserLoggedInUseCaseType
+    
+    init(authCoordinator: AuthCoordinator, isUserLoggedInUseCase: IsUserLoggedInUseCaseType) {
         self.authCoordinator = authCoordinator
+        self.isUserLoggedInUseCase = isUserLoggedInUseCase
+        self.activeScreen = !isUserLoggedInUseCase.isUserLogged ? .dashboard : .auth
         
         setupBindings()
     }

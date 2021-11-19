@@ -17,6 +17,7 @@ public class AuthAssembly: Assembly {
         container.autoregister(LoginView.self, initializer: LoginView.init)
         container.autoregister(RegistrationView.self, initializer: RegistrationView.init)
         container.autoregister(WelcomeView.self, initializer: WelcomeView.init)
+        container.autoregister(AuthView.self, initializer: AuthView.init)
         
         container.autoregister(WelcomeViewModel.self, initializer: WelcomeViewModel.init)
             .inObjectScope(.container)
@@ -27,8 +28,7 @@ public class AuthAssembly: Assembly {
         container.autoregister(LoginViewModel.self, initializer: LoginViewModel.init)
             .inObjectScope(.container)
         
-        
-        container.autoregister(AuthView.self, initializer: AuthView.init)
         container.autoregister(AuthCoordinator.self, initializer: AuthCoordinator.init)
+            .inObjectScope(.container)
     }
 }
