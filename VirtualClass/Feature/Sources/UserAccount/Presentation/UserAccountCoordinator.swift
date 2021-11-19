@@ -88,6 +88,15 @@ public final class UserAccountCoordinator: ObservableObject {
             })
             .store(in: &bag)
         
+        userAccountViewModel.didLogout
+            .sink(receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                
+                self.didLogoutSubject.send(())
+                self.activeScreen = nil
+            })
+            .store(in: &bag)
+        
         $classSearchViewModel
             .compactMap { $0 }
             .sink(

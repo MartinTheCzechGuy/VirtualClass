@@ -34,6 +34,12 @@ final class UserProfileRepository {
 }
 
 extension UserProfileRepository: UserProfileRepositoryType {
+    
+    func create(name: String, email: String) -> Result<Void, UserRepositoryError> {
+        database.create(domainModel: Student(id: UUID(), name: name, email: email, courses: []))
+            .mapError(UserRepositoryError.databaseError)
+    }
+    
     func update(_ user: UserProfile) -> Result<Void, UserRepositoryError> {
         var classes = Set<Course>()
         user.classes.forEach { classes.insert(

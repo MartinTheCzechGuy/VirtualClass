@@ -35,8 +35,7 @@ public class UserSDKAssembly: Assembly {
             .inObjectScope(.container)
         
         container.autoregister(UpdateUserProfileUseCaseType.self, initializer: UpdateUserProfileUseCase.init)
-            .inObjectScope(.container)
-        
+        container.autoregister(CreateStudentProfileUseCaseType.self, initializer: CreateStudentProfileUseCase.init)
         container.autoregister(GetUserProfileUseCaseType.self, initializer: GetUserProfileUseCase.init)
         container.autoregister(GetLoggedInUserUseCaseType.self, initializer: GetLoggedInUserUseCase.init)
     }

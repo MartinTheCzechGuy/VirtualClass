@@ -36,7 +36,7 @@ public final class MainCoordinator: ObservableObject  {
     init(authCoordinator: AuthCoordinator, isUserLoggedInUseCase: IsUserLoggedInUseCaseType) {
         self.authCoordinator = authCoordinator
         self.isUserLoggedInUseCase = isUserLoggedInUseCase
-        self.activeScreen = !isUserLoggedInUseCase.isUserLogged ? .dashboard : .auth
+        self.activeScreen = isUserLoggedInUseCase.isUserLogged ? .dashboard : .auth
         
         setupBindings()
     }

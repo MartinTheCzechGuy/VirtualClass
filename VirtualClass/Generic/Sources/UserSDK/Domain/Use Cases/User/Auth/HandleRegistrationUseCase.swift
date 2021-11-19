@@ -21,19 +21,22 @@ final class HandleUserRegistrationUseCase {
     private let checkEmailTakenUseCase: CheckEmailTakenUseCaseType
     private let isEmailUsedUseCase: IsEmailUsedUseCasetype
     private let userAuthRepository: UserAuthRepositoryType
+    private let createUserProfileUseCase: CreateStudentProfileUseCaseType
     
     init(
         checkValidEmailUseCase: CheckValidEmailUseCaseType,
         checkValidPasswordUseCase: CheckValidPasswordUseCaseType,
         checkEmailTakenUseCase: CheckEmailTakenUseCaseType,
         isEmailUsedUseCase: IsEmailUsedUseCasetype,
-        userAuthRepository: UserAuthRepositoryType
+        userAuthRepository: UserAuthRepositoryType,
+        createUserProfileUseCase: CreateStudentProfileUseCaseType
     ) {
         self.checkValidEmailUseCase = checkValidEmailUseCase
         self.checkValidPasswordUseCase = checkValidPasswordUseCase
         self.checkEmailTakenUseCase = checkEmailTakenUseCase
         self.isEmailUsedUseCase = isEmailUsedUseCase
         self.userAuthRepository = userAuthRepository
+        self.createUserProfileUseCase = createUserProfileUseCase
     }
 }
 
@@ -63,10 +66,9 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
         
         print("Found all used emails")
         
-        #warning("TODO - put me back into action.")
-//        guard !isEmailUsed else {
-//            return .emailAlreadyUsed
-//        }
+        guard !isEmailUsed else {
+            return .emailAlreadyUsed
+        }
         
         print("email is not taken")
         
@@ -74,6 +76,16 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
         
         print("storing result \(storeCredentialsResult)")
         
-        return storeCredentialsResult.success != nil ? .validData : .errorStoringCredentials
+        guard storeCredentialsResult.success != nil else {
+            return .errorStoringCredentials
+        }
+        
+        print("password stored \(storeCredentialsResult)")
+        
+        let createProfileResult = createUserProfileUseCase.register(name: form.name, email: form.email)
+        
+        print("profile creatin result \(createProfileResult)")
+        
+        return createProfileResult.success != nil ? .validData : .errorStoringCredentials
     }
 }

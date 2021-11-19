@@ -8,6 +8,7 @@
 import Foundation
 
 protocol UserProfileRepositoryType {
+    func create(name: String, email: String) -> Result<Void, UserRepositoryError>
     func update(_ user: UserProfile) -> Result<Void, UserRepositoryError>
     func load(userWithID id: UUID) -> Result<UserProfile?, UserRepositoryError>
     func load(userWithEmail email: String) -> Result<UserProfile?, UserRepositoryError>
