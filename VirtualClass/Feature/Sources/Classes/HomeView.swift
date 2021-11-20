@@ -21,7 +21,7 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        instanceProvider.resolve(CoursesCardsOverviewView.self)
+        instanceProvider.resolve(CourseCardsOverviewView.self)
             .fullScreenCover(
                 item: $coordinator.activeScreen,
                 onDismiss: { coordinator.classCardViewModel.reloadData.send() }

@@ -1,5 +1,5 @@
 //
-//  PersonalInfoViewModel.swift
+//  UpdatePersonalInfoViewModel.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -14,7 +14,7 @@ struct UserPersonalInfo {
     var email: String
 }
 
-public final class PersonalInfoViewModel: ObservableObject {
+public final class UpdatePersonalInfoViewModel: ObservableObject {
     
     // MARK: - Inputs
     @Published var userInfo: UserPersonalInfo?

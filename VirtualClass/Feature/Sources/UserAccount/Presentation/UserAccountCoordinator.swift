@@ -36,7 +36,7 @@ public final class UserAccountCoordinator: ObservableObject {
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var userAccountViewModel: UserProfileViewModel
     @Published private var classSearchViewModel: ClassSearchViewModel?
-    @Published private var personalInfoViewModel: PersonalInfoViewModel?
+    @Published private var personalInfoViewModel: UpdatePersonalInfoViewModel?
     @Published private var classListViewModel: ClassListViewModel?
     
     private let navigateToUserProfileSubject = PassthroughSubject<Void, Never>()
@@ -74,7 +74,7 @@ public final class UserAccountCoordinator: ObservableObject {
             .sink(receiveValue: { [weak self] userAccount in
                 guard let self = self else { return }
 
-                self.personalInfoViewModel = self.instanceProvider.resolve(PersonalInfoViewModel.self)
+                self.personalInfoViewModel = self.instanceProvider.resolve(UpdatePersonalInfoViewModel.self)
                 self.activeScreen = .personalInfo
             })
             .store(in: &bag)

@@ -13,7 +13,7 @@ public class ClassesAssembly: Assembly {
     public init() { }
     
     public func assemble(container: Container) {
-        container.autoregister(CoursesCardsOverviewView.self, initializer: CoursesCardsOverviewView.init)
+        container.autoregister(CourseCardsOverviewView.self, initializer: CourseCardsOverviewView.init)
         container.autoregister(ClassListView.self, initializer: ClassListView.init)
         container.autoregister(ClassSearchView.self, initializer: ClassSearchView.init)
         container.autoregister(HomeView.self, initializer: HomeView.init)

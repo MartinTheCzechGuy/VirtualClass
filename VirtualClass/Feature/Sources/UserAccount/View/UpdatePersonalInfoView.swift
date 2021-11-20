@@ -1,5 +1,5 @@
 //
-//  PersonalInfoView.swift
+//  UpdatePersonalInfoView.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -8,11 +8,11 @@
 import Common
 import SwiftUI
 
-public struct PersonalInfoView: View {
+public struct UpdatePersonalInfoView: View {
     
-    @ObservedObject var viewModel: PersonalInfoViewModel
+    @ObservedObject var viewModel: UpdatePersonalInfoViewModel
             
-    public init(viewModel: PersonalInfoViewModel) {
+    public init(viewModel: UpdatePersonalInfoViewModel) {
         self.viewModel = viewModel
     }
     

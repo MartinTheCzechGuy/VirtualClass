@@ -41,22 +41,22 @@ public struct UserProfileView: View {
                         .listRowBackground(Color(.systemGroupedBackground))
                         
                         Section(header: Text("My Account")) {
-                            Text("Personal info")
-                                .onTapGesture {
-                                    viewModel.personalInfoTap.send()
-                                }
+                            CustomRow(text: "Personal Info")
+                            .onTapGesture {
+                                viewModel.personalInfoTap.send()
+                            }
                         }
                         
                         Section(header: Text("My classes")) {
-                            Text("Currently studied classes")
-                                .onTapGesture {
-                                    viewModel.currentlyStudiedClassesTap.send()
-                                }
+                            CustomRow(text: "Currently studied classes")
+                            .onTapGesture {
+                                viewModel.personalInfoTap.send()
+                            }
                             
-                            Text("Add new class")
-                                .onTapGesture {
-                                    viewModel.addNewClassTap.send()
-                                }
+                            CustomRow(text: "Add new class")
+                            .onTapGesture {
+                                viewModel.personalInfoTap.send()
+                            }
                         }
                         
                         HStack {
@@ -92,5 +92,17 @@ public struct UserProfileView: View {
                 viewModel.reloadProfile()
             }
         }
+    }
+}
+
+private struct CustomRow: View {
+    let text: String
+    
+    var body: some View {
+        HStack {
+            Text(text)
+            Spacer(minLength: 0)
+        }
+        .contentShape(Rectangle())
     }
 }

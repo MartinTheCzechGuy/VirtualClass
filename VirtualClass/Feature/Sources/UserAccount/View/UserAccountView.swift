@@ -27,7 +27,7 @@ public struct UserAccountView: View {
                 case .classSearch:
                     instanceProvider.resolve(ClassSearchView.self)
                 case .personalInfo:
-                    instanceProvider.resolve(PersonalInfoView.self)
+                    instanceProvider.resolve(UpdatePersonalInfoView.self)
                 case .classList:
                     instanceProvider.resolve(ClassListView.self)
                 }

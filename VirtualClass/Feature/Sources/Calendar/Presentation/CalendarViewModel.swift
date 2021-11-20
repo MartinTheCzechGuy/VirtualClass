@@ -7,59 +7,72 @@
 
 import Combine
 import Foundation
-
-#warning("TODO - kdyby si chtel tahat udalosti z kalendare v telefonu, je na to framework EventKit")
+import UserSDK
 
 public final class CalendarViewModel: ObservableObject {
     
+    // MARK: - View Model to View
+    
     @Published var sevenDaysInterval: [Day] = []
-    @Published var selectedDay: Date = {
-        
-        return Date()
-    }()
     @Published var events: [Event] = []
+    @Published var errorLoadingLectures = false
+    
+    // MARK: - View to View Model
     
     let dayCapsuleTap = PassthroughSubject<Day, Never>()
     let goBackTap = PassthroughSubject<Void, Never>()
     
+    // MARK: - Private
+    
+    private let getLecturesUseCase: GetLecturesUseCaseType
     private var bag: Set<AnyCancellable> = []
     
-    public init() {
+    init(getLecturesUseCase: GetLecturesUseCaseType) {
+        self.getLecturesUseCase = getLecturesUseCase
+        
+        setupBindings()
+    }
+    
+    private func setupBindings() {
         let dayChangeTap = dayCapsuleTap
             .compactMap { !$0.isSelected ? $0.wholeDate : nil }
             .prepend(Date())
             .share()
         
+        #warning("TODO BUG - ta hodnota z dayChangeTap se nasharuje a ten prepend sem NEpritece")
+        let lecturesOnTheDate = dayChangeTap
+            .compactMap { [weak self] date -> Result<[Lecture], UserRepositoryError>? in
+                self?.getLecturesUseCase.lectures(on: date)
+            }
+            .share()
+        
         dayChangeTap
             .compactMap { [weak self] date -> [Day]? in
-                guard let self = self else { return nil }
-                
-                return self.sevenDaysInterval(from: date)
+                self?.sevenDaysInterval(from: date)
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: \.sevenDaysInterval, on: self)
             .store(in: &bag)
         
-        dayChangeTap
-            .compactMap { [weak self] date -> [Event]? in
-                guard let self = self else { return nil }
-                
-                return self.events(on: date)
+        lecturesOnTheDate
+            .compactMap(\.failure)
+            .map { _ in true }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.errorLoadingLectures, on: self)
+            .store(in: &bag)
+        
+        lecturesOnTheDate
+            .compactMap(\.success)
+            .map { lectures in
+                lectures
+                    .map { lecture in
+                        Event(time: lecture.date, room: lecture.classRoomName, className: lecture.className, ident: lecture.classIdent)
+                    }
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: \.events, on: self)
             .store(in: &bag)
     }
-    
-    private func events(on date: Date) -> [Event] {
-        if Calendar.current.isDate(date, inSameDayAs: Date()) {
-            return []
-        } else {
-            return [
-                .init(time: Date(), room: "Room", className: "Matematika", ident: "43MRER"),
-                .init(time: Date(), room: "Room 2", className: "Matematika II.", ident: "55MRER")
-            ]
-        }
-    }
-    
     
     private func sevenDaysInterval(from date: Date) -> [Day] {
         let calendar = Calendar.current
@@ -83,22 +96,4 @@ public final class CalendarViewModel: ObservableObject {
         
         return weekdays
     }
-}
-
-struct Day: Identifiable {
-    let id = UUID().uuidString
-    let day: String
-    let date: String
-    let wholeDate: Date
-    var isSelected: Bool
-}
-
-extension Day: Equatable {}
-
-struct Event: Identifiable {
-    let id = UUID().uuidString
-    let time: Date
-    let room: String
-    let className: String
-    let ident: String
 }

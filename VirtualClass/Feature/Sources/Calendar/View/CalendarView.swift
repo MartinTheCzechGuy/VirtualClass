@@ -75,14 +75,3 @@ public struct CalendarView: View {
         .padding(.horizontal)
     }
 }
-
-struct CalendarVIew_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            CalendarView(viewModel: .init())
-                .previewDevice("iPhone 13")
-            CalendarView(viewModel: .init())
-                .previewDevice("iPhone 8")
-        }
-    }
-}

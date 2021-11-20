@@ -1,5 +1,5 @@
 //
-//  CoursesCardsOverviewView.swift
+//  CourseCardsOverviewView.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import InstanceProvider
 
-public struct CoursesCardsOverviewView: View {
+public struct CourseCardsOverviewView: View {
         
     @ObservedObject var viewModel: CourseCardsOverviewViewModel
         
@@ -32,7 +32,7 @@ public struct CoursesCardsOverviewView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 2), spacing: 15) {
                             ForEach(viewModel.studiedClasses) { data in
-                                ClassCardView(
+                                CourseCardView(
                                     name: data.name,
                                     ident: data.ident,
                                     nextClass: data.lessons.closestDate ?? "",

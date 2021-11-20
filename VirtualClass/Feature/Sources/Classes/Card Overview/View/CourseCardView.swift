@@ -1,5 +1,5 @@
 //
-//  ClassCardView.swift
+//  CourseCardView.swift
 //  
 //
 //  Created by Martin on 12.11.2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ClassCardView: View {
+struct CourseCardView: View {
     
     private let name: String
     private let ident: String
