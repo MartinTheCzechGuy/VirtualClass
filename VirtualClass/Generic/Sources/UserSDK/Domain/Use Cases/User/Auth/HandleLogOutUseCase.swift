@@ -6,7 +6,7 @@
 //
 
 public protocol HandleLogOutUseCaseType {
-    func logout() -> Result<Void, UserAuthRepositoryError>
+    func logout()
 }
 
 final class HandleLogOutUseCase {
@@ -18,7 +18,7 @@ final class HandleLogOutUseCase {
 }
 
 extension HandleLogOutUseCase: HandleLogOutUseCaseType {
-    func logout() -> Result<Void, UserAuthRepositoryError> {
+    func logout() {
         userAuthRepository.logout()
     }
 }

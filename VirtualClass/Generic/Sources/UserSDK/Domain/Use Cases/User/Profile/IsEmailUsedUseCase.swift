@@ -12,9 +12,9 @@ protocol IsEmailUsedUseCasetype {
 }
 
 final class IsEmailUsedUseCase {
-    private let userRepository: UserProfileRepositoryType
+    private let userRepository: StudentRepositoryType
     
-    init(userRepository: UserProfileRepositoryType) {
+    init(userRepository: StudentRepositoryType) {
         self.userRepository = userRepository
     }
 }

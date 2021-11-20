@@ -31,12 +31,21 @@ public class UserSDKAssembly: Assembly {
 
         // MARK: User Profile
         
-        container.autoregister(UserProfileRepositoryType.self, initializer: UserProfileRepository.init)
+        container.autoregister(StudentRepositoryType.self, initializer: StudentRepository.init)
             .inObjectScope(.container)
         
-        container.autoregister(UpdateUserProfileUseCaseType.self, initializer: UpdateUserProfileUseCase.init)
+        container.autoregister(UpdateStudentProfileUseCaseType.self, initializer: UpdateStudentProfileUseCase.init)
         container.autoregister(CreateStudentProfileUseCaseType.self, initializer: CreateStudentProfileUseCase.init)
-        container.autoregister(GetUserProfileUseCaseType.self, initializer: GetUserProfileUseCase.init)
+        container.autoregister(GetStudentProfileUseCaseType.self, initializer: GetStudentProfileUseCase.init)
         container.autoregister(GetLoggedInUserUseCaseType.self, initializer: GetLoggedInUserUseCase.init)
+        container.autoregister(GetActiveCoursesUseCaseType.self, initializer: GetActiveCoursesUseCase.init)
+        
+        // MARK: - Courses
+        
+        container.autoregister(GetCoursesForLoggedInUserUseCaseType.self, initializer: GetCoursesForLoggedInUserUseCase.init)
+        container.autoregister(RemoveCourseFromStudiedUseCaseType.self, initializer: RemoveCourseFromStudiedUseCase.init)
+        container.autoregister(MarkCourseCompleteUseCaseType.self, initializer: MarkCourseCompleteUseCase.init)
+        container.autoregister(GetCoursesToEnrollUseCaseType.self, initializer: GetCoursesToEnrollUseCase.init)
+        container.autoregister(AddToUserActiveCoursesUseCaseType.self, initializer: AddToUserActiveCoursesUseCase.init)
     }
 }

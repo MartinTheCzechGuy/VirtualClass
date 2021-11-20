@@ -1,5 +1,5 @@
 //
-//  GetUserProfileUseCase.swift
+//  GetStudentProfileUseCase.swift
 //  
 //
 //  Created by Martin on 14.11.2021.
@@ -7,23 +7,23 @@
 
 import Foundation
 
-public protocol GetUserProfileUseCaseType {
-    var userProfile: UserProfile? { get }
+public protocol GetStudentProfileUseCaseType {
+    var userProfile: GenericStudent? { get }
 }
 
-final class GetUserProfileUseCase {
+final class GetStudentProfileUseCase {
     
     private let getLoggedInUserEmailUseCase: GetLoggedInUserUseCaseType
-    private let userProfileRepository: UserProfileRepositoryType
+    private let userProfileRepository: StudentRepositoryType
     
-    init(getLoggedInUserEmailUseCase: GetLoggedInUserUseCaseType, userProfileRepository: UserProfileRepositoryType) {
+    init(getLoggedInUserEmailUseCase: GetLoggedInUserUseCaseType, userProfileRepository: StudentRepositoryType) {
         self.userProfileRepository = userProfileRepository
         self.getLoggedInUserEmailUseCase = getLoggedInUserEmailUseCase
     }
 }
 
-extension GetUserProfileUseCase: GetUserProfileUseCaseType {
-    var userProfile: UserProfile? {
+extension GetStudentProfileUseCase: GetStudentProfileUseCaseType {
+    var userProfile: GenericStudent? {
         guard let email = getLoggedInUserEmailUseCase.email else {
             return nil
         }

@@ -18,16 +18,13 @@ struct ClassCardView: View {
     init(
         name: String,
         ident: String,
-        nextClass: Date,
+        nextClass: String,
         room: String,
         background: Color
     ) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E, d MMM HH:mm"
-        
         self.name = name
         self.ident = ident
-        self.nextClass = dateFormatter.string(from: nextClass)
+        self.nextClass = nextClass
         self.room = room
         self.background = background
     }
@@ -58,11 +55,5 @@ struct ClassCardView: View {
             }
             .padding()
         }
-    }
-}
-
-struct ClassCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        ClassCardView(name: "Matematika pro Ekonomy", ident: "4MT432", nextClass: Date() + 10000, room: "4NB434Q", background: .classCardBlue)
     }
 }

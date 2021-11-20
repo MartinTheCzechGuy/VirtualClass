@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InstanceProvider
+import UserSDK
 
 public struct HomeView: View {
     
@@ -20,11 +21,14 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        instanceProvider.resolve(ClassesCardOverviewView.self)
-            .fullScreenCover(item: $coordinator.activeScreen) { activeScreen in
+        instanceProvider.resolve(CoursesCardsOverviewView.self)
+            .fullScreenCover(
+                item: $coordinator.activeScreen,
+                onDismiss: { coordinator.classCardViewModel.reloadData.send() }
+            ) { activeScreen in
                 switch activeScreen {
-                case .classDetail(let classInfo):
-                    instanceProvider.resolve(ClassDetailView.self, argument: classInfo)
+                case .courseDetail(let viewModel):
+                    CourseDetailView(viewModel: viewModel)
                 case .addingClass:
                     instanceProvider.resolve(ClassSearchView.self)
                 }

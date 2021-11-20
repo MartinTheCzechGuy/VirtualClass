@@ -53,6 +53,7 @@ let package = Package(
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 .product(name: "Common", package: "Infrastructure"),
+                .product(name: "UserSDK", package: "Generic"),
             ]
         ),
         .target(

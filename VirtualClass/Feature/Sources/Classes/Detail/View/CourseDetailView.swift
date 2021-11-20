@@ -1,5 +1,5 @@
 //
-//  ClassDetailView.swift
+//  CourseDetailView.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -8,9 +8,9 @@
 import Common
 import SwiftUI
 
-struct ClassDetailView: View {
+struct CourseDetailView: View {
     
-    @ObservedObject var viewModel: ClassDetailViewModel
+    @ObservedObject var viewModel: CourseDetailViewModel
     
     var body: some View {
         VStack(spacing: 15) {
@@ -28,31 +28,29 @@ struct ClassDetailView: View {
                 }
                 .padding()
                 
-                Text(viewModel.selectedClass.name)
+                Text(viewModel.courseDetail.name)
                     .font(.title2)
                     .fontWeight(.bold)
             }
             
             VStack(spacing: 10) {
-                Text(viewModel.selectedClass.ident)
+                Text(viewModel.courseDetail.ident)
                     .fontWeight(.semibold)
                 
                 Divider()
                 
-                ClassDetailBodyView(
-                    classData: ClassBasicData(
-                        about: viewModel.selectedClass.description,
-                        lecturer: "",
-                        lessons: "",
-                        credits: 6
-                    )
+                CourseDetailBodyView(
+                    description: viewModel.courseDetail.description,
+                    lecturers: viewModel.courseDetail.lecturers,
+                    lessons: viewModel.courseDetail.lessons,
+                    credits: viewModel.courseDetail.credits
                 )
                 
                 VStack {
                     Spacer(minLength: 0)
                     
                     Button(
-                        action: { print("pressed completed") },
+                        action: { viewModel.markCourseCompleteTap.send(viewModel.courseDetail.ident) },
                         label: {
                             Text("Mark as completed")
                         }
@@ -60,7 +58,7 @@ struct ClassDetailView: View {
                         .buttonStyle(AppGoldenButtonStyle())
                     
                     Button(
-                        action: { print("pressed remove") },
+                        action: { viewModel.removeCourseTap.send(viewModel.courseDetail.ident) },
                         label: {
                             Text("Remove class")
                         }

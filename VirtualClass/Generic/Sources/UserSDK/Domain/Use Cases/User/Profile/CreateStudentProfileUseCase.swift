@@ -12,9 +12,9 @@ protocol CreateStudentProfileUseCaseType {
 }
 
 final class CreateStudentProfileUseCase {
-    private let userProfileRepository: UserProfileRepositoryType
+    private let userProfileRepository: StudentRepositoryType
     
-    init(userProfileRepository: UserProfileRepositoryType) {
+    init(userProfileRepository: StudentRepositoryType) {
         self.userProfileRepository = userProfileRepository
     }
 }

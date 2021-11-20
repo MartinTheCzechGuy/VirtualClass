@@ -28,18 +28,18 @@ public final class PersonalInfoViewModel: ObservableObject {
     let navigateToUserAccount: AnyPublisher<Void, Never>
     
     // MARK: - Private
-    private let getUserProfileUseCase: GetUserProfileUseCaseType
-    private let updateUserProfileUseCase: UpdateUserProfileUseCaseType
+    private let getUserProfileUseCase: GetStudentProfileUseCaseType
+    private let updateStudentProfileUseCase: UpdateStudentProfileUseCaseType
     
     private let userProfileUpdatedSubject = PassthroughSubject<Void, Never>()
     private var bag: Set<AnyCancellable> = []
     
     init(
-        getUserProfileUseCase: GetUserProfileUseCaseType,
-        updateUserProfileUseCase: UpdateUserProfileUseCaseType
+        getUserProfileUseCase: GetStudentProfileUseCaseType,
+        updateStudentProfileUseCase: UpdateStudentProfileUseCaseType
     ) {
         self.getUserProfileUseCase = getUserProfileUseCase
-        self.updateUserProfileUseCase = updateUserProfileUseCase
+        self.updateStudentProfileUseCase = updateStudentProfileUseCase
         self.navigateToUserAccount = goBackTap
             .merge(with: userProfileUpdatedSubject)
             .eraseToAnyPublisher()
@@ -49,7 +49,7 @@ public final class PersonalInfoViewModel: ObservableObject {
     
     private func setupBindings() {
         let updateProfileResult = saveChangesTap
-            .compactMap { [weak self] _ -> UserProfile? in
+            .compactMap { [weak self] _ -> GenericStudent? in
                 guard let self = self else { return nil }
                 
                 return self.getUserProfileUseCase.userProfile
@@ -57,14 +57,15 @@ public final class PersonalInfoViewModel: ObservableObject {
             .compactMap { [weak self] nonUpdatedProfile -> Result<Void, UserRepositoryError>? in
                 guard let self = self else { return nil }
                 
-                let updatedProfile = UserProfile(
+                let updatedProfile = GenericStudent(
                     id: nonUpdatedProfile.id,
                     name: self.userInfo!.name,
                     email: self.userInfo!.email,
-                    classes: nonUpdatedProfile.classes
+                    activeCourses: nonUpdatedProfile.activeCourses,
+                    completedCourses: nonUpdatedProfile.completedCourses
                 )
                 
-                return self.updateUserProfileUseCase.update(userProfile: updatedProfile)
+                return self.updateStudentProfileUseCase.update(updatedProfile)
             }
             .share()
         

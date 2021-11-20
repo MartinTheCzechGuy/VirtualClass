@@ -34,37 +34,28 @@ extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
         guard checkValidPasswordUseCase.isValid(password: password) else {
             return .invalidPassword
         }
-        
-        print("password is valid")
-        
+                
         guard checkValidEmailUseCase.isValid(email: email) else {
             return .invalidEmail
         }
-        
-        print("email is valid")
-        
-        guard let loggedInUserEmail = userAuthRepository.loggedInUserEmail else {
+                
+        guard let userExists = userAuthRepository.isExistingUser(withEmail: email).success, userExists
+        else {
             return .accountDoesNotExist
         }
-        
-        print("mám email z user defaults")
-        
-        guard loggedInUserEmail == email else {
-            return .invalidCredentials
-        }
-        
-        guard let savedPassword = userAuthRepository.storedPassword(for: email).success else {
+                
+        guard let savedPassword = userAuthRepository.storedPassword(for: email).success,
+                savedPassword != nil
+        else {
             return .errorLoadingData
         }
-        
-        print("mám heslo z keychain")
-        
+                
         guard password == savedPassword else {
             return .invalidCredentials
         }
         
-        print("hesla sedí")
-    
+        userAuthRepository.storeLoggedInUser(email)
+            
         return .validData
     }
 }

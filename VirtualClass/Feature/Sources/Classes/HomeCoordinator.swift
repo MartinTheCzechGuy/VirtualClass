@@ -8,11 +8,12 @@
 import Combine
 import Foundation
 import InstanceProvider
+import UserSDK
 
 final class HomeCoordinator: ObservableObject {
     
     enum ActiveScreen: Hashable, Identifiable {
-        case classDetail(Class)
+        case courseDetail(CourseDetailViewModel)
         case addingClass
         
         var id: Self {
@@ -21,31 +22,30 @@ final class HomeCoordinator: ObservableObject {
     }
     
     // MARK: - Coordinator to View
+    
     @Published var activeScreen: ActiveScreen? = nil
-    
+            
     // MARK: - Private
     
-    @Published private var classCardView: ClassesCardOverviewViewModel
-    @Published private var classDetailViewModel: ClassDetailViewModel?
+    @Published var classCardViewModel: CourseCardsOverviewViewModel
+    @Published private var classDetailViewModel: CourseDetailViewModel?
     @Published private var classSearchViewModel: ClassSearchViewModel?
-    
-    // MARK: - Private
-    
+        
     private let instanceProvider: InstanceProvider
     
     private var bag = Set<AnyCancellable>()
     private var classSearchBag = Set<AnyCancellable>()
     private var classDetailBag = Set<AnyCancellable>()
 
-    init(instanceProvider: InstanceProvider, classCardView: ClassesCardOverviewViewModel) {
+    init(instanceProvider: InstanceProvider, classCardViewModel: CourseCardsOverviewViewModel) {
         self.instanceProvider = instanceProvider
-        self.classCardView = classCardView
+        self.classCardViewModel = classCardViewModel
         
         setupBindings()
     }
     
     private func setupBindings() {
-        classCardView.addClassButtonTap
+        classCardViewModel.addClassButtonTap
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
@@ -54,12 +54,19 @@ final class HomeCoordinator: ObservableObject {
             })
             .store(in: &bag)
         
-        classCardView.classCardTap
-            .sink(receiveValue: { [weak self] classData in
+        classCardViewModel.classCardTap
+            .sink(receiveValue: { [weak self] course in
                 guard let self = self else { return }
-
-                self.classDetailViewModel = self.instanceProvider.resolve(ClassDetailViewModel.self, argument: classData)
-                self.activeScreen = .classDetail(classData)
+                
+                let courseDetailModel = course.asCourseDetailModel
+                let viewModel = CourseDetailViewModel(
+                    removeCourseFromStudiedUseCase: self.instanceProvider.resolve(RemoveCourseFromStudiedUseCaseType.self),
+                    markCourseCompleteUseCase: self.instanceProvider.resolve(MarkCourseCompleteUseCaseType.self),
+                    courseDetail: courseDetailModel
+                )
+                
+                self.classDetailViewModel = viewModel
+                self.activeScreen = .courseDetail(viewModel)
             })
             .store(in: &bag)
         
@@ -103,5 +110,18 @@ final class HomeCoordinator: ObservableObject {
                 }
             )
             .store(in: &bag)
+    }
+}
+
+extension GenericCourse {
+    var asCourseDetailModel: CourseDetailModel {
+        CourseDetailModel(
+            ident: self.ident,
+            name: self.name,
+            description: self.description,
+            lecturers: self.teachers.asClassDetailModel,
+            lessons: self.lessons.asClassDetailModel,
+            credits: self.credits
+        )
     }
 }

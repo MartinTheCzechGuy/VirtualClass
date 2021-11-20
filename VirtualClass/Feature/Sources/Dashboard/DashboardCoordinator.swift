@@ -17,7 +17,7 @@ public final class DashboardCoordinator: ObservableObject {
     
     // Private
     
-    @Published var classOverviewViewModel: ClassesCardOverviewViewModel
+    @Published var classOverviewViewModel: CourseCardsOverviewViewModel
     @Published var userAccountCoordinator: UserAccountCoordinator
     @Published var calendarViewModel: CalendarViewModel
     
@@ -26,7 +26,7 @@ public final class DashboardCoordinator: ObservableObject {
     
     public init(
         userAccountCoordinator: UserAccountCoordinator,
-        classOverviewViewModel: ClassesCardOverviewViewModel,
+        classOverviewViewModel: CourseCardsOverviewViewModel,
         calendarViewModel: CalendarViewModel
     ) {
         self.userAccountCoordinator = userAccountCoordinator

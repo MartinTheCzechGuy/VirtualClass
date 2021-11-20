@@ -13,8 +13,7 @@ import SwiftUI
 public final class UserProfileViewModel: ObservableObject {
     
     // Inputs
-    @Published var logoutUnsuccessful = false
-    @Published var userProfile: UserProfile?
+    @Published var userProfile: GenericStudent?
     
     // Outputs
     let personalInfoTap = PassthroughSubject<Void, Never>()
@@ -24,26 +23,25 @@ public final class UserProfileViewModel: ObservableObject {
     
     // Actions
     let navigateToClassSearch: AnyPublisher<Void, Never>
-    let navigateToPersonalInfo: AnyPublisher<UserProfile, Never>
+    let navigateToPersonalInfo: AnyPublisher<GenericStudent, Never>
     let navigateToClassList: AnyPublisher<Void, Never>
     public let didLogout: AnyPublisher<Void, Never>
     
     // Private
-    private let getUserProfileUseCase: GetUserProfileUseCaseType
+    private let getUserProfileUseCase: GetStudentProfileUseCaseType
     private let handleLogOutUseCase: HandleLogOutUseCaseType
     
-    private let navigateToPersonalInfoSubject = PassthroughSubject<UserProfile, Never>()
+    private let navigateToPersonalInfoSubject = PassthroughSubject<GenericStudent, Never>()
     private let didLogoutSubject = PassthroughSubject<Void, Never>()
     private var bag = Set<AnyCancellable>()
     
-    public init(getUserProfileUseCase: GetUserProfileUseCaseType, handleLogOutUseCase: HandleLogOutUseCaseType) {
+    public init(getUserProfileUseCase: GetStudentProfileUseCaseType, handleLogOutUseCase: HandleLogOutUseCaseType) {
         self.getUserProfileUseCase = getUserProfileUseCase
         self.handleLogOutUseCase = handleLogOutUseCase
         self.navigateToClassSearch = addNewClassTap.eraseToAnyPublisher()
         self.navigateToClassList = currentlyStudiedClassesTap.eraseToAnyPublisher()
         self.navigateToPersonalInfo = navigateToPersonalInfoSubject.eraseToAnyPublisher()
         self.didLogout = didLogoutSubject.eraseToAnyPublisher()
-        
         
         self.userProfile = getUserProfileUseCase.userProfile
         
@@ -54,25 +52,10 @@ public final class UserProfileViewModel: ObservableObject {
             })
             .store(in: &bag)
         
-        let logoutResult = logoutTap
-            .compactMap { [weak self] _ -> Result<Void, UserAuthRepositoryError>? in
+        logoutTap
+            .compactMap { [weak self] _ in
                 self?.handleLogOutUseCase.logout()
             }
-            .share()
-        
-        logoutResult
-            .compactMap { result -> Bool? in
-                guard result.failure != nil else {
-                    return nil
-                }
-                
-                return true
-            }
-            .assign(to: \.logoutUnsuccessful, on: self)
-            .store(in: &bag)
-        
-        logoutResult
-            .compactMap(\.success)
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 

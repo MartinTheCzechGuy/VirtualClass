@@ -11,7 +11,7 @@ import SwiftUI
 public struct ClassSearchView: View {
     
     @ObservedObject var viewModel: ClassSearchViewModel
-    
+        
     public init(viewModel: ClassSearchViewModel) {
         self.viewModel = viewModel
     }
@@ -32,7 +32,7 @@ public struct ClassSearchView: View {
             .padding()
             
             HStack {
-                TextField("Enter class name or ident...", text: $viewModel.className)
+                TextField("Enter class ident...", text: $viewModel.searchedCourse)
                 Image(systemName: "magnifyingglass")
             }
             .padding(10)
@@ -68,23 +68,15 @@ public struct ClassSearchView: View {
             )
                 .buttonStyle(AppGoldenButtonStyle())
         }
+        .onAppear {
+            viewModel.reloadDataSubject.send()
+        }
         .padding()
         .alert(isPresented: $viewModel.showError) { () -> Alert in
             Alert(
-                title: Text("The class name \(viewModel.className) not found. Please try a different name or ident."),
+                title: Text("The class name \(viewModel.searchedCourse) not found. Please try a different name or ident."),
                 dismissButton: .default(Text("OK"))
             )
-        }
-    }
-}
-
-struct ClassSearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ClassSearchView(viewModel: ClassSearchViewModel())
-                .previewDevice("iPhone 13")
-            ClassSearchView(viewModel: ClassSearchViewModel())
-                .previewDevice("iPhone 8")
         }
     }
 }

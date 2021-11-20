@@ -34,6 +34,14 @@ final class UserAuthRepository {
 
 extension UserAuthRepository: UserAuthRepositoryType {
     
+    func isExistingUser(withEmail email: String) -> Result<Bool, UserAuthRepositoryError> {
+        database.load(withEmail: email)
+            .map { optionalUser in
+                optionalUser?.email != nil
+            }
+            .mapError(UserAuthRepositoryError.storageError)
+    }
+    
     var loggedInUserEmail: String? {
         keyValueLocalStorage.read(objectForKey: .userEmail)
     }
@@ -50,10 +58,11 @@ extension UserAuthRepository: UserAuthRepositoryType {
             .mapError(UserAuthRepositoryError.storageError)
     }
     
-    func logout() -> Result<Void, UserAuthRepositoryError> {
+    func storeLoggedInUser(_ email: String) {
+        keyValueLocalStorage.set(email, for: .userEmail)
+    }
+    
+    func logout() {
         keyValueLocalStorage.delete(objectForKey: .userEmail)
-        
-        return secureStorage.removeAllValues()
-            .mapError(UserAuthRepositoryError.storageError)
     }
 }
