@@ -33,11 +33,11 @@ public struct CourseCardsOverviewView: View {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 2), spacing: 15) {
                             ForEach(viewModel.studiedClasses) { data in
                                 CourseCardView(
-                                    name: data.name,
                                     ident: data.ident,
-                                    nextClass: data.lessons.closestDate ?? "",
+                                    name: data.name,
                                     room: data.classRoom.name,
-                                    background: .classCardBlue
+                                    nextClass: data.lessons.closestDate ?? "",
+                                    faculty: data.faculty
                                 )
                                     .onTapGesture {
                                         withAnimation {

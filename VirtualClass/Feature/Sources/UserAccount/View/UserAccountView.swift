@@ -1,13 +1,13 @@
 //
-//  File.swift
+//  UserAccountView.swift
 //  
 //
 //  Created by Martin on 14.11.2021.
 //
 
-import SwiftUI
+import Courses
 import InstanceProvider
-import Classes
+import SwiftUI
 
 public struct UserAccountView: View {
     
@@ -24,15 +24,15 @@ public struct UserAccountView: View {
         instanceProvider.resolve(UserProfileView.self)
             .fullScreenCover(
                 item: $coordinator.activeScreen,
-                onDismiss: { coordinator.userAccountViewModel.reloadProfile() }
+                onDismiss: { coordinator.userProfileViewModel.reloadProfile() }
             ) { activeScreen in
                 switch activeScreen {
                 case .classSearch:
-                    instanceProvider.resolve(ClassSearchView.self)
+                    instanceProvider.resolve(CourseSearchView.self)
                 case .personalInfo:
                     instanceProvider.resolve(UpdatePersonalInfoView.self)
-                case .classList:
-                    instanceProvider.resolve(ClassListView.self)
+                case .completedCourses:
+                    instanceProvider.resolve(CompletedCoursesView.self)
                 }
             }
         

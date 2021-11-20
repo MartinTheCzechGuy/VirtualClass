@@ -28,7 +28,7 @@ struct CourseDetailBodyView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Description: \(description)")
+            Text(description)
                 .foregroundColor(.gray)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.body)

@@ -5,43 +5,35 @@
 //  Created by Martin on 12.11.2021.
 //
 
+import UserSDK
 import SwiftUI
 
 struct CourseCardView: View {
     
-    private let name: String
     private let ident: String
-    private let nextClass: String
+    private let name: String
     private let room: String
-    private let background: Color
+    private let nextClass: String
+    private let faculty: GenericFaculty
     
     init(
-        name: String,
         ident: String,
-        nextClass: String,
+        name: String,
         room: String,
-        background: Color
+        nextClass: String,
+        faculty: GenericFaculty
     ) {
         self.name = name
         self.ident = ident
         self.nextClass = nextClass
         self.room = room
-        self.background = background
+        self.faculty = faculty
     }
     
     var body: some View {
         
         ZStack {
-//            LinearGradient(
-//                colors: [
-//                    background,
-//                    .white
-//                ],
-//                startPoint: .bottomLeading,
-//                endPoint: .topTrailing
-//            )
-            background
-                .cornerRadius(15)
+            faculty.background
             
             VStack(spacing: 10) {
                 VStack(alignment: .center, spacing: 10) {
@@ -55,5 +47,6 @@ struct CourseCardView: View {
             }
             .padding()
         }
+        .cornerRadius(15)
     }
 }

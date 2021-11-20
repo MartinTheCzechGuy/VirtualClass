@@ -47,13 +47,13 @@ public struct UserProfileView: View {
                                 }
                         }
                         
-                        Section(header: Text("My classes")) {
-                            CustomRow(text: "Currently studied classes")
+                        Section(header: Text("My courses")) {
+                            CustomRow(text: "Completed courses")
                                 .onTapGesture {
-                                    viewModel.currentlyStudiedClassesTap.send()
+                                    viewModel.showCompletedCoursesTap.send()
                                 }
                             
-                            CustomRow(text: "Add new class")
+                            CustomRow(text: "Add new course")
                                 .onTapGesture {
                                     viewModel.addNewClassTap.send()
                                 }

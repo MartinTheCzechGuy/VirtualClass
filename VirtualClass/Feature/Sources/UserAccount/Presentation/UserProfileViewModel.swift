@@ -17,15 +17,15 @@ public final class UserProfileViewModel: ObservableObject {
     
     // Outputs
     let personalInfoTap = PassthroughSubject<Void, Never>()
-    let currentlyStudiedClassesTap = PassthroughSubject<Void, Never>()
     let addNewClassTap = PassthroughSubject<Void, Never>()
     let logoutTap = PassthroughSubject<Void, Never>()
+    let showCompletedCoursesTap = PassthroughSubject<Void, Never>()
     
-    // Actions
+    // View Model to Coordinator
+    let navigateToCompletedCourses: AnyPublisher<Void, Never>
     let navigateToClassSearch: AnyPublisher<Void, Never>
     let navigateToPersonalInfo: AnyPublisher<GenericStudent, Never>
-    let navigateToClassList: AnyPublisher<Void, Never>
-    public let didLogout: AnyPublisher<Void, Never>
+    let didLogout: AnyPublisher<Void, Never>
     
     // Private
     private let getUserProfileUseCase: GetStudentProfileUseCaseType
@@ -39,9 +39,9 @@ public final class UserProfileViewModel: ObservableObject {
         self.getUserProfileUseCase = getUserProfileUseCase
         self.handleLogOutUseCase = handleLogOutUseCase
         self.navigateToClassSearch = addNewClassTap.eraseToAnyPublisher()
-        self.navigateToClassList = currentlyStudiedClassesTap.eraseToAnyPublisher()
         self.navigateToPersonalInfo = navigateToPersonalInfoSubject.eraseToAnyPublisher()
         self.didLogout = didLogoutSubject.eraseToAnyPublisher()
+        self.navigateToCompletedCourses = showCompletedCoursesTap.eraseToAnyPublisher()
         
         self.userProfile = getUserProfileUseCase.userProfile
         

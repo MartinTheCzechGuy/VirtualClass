@@ -10,3 +10,4 @@ public enum GenericFaculty: String {
     case facultyOne = "Fakulta jedna"
     case facultyTwo = "Fakulta dva"
 }
+

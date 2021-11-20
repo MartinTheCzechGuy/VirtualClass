@@ -18,20 +18,6 @@ public struct CalendarView: View {
     public var body: some View {
         VStack(spacing: 10) {
             HStack {
-                Image(systemName: "arrow.backward")
-                    .foregroundColor(Color.black)
-                    .onTapGesture {
-                        withAnimation {
-                            viewModel.goBackTap.send()
-                        }
-                    }
-                
-                Spacer(minLength: 0)
-            }
-            .padding()
-            
-            HStack {
-#warning("TODO - zatim to nech bez scrollbaru, datumy se budou menit jenom tim jak jak se posouvas o jednotlivy dny.")
                 ForEach($viewModel.sevenDaysInterval) { $date in
                     DateView(
                         day: date.day,
@@ -45,6 +31,7 @@ public struct CalendarView: View {
                         }
                 }
             }
+            .padding(.top, 20)
             
             Divider()
             

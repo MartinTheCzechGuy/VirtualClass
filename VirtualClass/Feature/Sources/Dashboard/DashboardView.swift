@@ -6,7 +6,7 @@
 //
 
 import Calendar
-import Classes
+import Courses
 import InstanceProvider
 import UserAccount
 import SwiftUI

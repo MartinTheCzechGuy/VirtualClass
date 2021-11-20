@@ -24,12 +24,12 @@ final class HomeCoordinator: ObservableObject {
     // MARK: - Coordinator to View
     
     @Published var activeScreen: ActiveScreen? = nil
-            
+        
     // MARK: - Private
     
     @Published var classCardViewModel: CourseCardsOverviewViewModel
     @Published private var classDetailViewModel: CourseDetailViewModel?
-    @Published private var classSearchViewModel: ClassSearchViewModel?
+    @Published private var classSearchViewModel: CourseSearchViewModel?
         
     private let instanceProvider: InstanceProvider
     
@@ -49,7 +49,7 @@ final class HomeCoordinator: ObservableObject {
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
-                self.classSearchViewModel = self.instanceProvider.resolve(ClassSearchViewModel.self)
+                self.classSearchViewModel = self.instanceProvider.resolve(CourseSearchViewModel.self)
                 self.activeScreen = .addingClass
             })
             .store(in: &bag)
@@ -123,5 +123,20 @@ extension GenericCourse {
             lessons: self.lessons.asClassDetailModel,
             credits: self.credits
         )
+    }
+}
+
+extension Set where Element == Date {
+    var asClassDetailModel: [String] {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E d MMM, HH:mm"
+        
+        return map(dateFormatter.string)
+    }
+}
+
+extension Set where Element == GenericTeacher {
+    var asClassDetailModel: [String] {
+        map(\.name)
     }
 }

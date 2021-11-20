@@ -14,26 +14,24 @@ struct CourseDetailView: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            ZStack {
-                HStack {
-                    Image(systemName: "arrow.backward")
-                        .foregroundColor(Color.black)
-                        .onTapGesture {
-                            withAnimation {
-                                viewModel.goBackSubject.send()
-                            }
+            HStack {
+                Image(systemName: "arrow.backward")
+                    .foregroundColor(Color.black)
+                    .onTapGesture {
+                        withAnimation {
+                            viewModel.goBackSubject.send()
                         }
-                    
-                    Spacer(minLength: 0)
-                }
-                .padding()
+                    }
                 
+                Spacer(minLength: 0)
+            }
+            .padding()
+            
+            VStack(spacing: 10) {
                 Text(viewModel.courseDetail.name)
                     .font(.title2)
                     .fontWeight(.bold)
-            }
-            
-            VStack(spacing: 10) {
+                
                 Text(viewModel.courseDetail.ident)
                     .fontWeight(.semibold)
                 

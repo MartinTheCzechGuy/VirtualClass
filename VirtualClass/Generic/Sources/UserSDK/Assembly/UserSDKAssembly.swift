@@ -48,5 +48,7 @@ public class UserSDKAssembly: Assembly {
         container.autoregister(GetCoursesToEnrollUseCaseType.self, initializer: GetCoursesToEnrollUseCase.init)
         container.autoregister(AddToUserActiveCoursesUseCaseType.self, initializer: AddToUserActiveCoursesUseCase.init)
         container.autoregister(GetLecturesUseCaseType.self, initializer: GetLecturesUseCase.init)
+        container.autoregister(GetCompletedCoursesForLoggedInUserUseCaseType.self, initializer: GetCompletedCoursesForLoggedInUserUseCase.init)
+        container.autoregister(GetCompletedCoursesUseCaseType.self, initializer: GetCompletedCoursesUseCase.init)
     }
 }

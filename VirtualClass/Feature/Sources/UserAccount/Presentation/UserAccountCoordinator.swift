@@ -5,8 +5,8 @@
 //  Created by Martin on 11.11.2021.
 //
 
-import Classes
 import Combine
+import Courses
 import InstanceProvider
 import UserSDK
 
@@ -15,7 +15,7 @@ public final class UserAccountCoordinator: ObservableObject {
     enum ActiveScreen: Identifiable {
         case classSearch
         case personalInfo
-        case classList
+        case completedCourses
         
         var id: Self {
             self
@@ -34,25 +34,25 @@ public final class UserAccountCoordinator: ObservableObject {
     
     // Private
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
-    @Published var userAccountViewModel: UserProfileViewModel
-    @Published private var classSearchViewModel: ClassSearchViewModel?
+    @Published var userProfileViewModel: UserProfileViewModel
+    @Published private var classSearchViewModel: CourseSearchViewModel?
     @Published private var personalInfoViewModel: UpdatePersonalInfoViewModel?
-    @Published private var classListViewModel: ClassListViewModel?
-    
+    @Published private var completedCoursesViewModel: CompletedCoursesViewModel?
+
     private let navigateToUserProfileSubject = PassthroughSubject<Void, Never>()
     
     private var bag = Set<AnyCancellable>()
     private var classSearchBag = Set<AnyCancellable>()
     private var personalInfoBag = Set<AnyCancellable>()
-    private var classListBag = Set<AnyCancellable>()
+    private var completedCoursesBag = Set<AnyCancellable>()
     
     private let instanceProvider: InstanceProvider
     
     public init(
-        userAccountViewModel: UserProfileViewModel,
+        userProfileViewModel: UserProfileViewModel,
         instanceProvider: InstanceProvider
     ) {
-        self.userAccountViewModel = userAccountViewModel
+        self.userProfileViewModel = userProfileViewModel
         self.instanceProvider = instanceProvider
         self.didLogout = didLogoutSubject.eraseToAnyPublisher()
         self.navigateToUserProfile = navigateToUserProfileSubject.eraseToAnyPublisher()
@@ -61,16 +61,16 @@ public final class UserAccountCoordinator: ObservableObject {
     }
     
     private func setupBindings() {
-        userAccountViewModel.navigateToClassSearch
+        userProfileViewModel.navigateToClassSearch
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
-                self.classSearchViewModel = self.instanceProvider.resolve(ClassSearchViewModel.self)
+                self.classSearchViewModel = self.instanceProvider.resolve(CourseSearchViewModel.self)
                 self.activeScreen = .classSearch
             })
             .store(in: &bag)
         
-        userAccountViewModel.navigateToPersonalInfo
+        userProfileViewModel.navigateToPersonalInfo
             .sink(receiveValue: { [weak self] userAccount in
                 guard let self = self else { return }
 
@@ -79,16 +79,16 @@ public final class UserAccountCoordinator: ObservableObject {
             })
             .store(in: &bag)
         
-        userAccountViewModel.navigateToClassList
-            .sink(receiveValue: { [weak self] _ in
+        userProfileViewModel.navigateToCompletedCourses
+            .sink(receiveValue: { [weak self] userAccount in
                 guard let self = self else { return }
-                
-                self.classListViewModel = self.instanceProvider.resolve(ClassListViewModel.self)
-                self.activeScreen = .classList
+
+                self.completedCoursesViewModel = self.instanceProvider.resolve(CompletedCoursesViewModel.self)
+                self.activeScreen = .completedCourses
             })
             .store(in: &bag)
         
-        userAccountViewModel.didLogout
+        userProfileViewModel.didLogout
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 
@@ -121,7 +121,7 @@ public final class UserAccountCoordinator: ObservableObject {
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
-                    self.classSearchBag.removeAll()
+                    self.personalInfoBag.removeAll()
                     
                     viewModel?.navigateToUserAccount
                         .sink(receiveValue: {
@@ -133,19 +133,19 @@ public final class UserAccountCoordinator: ObservableObject {
             )
             .store(in: &bag)
         
-        $classListViewModel
+        $completedCoursesViewModel
             .sink(
                 receiveValue: { [weak self] viewModel in
                     guard let self = self else { return }
                     
-                    self.classSearchBag.removeAll()
+                    self.completedCoursesBag.removeAll()
                     
-                    viewModel?.navigateToUserAccount
+                    viewModel?.navigateBackTap
                         .sink(receiveValue: {
-                            self.classListViewModel = nil
+                            self.completedCoursesViewModel = nil
                             self.activeScreen = .none
                         })
-                        .store(in: &self.classListBag)
+                        .store(in: &self.completedCoursesBag)
                 }
             )
             .store(in: &bag)

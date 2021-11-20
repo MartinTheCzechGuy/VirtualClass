@@ -1,5 +1,5 @@
 //
-//  ClassSearchView.swift
+//  CourseSearchView.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -8,11 +8,11 @@
 import Common
 import SwiftUI
 
-public struct ClassSearchView: View {
+public struct CourseSearchView: View {
     
-    @ObservedObject var viewModel: ClassSearchViewModel
+    @ObservedObject var viewModel: CourseSearchViewModel
         
-    public init(viewModel: ClassSearchViewModel) {
+    public init(viewModel: CourseSearchViewModel) {
         self.viewModel = viewModel
     }
     
@@ -52,11 +52,8 @@ public struct ClassSearchView: View {
                     Spacer(minLength: 0)
                 }
                 .padding()
-                .frame(width: 300, alignment: .center)
-                .background(Color.gray)
-                .cornerRadius(16)
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
             }
-            .background(Color.white)
             
             Spacer(minLength: 0)
             

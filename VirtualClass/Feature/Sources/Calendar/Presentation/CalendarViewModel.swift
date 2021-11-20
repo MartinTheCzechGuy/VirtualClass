@@ -20,7 +20,6 @@ public final class CalendarViewModel: ObservableObject {
     // MARK: - View to View Model
     
     let dayCapsuleTap = PassthroughSubject<Day, Never>()
-    let goBackTap = PassthroughSubject<Void, Never>()
     
     // MARK: - Private
     

@@ -1,5 +1,5 @@
 //
-//  ClassSearchViewModel.swift
+//  CourseSearchViewModel.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import UserSDK
 
-public final class ClassSearchViewModel: ObservableObject {
+public final class CourseSearchViewModel: ObservableObject {
     
     // MARK: - View Model to View
     

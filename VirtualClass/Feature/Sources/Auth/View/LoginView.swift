@@ -85,8 +85,7 @@ public struct LoginView: View {
                 }
                 .padding()
             }
-            .padding()
-            .padding(.horizontal)
+            .padding(.horizontal, 70)
             .preferredColorScheme(.dark)
         }
     }

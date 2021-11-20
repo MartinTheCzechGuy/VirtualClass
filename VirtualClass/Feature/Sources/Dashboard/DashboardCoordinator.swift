@@ -7,7 +7,7 @@
 
 import Calendar
 import Combine
-import Classes
+import Courses
 import UserAccount
 
 public final class DashboardCoordinator: ObservableObject {

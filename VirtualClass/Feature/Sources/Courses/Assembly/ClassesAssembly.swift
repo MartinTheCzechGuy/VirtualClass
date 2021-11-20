@@ -14,15 +14,15 @@ public class ClassesAssembly: Assembly {
     
     public func assemble(container: Container) {
         container.autoregister(CourseCardsOverviewView.self, initializer: CourseCardsOverviewView.init)
-        container.autoregister(ClassListView.self, initializer: ClassListView.init)
-        container.autoregister(ClassSearchView.self, initializer: ClassSearchView.init)
+        container.autoregister(CourseSearchView.self, initializer: CourseSearchView.init)
         container.autoregister(HomeView.self, initializer: HomeView.init)
-        
+        container.autoregister(CompletedCoursesView.self, initializer: CompletedCoursesView.init)
+
+        container.autoregister(CompletedCoursesViewModel.self, initializer: CompletedCoursesViewModel.init)
+            .inObjectScope(.container)
         container.autoregister(CourseCardsOverviewViewModel.self, initializer: CourseCardsOverviewViewModel.init)
             .inObjectScope(.container)
-        container.autoregister(ClassListViewModel.self, initializer: ClassListViewModel.init)
-            .inObjectScope(.container)
-        container.autoregister(ClassSearchViewModel.self, initializer: ClassSearchViewModel.init)
+        container.autoregister(CourseSearchViewModel.self, initializer: CourseSearchViewModel.init)
             .inObjectScope(.container)
         container.autoregister(HomeCoordinator.self, initializer: HomeCoordinator.init)
             .inObjectScope(.container)

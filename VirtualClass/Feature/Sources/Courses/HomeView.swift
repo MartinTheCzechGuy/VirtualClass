@@ -30,7 +30,7 @@ public struct HomeView: View {
                 case .courseDetail(let viewModel):
                     CourseDetailView(viewModel: viewModel)
                 case .addingClass:
-                    instanceProvider.resolve(ClassSearchView.self)
+                    instanceProvider.resolve(CourseSearchView.self)
                 }
             }
     }
