@@ -51,6 +51,10 @@ public final class ClassSearchViewModel: ObservableObject {
         self.goBackTap = goBackTapSubject.eraseToAnyPublisher()
         self.classedAddedSuccessfully = classedAddedSuccessfullySubject.eraseToAnyPublisher()
         
+        setupBindings()
+    }
+    
+    private func setupBindings() {
         reloadDataSubject
             .compactMap { [weak self] courseIdent in
                 self?.findPossibleToEnrollCoursesUseCase.allAvailable

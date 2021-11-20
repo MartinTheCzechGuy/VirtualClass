@@ -34,7 +34,7 @@ public final class UserAccountCoordinator: ObservableObject {
     
     // Private
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
-    @Published private var userAccountViewModel: UserProfileViewModel
+    @Published var userAccountViewModel: UserProfileViewModel
     @Published private var classSearchViewModel: ClassSearchViewModel?
     @Published private var personalInfoViewModel: UpdatePersonalInfoViewModel?
     @Published private var classListViewModel: ClassListViewModel?

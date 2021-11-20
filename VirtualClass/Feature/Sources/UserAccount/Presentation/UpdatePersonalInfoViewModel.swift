@@ -17,7 +17,7 @@ struct UserPersonalInfo {
 public final class UpdatePersonalInfoViewModel: ObservableObject {
     
     // MARK: - Inputs
-    @Published var userInfo: UserPersonalInfo?
+    @Published var userInfo: UserPersonalInfo = UserPersonalInfo(name: "", email: "")
     @Published var errorUpdatingProfile: String? = nil
     
     // MARK: - Outputs
@@ -59,8 +59,8 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
                 
                 let updatedProfile = GenericStudent(
                     id: nonUpdatedProfile.id,
-                    name: self.userInfo!.name,
-                    email: self.userInfo!.email,
+                    name: self.userInfo.name,
+                    email: self.userInfo.email,
                     activeCourses: nonUpdatedProfile.activeCourses,
                     completedCourses: nonUpdatedProfile.completedCourses
                 )
@@ -84,6 +84,10 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
     }
     
     func reloadUserData() {
-        self.userInfo = getUserProfileUseCase.userProfile.map { UserPersonalInfo(name: $0.name, email: $0.email) }
+        guard let profile = getUserProfileUseCase.userProfile else {
+            return
+        }
+        
+        userInfo = UserPersonalInfo(name: profile.name, email: profile.email)
     }
 }

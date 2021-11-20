@@ -22,7 +22,10 @@ public struct UserAccountView: View {
     
     public var body: some View {
         instanceProvider.resolve(UserProfileView.self)
-            .fullScreenCover(item: $coordinator.activeScreen) { activeScreen in
+            .fullScreenCover(
+                item: $coordinator.activeScreen,
+                onDismiss: { coordinator.userAccountViewModel.reloadProfile() }
+            ) { activeScreen in
                 switch activeScreen {
                 case .classSearch:
                     instanceProvider.resolve(ClassSearchView.self)

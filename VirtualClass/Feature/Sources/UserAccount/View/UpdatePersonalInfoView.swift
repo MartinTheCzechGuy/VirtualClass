@@ -11,75 +11,56 @@ import SwiftUI
 public struct UpdatePersonalInfoView: View {
     
     @ObservedObject var viewModel: UpdatePersonalInfoViewModel
-            
+    
     public init(viewModel: UpdatePersonalInfoViewModel) {
         self.viewModel = viewModel
     }
     
     public var body: some View {
         VStack {
-            
-            if var personalInfo = viewModel.userInfo {
-                let nameBinding = Binding<String>(
-                    get: { return personalInfo.name },
-                    set: { personalInfo.name = $0 }
-                )
-                let emailBinding = Binding<String>(
-                    get: { return personalInfo.email },
-                    set: { personalInfo.email = $0 }
-                )
-                
-                HStack {
-                    Image(systemName: "arrow.backward")
-                        .foregroundColor(Color.black)
-                        .onTapGesture {
-                            withAnimation {
-                                viewModel.goBackTap.send()
-                            }
+            HStack {
+                Image(systemName: "arrow.backward")
+                    .foregroundColor(Color.black)
+                    .onTapGesture {
+                        withAnimation {
+                            viewModel.goBackTap.send()
                         }
-                    
-                    Spacer(minLength: 0)
-                }
-                .padding()
-                
-                Image("profile_picture")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(Circle())
-                    .frame(width: 300, height: 300, alignment: .center)
-                
-                AppTextField(
-                    imageSystemName: "envelope",
-                    title: "Email address",
-                    fieldType: .text,
-                    value: emailBinding
-                )
-                
-                AppTextField(
-                    imageSystemName: "person",
-                    title: "Full name",
-                    fieldType: .text,
-                    value: nameBinding
-                )
-                
-                Spacer(minLength: 0)
-                
-                Button(
-                    action: { viewModel.saveChangesTap.send() },
-                    label: {
-                        Text("Save changes")
                     }
-                )
-                    .buttonStyle(AppBlackButtonStyle())
-                    .padding(.bottom, 50)
-                
-            } else {
-                Spacer(minLength: 0)
-                
-                Text("Error loading user profile. You should not be here 👻")
                 
                 Spacer(minLength: 0)
             }
+            .padding()
+            
+            Image("profile_picture")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(Circle())
+                .frame(width: 300, height: 300, alignment: .center)
+            
+            AppTextField(
+                imageSystemName: "envelope",
+                title: "Email address",
+                fieldType: .text,
+                value: $viewModel.userInfo.email
+            )
+            
+            AppTextField(
+                imageSystemName: "person",
+                title: "Full name",
+                fieldType: .text,
+                value: $viewModel.userInfo.name
+            )
+            
+            Spacer(minLength: 0)
+            
+            Button(
+                action: { viewModel.saveChangesTap.send() },
+                label: {
+                    Text("Save changes")
+                }
+            )
+                .buttonStyle(AppBlackButtonStyle())
+                .padding(.bottom, 50)
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onAppear {

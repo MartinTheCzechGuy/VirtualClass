@@ -42,21 +42,21 @@ public struct UserProfileView: View {
                         
                         Section(header: Text("My Account")) {
                             CustomRow(text: "Personal Info")
-                            .onTapGesture {
-                                viewModel.personalInfoTap.send()
-                            }
+                                .onTapGesture {
+                                    viewModel.personalInfoTap.send()
+                                }
                         }
                         
                         Section(header: Text("My classes")) {
                             CustomRow(text: "Currently studied classes")
-                            .onTapGesture {
-                                viewModel.personalInfoTap.send()
-                            }
+                                .onTapGesture {
+                                    viewModel.currentlyStudiedClassesTap.send()
+                                }
                             
                             CustomRow(text: "Add new class")
-                            .onTapGesture {
-                                viewModel.personalInfoTap.send()
-                            }
+                                .onTapGesture {
+                                    viewModel.addNewClassTap.send()
+                                }
                         }
                         
                         HStack {
@@ -76,7 +76,7 @@ public struct UserProfileView: View {
                         .listRowBackground(Color(.systemGroupedBackground))
                         
                     }
-
+                    
                 } else {
                     Spacer(minLength: 0)
                     
@@ -95,7 +95,7 @@ public struct UserProfileView: View {
     }
 }
 
-private struct CustomRow: View {
+struct CustomRow: View {
     let text: String
     
     var body: some View {

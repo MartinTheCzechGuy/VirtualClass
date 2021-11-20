@@ -79,5 +79,6 @@ public struct ClassListView: View {
                                     .padding()
             )
         }
+        .onAppear { viewModel.reloadDataSubject.send() }
     }
 }
