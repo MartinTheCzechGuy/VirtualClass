@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CombineExt
 
 public protocol IsUserLoggedInUseCaseType {
     var isUserLogged: Bool { get }
@@ -22,7 +21,6 @@ final class IsUserLoggedInUseCase {
 
 extension IsUserLoggedInUseCase: IsUserLoggedInUseCaseType {
     var isUserLogged: Bool {
-        authRepository.logout()
         guard let email = authRepository.loggedInUserEmail else {
             return false
         }

@@ -27,11 +27,11 @@ let package = Package(
         .library(
             name: "SecureStorage",
             targets: ["SecureStorage"]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/Qase/swift-core-database", .revisionItem("a838454a720ce8eb77c0be6339d0bd8a1ba735cf")),
+        .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMajor(from: "5.13.0")),
         .package(url: "https://github.com/Swinject/Swinject.git", .upToNextMajor(from: "2.8.0")),
         .package(url: "https://github.com/Swinject/SwinjectAutoregistration.git", .upToNextMajor(from: "2.7.0")),
     ],
@@ -48,8 +48,9 @@ let package = Package(
         .target(
             name: "Database",
             dependencies: [
-                .product(name: "CoreDatabase", package: "swift-core-database"),
+                .product(name: "GRDB", package: "GRDB.swift"),
                 "Common",
+                "InstanceProvider",
                 "Swinject",
                 "SwinjectAutoregistration"
             ]
@@ -74,7 +75,7 @@ let package = Package(
         ),
         .testTarget(
             name: "InfrastructureTests",
-            dependencies: ["BasicLocalStorage", "Database", "InstanceProvider", "SecureStorage"]
+            dependencies: ["BasicLocalStorage", "Database", "InstanceProvider", "SecureStorage", "Swinject", "SwinjectAutoregistration"]
         ),
     ]
 )

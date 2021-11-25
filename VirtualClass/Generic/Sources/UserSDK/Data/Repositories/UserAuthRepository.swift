@@ -17,12 +17,12 @@ public enum UserAuthRepositoryError: Error {
 
 final class UserAuthRepository {
 
-    private let database: StudentDBRepositoryType
+    private let database: DatabaseInteracting
     private let keyValueLocalStorage: LocalKeyValueStorage
     private let secureStorage: SecureStorage
     
     init(
-        database: StudentDBRepositoryType,
+        database: DatabaseInteracting,
         keyValueLocalStorage: LocalKeyValueStorage,
         secureStorage: SecureStorage
     ) {
@@ -34,12 +34,13 @@ final class UserAuthRepository {
 
 extension UserAuthRepository: UserAuthRepositoryType {
     
-    func isExistingUser(withEmail email: String) -> Result<Bool, UserAuthRepositoryError> {
+    func isExistingUser(withEmail email: String) -> AnyPublisher<Bool, UserAuthRepositoryError> {
         database.load(withEmail: email)
             .map { optionalUser in
                 optionalUser?.email != nil
             }
             .mapError(UserAuthRepositoryError.storageError)
+            .eraseToAnyPublisher()
     }
     
     var loggedInUserEmail: String? {

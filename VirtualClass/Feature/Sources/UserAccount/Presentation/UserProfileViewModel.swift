@@ -20,6 +20,7 @@ public final class UserProfileViewModel: ObservableObject {
     let addNewClassTap = PassthroughSubject<Void, Never>()
     let logoutTap = PassthroughSubject<Void, Never>()
     let showCompletedCoursesTap = PassthroughSubject<Void, Never>()
+    let reloadProfileSubject = PassthroughSubject<Void, Never>()
     
     // View Model to Coordinator
     let navigateToCompletedCourses: AnyPublisher<Void, Never>
@@ -43,7 +44,19 @@ public final class UserProfileViewModel: ObservableObject {
         self.didLogout = didLogoutSubject.eraseToAnyPublisher()
         self.navigateToCompletedCourses = showCompletedCoursesTap.eraseToAnyPublisher()
         
-        self.userProfile = getUserProfileUseCase.userProfile
+        reloadProfileSubject
+//            .prepend(())
+            .flatMap { [weak self] _ -> AnyPublisher<GenericStudent?, Never> in
+                guard let self = self else {
+                    return Empty<GenericStudent?, Never>().eraseToAnyPublisher()
+                }
+                
+                return self.getUserProfileUseCase.userProfile
+                    .replaceError(with: nil)
+                    .eraseToAnyPublisher()
+            }
+            .assign(to: \.userProfile, on: self)
+            .store(in: &bag)
         
         personalInfoTap
             .compactMap { [weak self] _ in self?.userProfile }
@@ -62,9 +75,5 @@ public final class UserProfileViewModel: ObservableObject {
                 self.didLogoutSubject.send(())
             })
             .store(in: &bag)
-    }
-    
-    func reloadProfile() {
-        self.userProfile = getUserProfileUseCase.userProfile
     }
 }

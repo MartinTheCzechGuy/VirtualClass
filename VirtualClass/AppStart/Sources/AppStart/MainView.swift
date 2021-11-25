@@ -26,14 +26,8 @@ public struct MainView: View {
                     switch phase {
                     case .background:
                         print("[APP STATE] - going into background")
-                        // tady bys mohl ukladat stav do DB kdyz jdes do pozadi
-                        //                databaseInteracting.save
-                    case .inactive:
-                        print("[APP STATE] - going into inactive")
-                    case .active:
-                        print("[APP STATE] - becoming active again")
-                    @unknown default:
-                        print("[APP STATE] - Catched aditional unknown phase")
+                    default:
+                        return
                     }
                 }
         case .auth:

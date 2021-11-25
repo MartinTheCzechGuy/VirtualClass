@@ -15,7 +15,7 @@ final class UserDBRepositoryTests: XCTestCase {
         
         XCTAssertNotNil(sut)
         
-        let domainModel = DomainUserModel(id: .init(), name: "my domain model")
+        let domainModel = DomainUserModel(id: UUID(), name: "Franta", email: "Franta")
         
         let result = sut!.create(domainModel: domainModel)
         

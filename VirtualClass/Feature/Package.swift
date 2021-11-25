@@ -16,8 +16,8 @@ let package = Package(
             targets: ["Calendar"]
         ),
         .library(
-            name: "Classes",
-            targets: ["Classes"]
+            name: "Courses",
+            targets: ["Courses"]
         ),
         .library(
             name: "Dashboard",
@@ -46,10 +46,11 @@ let package = Package(
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 .product(name: "Common", package: "Infrastructure"),
+                .product(name: "UserSDK", package: "Generic"),
             ]
         ),
         .target(
-            name: "Classes",
+            name: "Courses",
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 .product(name: "Common", package: "Infrastructure"),
@@ -61,7 +62,7 @@ let package = Package(
             dependencies: [
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 "Calendar",
-                "Classes",
+                "Courses",
                 "UserAccount"
             ]
         ),
@@ -71,7 +72,7 @@ let package = Package(
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 .product(name: "Common", package: "Infrastructure"),
                 .product(name: "UserSDK", package: "Generic"),
-                "Classes",
+                "Courses",
             ]
         ),
         .testTarget(

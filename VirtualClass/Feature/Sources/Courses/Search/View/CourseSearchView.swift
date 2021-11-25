@@ -69,9 +69,9 @@ public struct CourseSearchView: View {
             viewModel.reloadDataSubject.send()
         }
         .padding()
-        .alert(isPresented: $viewModel.showError) { () -> Alert in
+        .alert(item: $viewModel.showError) { errorMessage in
             Alert(
-                title: Text("The class name \(viewModel.searchedCourse) not found. Please try a different name or ident."),
+                title: Text(errorMessage.rawValue),
                 dismissButton: .default(Text("OK"))
             )
         }

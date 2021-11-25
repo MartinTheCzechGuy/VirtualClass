@@ -5,10 +5,11 @@
 //  Created by Martin on 19.11.2021.
 //
 
+import Combine
 import Foundation
 
 public protocol GetActiveCoursesUseCaseType {
-    func courses(forUser email: String) -> Result<Set<GenericCourse>, UserRepositoryError>
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError>
 }
 
 final class GetActiveCoursesUseCase {
@@ -20,10 +21,11 @@ final class GetActiveCoursesUseCase {
 }
 
 extension GetActiveCoursesUseCase: GetActiveCoursesUseCaseType {
-    func courses(forUser email: String) -> Result<Set<GenericCourse>, UserRepositoryError> {
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
         repository.load(userWithEmail: email)
             .map { optionalProfile in
                 optionalProfile?.activeCourses ?? []
             }
+            .eraseToAnyPublisher()
     }
 }

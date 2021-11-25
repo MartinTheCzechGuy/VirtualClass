@@ -34,8 +34,10 @@ public final class RegistrationViewModel: ObservableObject {
         self.navigateToDashboard = tada.eraseToAnyPublisher()
         
         let registrationResult = registerTap
-            .compactMap { [weak self] registrationForm -> RegistrationValidationResult? in
-                self?.handleRegistrationUseCase.register(
+            .flatMap { [weak self] registrationForm -> AnyPublisher<RegistrationValidationResult, Never> in
+                guard let self = self else { return Just(.errorStoringCredentials).eraseToAnyPublisher() }
+                
+                return self.handleRegistrationUseCase.register(
                     form: .init(
                         email: registrationForm.email,
                         password1: registrationForm.password1,

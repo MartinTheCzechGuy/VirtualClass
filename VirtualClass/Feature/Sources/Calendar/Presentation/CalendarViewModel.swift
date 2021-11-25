@@ -9,6 +9,10 @@ import Combine
 import Foundation
 import UserSDK
 
+enum CalendarError: Error {
+    case errorLoadingData
+}
+
 public final class CalendarViewModel: ObservableObject {
     
     // MARK: - View Model to View
@@ -40,8 +44,16 @@ public final class CalendarViewModel: ObservableObject {
         
         #warning("TODO BUG - ta hodnota z dayChangeTap se nasharuje a ten prepend sem NEpritece")
         let lecturesOnTheDate = dayChangeTap
-            .compactMap { [weak self] date -> Result<[Lecture], UserRepositoryError>? in
-                self?.getLecturesUseCase.lectures(on: date)
+            .flatMap { [weak self] date -> AnyPublisher<Result<[Lecture], CalendarError>, Never> in
+                guard let self = self else {
+                    return Just(.failure(CalendarError.errorLoadingData))
+                        .eraseToAnyPublisher()
+                }
+                
+                return self.getLecturesUseCase.lectures(on: date)
+                    .mapError { _ in CalendarError.errorLoadingData }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
             }
             .share()
         
@@ -62,11 +74,8 @@ public final class CalendarViewModel: ObservableObject {
         
         lecturesOnTheDate
             .compactMap(\.success)
-            .map { lectures in
-                lectures
-                    .map { lecture in
-                        Event(time: lecture.date, room: lecture.classRoomName, className: lecture.className, ident: lecture.classIdent)
-                    }
+            .mapElement { lecture in
+                Event(time: lecture.date, room: lecture.classRoomName, className: lecture.className, ident: lecture.classIdent)
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.events, on: self)

@@ -5,14 +5,14 @@
 //  Created by Martin on 13.11.2021.
 //
 
-import Foundation
+import Combine
 
 enum CheckEmailTakenUseCaseError: Error {
     case userProfileError(error: Error)
 }
 
 protocol CheckEmailTakenUseCaseType {
-    func isTaken(email: String) -> Result<Bool, CheckEmailTakenUseCaseError>
+    func isTaken(email: String) -> AnyPublisher<Bool, CheckEmailTakenUseCaseError>
 }
 
 final class CheckEmailTakenUseCase {
@@ -25,11 +25,13 @@ final class CheckEmailTakenUseCase {
 }
 
 extension CheckEmailTakenUseCase: CheckEmailTakenUseCaseType {
-    func isTaken(email: String) -> Result<Bool, CheckEmailTakenUseCaseError> {
-        userRepository.takenEmails()
+    func isTaken(email: String) -> AnyPublisher<Bool, CheckEmailTakenUseCaseError> {
+        userRepository.loadAll()
+            .mapElement(\.email)
             .mapError(CheckEmailTakenUseCaseError.userProfileError)
             .map { takenEmails in
                 takenEmails.contains(email)
             }
+            .eraseToAnyPublisher()
     }
 }

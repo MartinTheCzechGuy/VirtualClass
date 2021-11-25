@@ -5,10 +5,10 @@
 //  Created by Martin on 20.11.2021.
 //
 
-import Foundation
+import Combine
 
 public protocol AddToUserActiveCoursesUseCaseType {
-    func add(idents: [String]) -> Result<Void, UserRepositoryError>
+    func add(idents: [String]) -> AnyPublisher<Void, UserRepositoryError>
 }
 
 final class AddToUserActiveCoursesUseCase {
@@ -22,9 +22,9 @@ final class AddToUserActiveCoursesUseCase {
 }
 
 extension AddToUserActiveCoursesUseCase: AddToUserActiveCoursesUseCaseType {
-    func add(idents: [String]) -> Result<Void, UserRepositoryError> {
+    func add(idents: [String]) -> AnyPublisher<Void, UserRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return .failure(UserRepositoryError.storageError(nil))
+            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.addCourses(idents, forStudentWithEmail: email)

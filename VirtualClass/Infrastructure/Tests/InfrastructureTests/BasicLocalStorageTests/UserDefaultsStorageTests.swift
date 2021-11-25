@@ -28,9 +28,9 @@ final class UserDefaultsStorageTests: XCTestCase {
         let value = "value"
         let key = "key"
         
-        storage?.set(value, for: key)
+        storage?.set(value, for: .userEmail)
         
-        let result: String? = storage?.read(objectForKey: key)
+        let result: String? = storage?.read(objectForKey: .userEmail)
         
         XCTAssertNotNil(result)
         XCTAssertEqual(result, value)

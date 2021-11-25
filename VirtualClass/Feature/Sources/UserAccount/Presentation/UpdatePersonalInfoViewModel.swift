@@ -9,6 +9,11 @@ import Combine
 import UserSDK
 import Foundation
 
+enum UpdatePersonalInfoError: Error {
+    case errorLoadingProfile
+    case errorUpdatingProfile
+}
+
 struct UserPersonalInfo {
     var name: String
     var email: String
@@ -23,6 +28,7 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
     // MARK: - Outputs
     let saveChangesTap = PassthroughSubject<Void, Never>()
     let goBackTap = PassthroughSubject<Void, Never>()
+    let reloadDataSubject = PassthroughSubject<Void, Never>()
     
     // MARK: - Actions
     let navigateToUserAccount: AnyPublisher<Void, Never>
@@ -48,14 +54,38 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
     }
     
     private func setupBindings() {
-        let updateProfileResult = saveChangesTap
-            .compactMap { [weak self] _ -> GenericStudent? in
-                guard let self = self else { return nil }
+        reloadDataSubject
+            .flatMap { [weak self] _ -> AnyPublisher<GenericStudent?, Never> in
+                guard let self = self else {
+                    return Empty().eraseToAnyPublisher()
+                }
                 
                 return self.getUserProfileUseCase.userProfile
+                    .replaceError(with: nil)
+                    .eraseToAnyPublisher()
             }
-            .compactMap { [weak self] nonUpdatedProfile -> Result<Void, UserRepositoryError>? in
-                guard let self = self else { return nil }
+            .compactMap { $0 }
+            .map { UserPersonalInfo(name: $0.name, email: $0.email) }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.userInfo, on: self)
+            .store(in: &bag)
+
+        let updateProfileResult = saveChangesTap
+            .flatMap { [weak self] _ -> AnyPublisher<GenericStudent?, UpdatePersonalInfoError> in
+                guard let self = self else {
+                    return Fail(error: UpdatePersonalInfoError.errorLoadingProfile)
+                        .eraseToAnyPublisher()
+                }
+                
+                return self.getUserProfileUseCase.userProfile
+                    .mapError { _ in UpdatePersonalInfoError.errorLoadingProfile }
+                    .eraseToAnyPublisher()
+            }
+            .flatMap { [weak self] nonUpdatedProfile -> AnyPublisher<Result<Void, UpdatePersonalInfoError>, Never> in
+                guard let self = self, let nonUpdatedProfile = nonUpdatedProfile else {
+                    return Just(.failure(UpdatePersonalInfoError.errorLoadingProfile))
+                        .eraseToAnyPublisher()
+                }
                 
                 let updatedProfile = GenericStudent(
                     id: nonUpdatedProfile.id,
@@ -66,11 +96,16 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
                 )
                 
                 return self.updateStudentProfileUseCase.update(updatedProfile)
+                    .mapError { _ in UpdatePersonalInfoError.errorUpdatingProfile }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
             }
+            .mapToResult()
             .share()
         
         updateProfileResult
             .compactMap(\.success)
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
                 self?.userProfileUpdatedSubject.send()
             })
@@ -78,16 +113,9 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
         
         updateProfileResult
             .compactMap(\.failure)
-            .map { _ in "baaaac" }
+            .map { _ in "Error updating user profile." }
+            .receive(on: DispatchQueue.main)
             .assign(to: \.errorUpdatingProfile, on: self)
             .store(in: &bag)
-    }
-    
-    func reloadUserData() {
-        guard let profile = getUserProfileUseCase.userProfile else {
-            return
-        }
-        
-        userInfo = UserPersonalInfo(name: profile.name, email: profile.email)
     }
 }

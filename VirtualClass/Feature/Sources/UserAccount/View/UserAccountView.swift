@@ -24,7 +24,7 @@ public struct UserAccountView: View {
         instanceProvider.resolve(UserProfileView.self)
             .fullScreenCover(
                 item: $coordinator.activeScreen,
-                onDismiss: { coordinator.userProfileViewModel.reloadProfile() }
+                onDismiss: { coordinator.userProfileViewModel.reloadProfileSubject.send() }
             ) { activeScreen in
                 switch activeScreen {
                 case .classSearch:

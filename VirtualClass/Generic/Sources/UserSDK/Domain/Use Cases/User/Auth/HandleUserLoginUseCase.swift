@@ -5,11 +5,18 @@
 //  Created by Martin on 13.11.2021.
 //
 
+import Combine
 import Common
 import Foundation
 
+enum HandleLoginError: Error {
+    case accountDoesNotExist
+    case errorLoadingData
+    case invalidCredentials
+}
+
 public protocol HandleUserLoginUseCaseType {
-    func login(email: String, password: String) -> LoginValidationResult
+    func login(email: String, password: String) -> AnyPublisher<LoginValidationResult, Never>
 }
 
 final class HandleUserLoginUseCase {
@@ -30,32 +37,67 @@ final class HandleUserLoginUseCase {
 }
 
 extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
-    func login(email: String, password: String) -> LoginValidationResult {
+    func login(email: String, password: String) -> AnyPublisher<LoginValidationResult, Never> {
         guard checkValidPasswordUseCase.isValid(password: password) else {
-            return .invalidPassword
+            return Just(.invalidPassword).eraseToAnyPublisher()
         }
                 
         guard checkValidEmailUseCase.isValid(email: email) else {
-            return .invalidEmail
+            return Just(.invalidEmail).eraseToAnyPublisher()
         }
                 
-        guard let userExists = userAuthRepository.isExistingUser(withEmail: email).success, userExists
-        else {
-            return .accountDoesNotExist
-        }
-                
-        guard let savedPassword = userAuthRepository.storedPassword(for: email).success,
-                savedPassword != nil
-        else {
-            return .errorLoadingData
-        }
-                
-        guard password == savedPassword else {
-            return .invalidCredentials
-        }
+        let isExistingUser = userAuthRepository.isExistingUser(withEmail: email)
+            .replaceError(with: false)
+            .share()
         
-        userAuthRepository.storeLoggedInUser(email)
-            
-        return .validData
+        let userDoesNotExists = isExistingUser
+            .filter { !$0 }
+            .map { _ in LoginValidationResult.accountDoesNotExist }
+        
+        let hasStoredPassword = isExistingUser
+            .filter { $0 }
+            .flatMap { [weak self] _ -> AnyPublisher<String?, Never> in
+                guard let self = self else {
+                    return Just(nil).eraseToAnyPublisher()
+                }
+                
+                return self.userAuthRepository.storedPassword(for: email).publisher
+                    .replaceError(with: nil)
+                    .eraseToAnyPublisher()
+            }
+            .share()
+        
+        let passwordNotFound = hasStoredPassword
+            .filter { optionalPassword in
+                optionalPassword == nil
+            }
+            .map { _ in LoginValidationResult.errorLoadingData }
+        
+        let checkPassword = hasStoredPassword
+            .compactMap { $0 }
+            .map { storedPassword in
+                storedPassword == password
+            }
+            .share()
+        
+        let passwordDoesntMatch = checkPassword
+            .filter { !$0 }
+            .map { _ in LoginValidationResult.invalidCredentials }
+
+        let storeLoggedInUser = checkPassword
+            .filter { $0 }
+            .compactMap { [weak self] _ -> LoginValidationResult? in
+                guard let self = self else { return nil }
+                
+                self.userAuthRepository.storeLoggedInUser(email)
+                
+                return .validData
+            }
+        
+        return userDoesNotExists
+            .merge(with: passwordNotFound)
+            .merge(with: passwordDoesntMatch)
+            .merge(with: storeLoggedInUser)
+            .eraseToAnyPublisher()
     }
 }

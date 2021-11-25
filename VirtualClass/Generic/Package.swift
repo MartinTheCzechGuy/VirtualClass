@@ -26,7 +26,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "GenericTests",
+            name: "UserSDKTests",
             dependencies: ["UserSDK"]
         ),
     ]

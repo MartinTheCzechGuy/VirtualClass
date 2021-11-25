@@ -5,10 +5,27 @@
 //  Created by Martin on 14.11.2021.
 //
 
+import Combine
+import Common
 import Foundation
 
+public struct GetStudentProfileError: ErrorReportable {
+    public enum ErrorCause: Error {
+        case emailNotFound
+        case profileNotFound(forEmail: String)
+    }
+    
+    init(cause: ErrorCause, underlyingError: Error? = nil) {
+        self.cause = cause
+        self.underlyingError = underlyingError
+    }
+    
+    public private(set) var cause: Error
+    public private(set) var underlyingError: Error?
+}
+
 public protocol GetStudentProfileUseCaseType {
-    var userProfile: GenericStudent? { get }
+    var userProfile: AnyPublisher<GenericStudent?, GetStudentProfileError> { get }
 }
 
 final class GetStudentProfileUseCase {
@@ -23,15 +40,14 @@ final class GetStudentProfileUseCase {
 }
 
 extension GetStudentProfileUseCase: GetStudentProfileUseCaseType {
-    var userProfile: GenericStudent? {
+    var userProfile: AnyPublisher<GenericStudent?, GetStudentProfileError> {
         guard let email = getLoggedInUserEmailUseCase.email else {
-            return nil
+            return Fail(error: GetStudentProfileError(cause: .emailNotFound))
+                .eraseToAnyPublisher()
         }
         
-        guard let profile = userProfileRepository.load(userWithEmail: email).success else {
-            return nil
-        }
-     
-        return profile
+        return userProfileRepository.load(userWithEmail: email)
+            .mapError { GetStudentProfileError(cause: .profileNotFound(forEmail: email), underlyingError: $0) }
+            .eraseToAnyPublisher()
     }
 }

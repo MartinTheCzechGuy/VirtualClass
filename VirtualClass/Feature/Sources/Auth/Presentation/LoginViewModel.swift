@@ -36,8 +36,10 @@ public final class LoginViewModel: ObservableObject {
         self.navigateToDashboard = tada.eraseToAnyPublisher()
 
         let loginEvaluation = loginTap
-            .compactMap { [weak self] email, password -> LoginValidationResult? in
-                guard let self = self else { return nil }
+            .flatMap { [weak self] email, password -> AnyPublisher<LoginValidationResult, Never> in
+                guard let self = self else {
+                    return Empty().eraseToAnyPublisher()
+                }
                 
                 return self.handleLoginUseCase.login(email: email, password: password)                
             }

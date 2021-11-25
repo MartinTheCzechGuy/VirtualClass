@@ -89,7 +89,7 @@ public struct UserProfileView: View {
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationBarHidden(true)
             .onAppear {
-                viewModel.reloadProfile()
+                viewModel.reloadProfileSubject.send()
             }
         }
     }

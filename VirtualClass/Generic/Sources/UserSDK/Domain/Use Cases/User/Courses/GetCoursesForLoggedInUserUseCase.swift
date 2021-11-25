@@ -5,10 +5,27 @@
 //  Created by Martin on 19.11.2021.
 //
 
+import Combine
+import Common
 import Foundation
 
+public struct GetCoursesForUserError: ErrorReportable {
+    public enum ErrorCause: Error {
+        case emailNotFound
+        case errorLoadingCourses(forEmail: String)
+    }
+    
+    init(cause: ErrorCause, underlyingError: Error? = nil) {
+        self.cause = cause
+        self.underlyingError = underlyingError
+    }
+    
+    public private(set) var cause: Error
+    public private(set) var underlyingError: Error?
+}
+
 public protocol GetCoursesForLoggedInUserUseCaseType {
-    var courses: Result<Set<GenericCourse>, UserRepositoryError> { get }
+    var courses: AnyPublisher<Set<GenericCourse>, GetCoursesForUserError> { get }
 }
 
 final class GetCoursesForLoggedInUserUseCase {
@@ -22,11 +39,14 @@ final class GetCoursesForLoggedInUserUseCase {
 }
 
 extension GetCoursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType {
-    var courses: Result<Set<GenericCourse>, UserRepositoryError> {
+    var courses: AnyPublisher<Set<GenericCourse>, GetCoursesForUserError> {
         guard let email = getLogedInUserUseCase.email else {
-            return .failure(UserRepositoryError.storageError(nil))
+            return Fail(error: GetCoursesForUserError(cause: .emailNotFound))
+                .eraseToAnyPublisher()
         }
         
-        return getCoursesUseCase.courses(forUser: email)
+        return getCoursesUseCase.courses(forUserWithEmail: email)
+            .mapError { GetCoursesForUserError(cause: .errorLoadingCourses(forEmail: email), underlyingError: $0) }
+            .eraseToAnyPublisher()
     }
 }

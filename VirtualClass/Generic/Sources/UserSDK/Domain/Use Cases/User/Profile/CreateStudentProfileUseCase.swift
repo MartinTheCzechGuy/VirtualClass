@@ -5,10 +5,11 @@
 //  Created by Martin on 19.11.2021.
 //
 
+import Combine
 import Foundation
 
 protocol CreateStudentProfileUseCaseType {
-    func register(name: String, email: String) -> Result<Void, UserRepositoryError>
+    func register(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError>
 }
 
 final class CreateStudentProfileUseCase {
@@ -20,7 +21,7 @@ final class CreateStudentProfileUseCase {
 }
 
 extension CreateStudentProfileUseCase: CreateStudentProfileUseCaseType {
-    func register(name: String, email: String) -> Result<Void, UserRepositoryError> {
+    func register(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError> {
         userProfileRepository.create(name: name, email: email)
     }
 }

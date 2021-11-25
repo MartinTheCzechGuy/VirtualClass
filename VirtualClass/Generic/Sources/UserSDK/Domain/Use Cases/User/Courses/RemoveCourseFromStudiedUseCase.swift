@@ -5,10 +5,10 @@
 //  Created by Martin on 19.11.2021.
 //
 
-import Foundation
+import Combine
 
 public protocol RemoveCourseFromStudiedUseCaseType {
-    func remove(courseIdent ident: String) -> Result<Void, UserRepositoryError>
+    func remove(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError>
 }
 
 final class RemoveCourseFromStudiedUseCase {
@@ -25,9 +25,9 @@ final class RemoveCourseFromStudiedUseCase {
 }
 
 extension RemoveCourseFromStudiedUseCase: RemoveCourseFromStudiedUseCaseType {
-    func remove(courseIdent ident: String) -> Result<Void, UserRepositoryError> {
+    func remove(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return .failure(UserRepositoryError.storageError(nil))
+            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.remove(courseIdent: ident, forUserWithEmail: email)

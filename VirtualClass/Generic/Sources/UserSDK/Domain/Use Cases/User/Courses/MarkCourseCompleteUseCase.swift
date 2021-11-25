@@ -5,8 +5,10 @@
 //  Created by Martin on 19.11.2021.
 //
 
+import Combine
+
 public protocol MarkCourseCompleteUseCaseType {
-    func complete(courseIdent ident: String) -> Result<Void, UserRepositoryError>
+    func complete(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError>
 }
 
 final class MarkCourseCompleteUseCase {
@@ -23,9 +25,9 @@ final class MarkCourseCompleteUseCase {
 }
 
 extension MarkCourseCompleteUseCase: MarkCourseCompleteUseCaseType {
-    func complete(courseIdent ident: String) -> Result<Void, UserRepositoryError> {
+    func complete(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return .failure(UserRepositoryError.storageError(nil))
+            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.markComplete(courseIdent: ident, forUserWithEmail: email)

@@ -6,11 +6,26 @@
 //
 
 import Combine
+import Common
 import Foundation
-import UIKit
+
+public struct GetLecturesError: ErrorReportable {
+    public enum ErrorCause: Error {
+        case errorLoadingCourses
+    }
+    
+    init(cause: ErrorCause, underlyingError: Error? = nil) {
+        self.cause = cause
+        self.underlyingError = underlyingError
+    }
+    
+    public private(set) var cause: Error
+    public private(set) var underlyingError: Error?
+}
+
 
 public protocol GetLecturesUseCaseType {
-    func lectures(on: Date) -> Result<[Lecture], UserRepositoryError>
+    func lectures(on: Date) -> AnyPublisher<[Lecture], GetLecturesError>
 }
 
 final class GetLecturesUseCase {
@@ -22,20 +37,17 @@ final class GetLecturesUseCase {
 }
 
 extension GetLecturesUseCase: GetLecturesUseCaseType {
-    func lectures(on date: Date) -> Result<[Lecture], UserRepositoryError> {
-        guard let courses = coursesForLoggedInUserUseCase.courses.success else {
-            return .failure(UserRepositoryError.storageError(nil))
-        }
-        
-        let lessons = courses
-            .compactMap { filteredCourse -> Lecture? in
+    func lectures(on date: Date) -> AnyPublisher<[Lecture], GetLecturesError> {
+        coursesForLoggedInUserUseCase.courses
+            .mapError { GetLecturesError(cause: .errorLoadingCourses, underlyingError: $0) }
+            .mapOptionalElement { filteredCourse -> Lecture? in
                 guard let lessonOnDate = filteredCourse.lessons.first(where: { Calendar.current.isDate($0, inSameDayAs: date) }) else {
                     return nil
                 }
                 
                 return Lecture(classIdent: filteredCourse.ident, className: filteredCourse.name, classRoomName: filteredCourse.classRoom.name, date: lessonOnDate)
+                
             }
-        
-        return .success(lessons)
+            .eraseToAnyPublisher()
     }
 }

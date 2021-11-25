@@ -9,6 +9,10 @@ import Combine
 import Foundation
 import UserSDK
 
+enum CompletedCoursesError: Error {
+    case errorLoadingData
+}
+
 public final class CompletedCoursesViewModel: ObservableObject {
     
     // MARK: - View Model to View
@@ -35,14 +39,22 @@ public final class CompletedCoursesViewModel: ObservableObject {
         self.getCompletedCoursesUseCase = getCompletedCoursesUseCase
         
         let loadDataResult = reloadDataSubject
-            .compactMap { [weak self] _ in
-                self?.getCompletedCoursesUseCase.courses
+            .flatMap { [weak self] _ -> AnyPublisher<Result<Set<GenericCourse>, CompletedCoursesError>, Never> in
+                guard let self = self else {
+                    return Just(.failure(CompletedCoursesError.errorLoadingData))
+                        .eraseToAnyPublisher()
+                }
+                
+                return self.getCompletedCoursesUseCase.courses
+                    .mapError { _ in CompletedCoursesError.errorLoadingData }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
             }
             .share()
         
         loadDataResult
             .compactMap(\.success)
-            .map { Array($0) }
+            .map(Array.init)
             .receive(on: DispatchQueue.main)
             .assign(to: \.completedCourses, on: self)
             .store(in: &bag)

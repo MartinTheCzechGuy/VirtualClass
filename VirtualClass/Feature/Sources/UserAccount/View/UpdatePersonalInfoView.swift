@@ -64,7 +64,7 @@ public struct UpdatePersonalInfoView: View {
         }
         .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .onAppear {
-            viewModel.reloadUserData()
+            viewModel.reloadDataSubject.send()
         }
     }
 }

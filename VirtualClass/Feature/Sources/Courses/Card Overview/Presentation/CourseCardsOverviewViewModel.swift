@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Common
 import Foundation
 import UserSDK
 
@@ -39,26 +40,22 @@ public final class CourseCardsOverviewViewModel: ObservableObject {
         self.addClassButtonTap = adddClassSubject.eraseToAnyPublisher()
     
         let loadingDataResult = reloadData
-            .flatMap { [weak self] _ -> AnyPublisher<Result<[GenericCourse], Error>, Never> in
+            .flatMap { [weak self] _ -> AnyPublisher<Result<Set<GenericCourse>, CoursesCardOverviewError>, Never> in
                 guard let self = self else {
                     return Just(.failure(CoursesCardOverviewError.errorLoadingData(underlyingError: nil)))
                         .eraseToAnyPublisher()
                 }
                 
-                switch self.getCoursesUseCase.courses {
-                case .success(let courses):
-                    let courses = courses.map { $0 }
-                    return Just(.success(courses))
-                        .eraseToAnyPublisher()
-                case .failure(let error):
-                    return Just(.failure(CoursesCardOverviewError.errorLoadingData(underlyingError: error)))
-                        .eraseToAnyPublisher()
-                }
+                return self.getCoursesUseCase.courses
+                    .mapError { CoursesCardOverviewError.errorLoadingData(underlyingError: $0) }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
             }
             .share()
         
         loadingDataResult
             .compactMap(\.success)
+            .map(Array.init)
             .assign(to: \.studiedClasses, on: self)
             .store(in: &bag)
         

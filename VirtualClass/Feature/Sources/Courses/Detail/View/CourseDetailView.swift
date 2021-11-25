@@ -43,6 +43,7 @@ struct CourseDetailView: View {
                     lessons: viewModel.courseDetail.lessons,
                     credits: viewModel.courseDetail.credits
                 )
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 
                 VStack {
                     Spacer(minLength: 0)
@@ -67,6 +68,7 @@ struct CourseDetailView: View {
                         .frame(height: 20)
                 }
             }
+            
         }
     }
 }

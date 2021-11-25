@@ -9,6 +9,16 @@ import Combine
 import Foundation
 import UserSDK
 
+enum CourseSearchError: String, Error, Identifiable {
+    case errorLoadingCourses = "Loading course data failed."
+    case errorFindingCourses = "Could not find the courses. Please try again"
+    case errorAddingCourses = "Error adding courses among active."
+    
+    var id: Self {
+        self
+    }
+}
+
 public final class CourseSearchViewModel: ObservableObject {
     
     // MARK: - View Model to View
@@ -21,7 +31,7 @@ public final class CourseSearchViewModel: ObservableObject {
         }
     }
     @Published var searchResult: [SearchedCourse] = []
-    @Published var showError = false
+    @Published var showError: CourseSearchError? = nil
     
     // MARK: - View to View Model
     
@@ -55,40 +65,75 @@ public final class CourseSearchViewModel: ObservableObject {
     }
     
     private func setupBindings() {
-        reloadDataSubject
-            .compactMap { [weak self] courseIdent in
-                self?.findPossibleToEnrollCoursesUseCase.allAvailable
-            }
-            .map { courses in
-                courses.map {
-                    SearchedCourse(
-                        ident: $0.ident,
-                        name: $0.name,
-                        isSelected: false
-                    )
+        let availableCourses = reloadDataSubject
+            .flatMap { [weak self] courseIdent -> AnyPublisher<Result<Set<GenericCourse>, CourseSearchError>, Never> in
+                guard let self = self else {
+                    return Just(.failure(CourseSearchError.errorLoadingCourses))
+                        .eraseToAnyPublisher()
                 }
+                
+                return self.findPossibleToEnrollCoursesUseCase.allAvailable
+                    .mapError { _ in CourseSearchError.errorLoadingCourses }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
+            }
+            .share()
+        
+        availableCourses
+            .compactMap(\.success)
+            .mapElement {
+                SearchedCourse(
+                    ident: $0.ident,
+                    name: $0.name,
+                    isSelected: false
+                )
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.searchResult, on: self)
             .store(in: &bag)
         
-        $searchedCourse
+        availableCourses
+            .compactMap(\.failure)
+            .map { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.showError, on: self)
+            .store(in: &bag)
+        
+        let foundCourses = $searchedCourse
             .compactMap { $0.count == .zero ? nil : $0 }
             .debounce(for: .milliseconds(500), scheduler: DispatchQueue.global(qos: .background))
-            .compactMap { [weak self] courseIdent in
-                self?.findPossibleToEnrollCoursesUseCase.find(ident: courseIdent)
-            }
-            .map { courses in
-                courses.map {
-                    SearchedCourse(
-                        ident: $0.ident,
-                        name: $0.name,
-                        isSelected: false
-                    )
+            .flatMap { [weak self] courseIdent -> AnyPublisher<Result<Set<GenericCourse>, CourseSearchError>, Never> in
+                guard let self = self else {
+                    return Just(.failure(CourseSearchError.errorFindingCourses))
+                        .eraseToAnyPublisher()
                 }
+                
+                return self.findPossibleToEnrollCoursesUseCase.find(ident: courseIdent)
+                    .mapError { _ in CourseSearchError.errorFindingCourses }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
+            }
+            .share()
+        
+        foundCourses
+            .compactMap(\.success)
+            .mapElement {
+                SearchedCourse(
+                    ident: $0.ident,
+                    name: $0.name,
+                    isSelected: false
+                )
+                
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.searchResult, on: self)
+            .store(in: &bag)
+        
+        foundCourses
+            .compactMap(\.failure)
+            .map { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.showError, on: self)
             .store(in: &bag)
         
         let addClassesResult = addSelectedTapSubject
@@ -99,10 +144,15 @@ public final class CourseSearchViewModel: ObservableObject {
                     .filter { $0.isSelected }
                     .map(\.ident)
             }
-            .compactMap { [weak self] courseIdents -> Result<Void, UserRepositoryError>? in
-                guard let self = self else { return nil }
-
+            .flatMap { [weak self] courseIdents -> AnyPublisher<Result<Void, CourseSearchError>, Never> in
+                guard let self = self else {
+                    return Just(.failure(CourseSearchError.errorAddingCourses)).eraseToAnyPublisher()
+                }
+                
                 return self.addCoursesUseCase.add(idents: courseIdents)
+                    .mapError { _ in CourseSearchError.errorAddingCourses }
+                    .mapToResult()
+                    .eraseToAnyPublisher()
             }
             .share()
         
@@ -115,7 +165,7 @@ public final class CourseSearchViewModel: ObservableObject {
         
         addClassesResult
             .compactMap(\.failure)
-            .map { _ in true }
+            .map { $0 }
             .receive(on: DispatchQueue.main)
             .assign(to: \.showError, on: self)
             .store(in: &bag)

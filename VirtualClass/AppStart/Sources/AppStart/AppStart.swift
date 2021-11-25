@@ -1,9 +1,10 @@
 import Auth
 import BasicLocalStorage
 import Calendar
-import Classes
+import Courses
 import Dashboard
 import Database
+import Foundation
 import InstanceProvider
 import UserSDK
 import UserAccount
@@ -34,7 +35,7 @@ let instanceProvider: InstanceProvider = {
 public struct AppStart {
     
     public init() {}
-    
+        
     func startApp() {
         print("tada")
         
