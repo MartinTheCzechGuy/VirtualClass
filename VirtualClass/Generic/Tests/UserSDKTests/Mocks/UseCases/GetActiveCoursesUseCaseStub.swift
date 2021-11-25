@@ -1,5 +1,5 @@
 //
-//  GetCompletedCoursesUseCaseStubs.swift
+//  GetActiveCoursesUseCaseStub.swift
 //  
 //
 //  Created by Martin on 25.11.2021.
@@ -8,7 +8,7 @@
 import Combine
 @testable import UserSDK
 
-final class GetCompletedCoursesUseCaseStub: GetCompletedCoursesUseCaseType {
+final class GetActiveCoursesUseCaseStub: GetActiveCoursesUseCaseType {
     
     private let courses: AnyPublisher<Set<GenericCourse>, UserRepositoryError>
     
@@ -16,7 +16,7 @@ final class GetCompletedCoursesUseCaseStub: GetCompletedCoursesUseCaseType {
         self.courses = courses
     }
     
-    func courses(forUser email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
         courses
     }
 }

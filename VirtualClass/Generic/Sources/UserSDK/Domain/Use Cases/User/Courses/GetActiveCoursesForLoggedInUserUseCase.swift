@@ -1,5 +1,5 @@
 //
-//  GetCoursesForLoggedInUserUseCase.swift
+//  GetActiveCoursesForLoggedInUserUseCase.swift
 //  
 //
 //  Created by Martin on 19.11.2021.
@@ -24,11 +24,11 @@ public struct GetCoursesForUserError: ErrorReportable {
     public private(set) var underlyingError: Error?
 }
 
-public protocol GetCoursesForLoggedInUserUseCaseType {
+public protocol GetActiveCoursesForLoggedInUserUseCaseType {
     var courses: AnyPublisher<Set<GenericCourse>, GetCoursesForUserError> { get }
 }
 
-final class GetCoursesForLoggedInUserUseCase {
+final class GetActiveCoursesForLoggedInUserUseCase {
     private let getCoursesUseCase: GetActiveCoursesUseCaseType
     private let getLogedInUserUseCase: GetLoggedInUserUseCaseType
     
@@ -38,7 +38,7 @@ final class GetCoursesForLoggedInUserUseCase {
     }
 }
 
-extension GetCoursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType {
+extension GetActiveCoursesForLoggedInUserUseCase: GetActiveCoursesForLoggedInUserUseCaseType {
     var courses: AnyPublisher<Set<GenericCourse>, GetCoursesForUserError> {
         guard let email = getLogedInUserUseCase.email else {
             return Fail(error: GetCoursesForUserError(cause: .emailNotFound))

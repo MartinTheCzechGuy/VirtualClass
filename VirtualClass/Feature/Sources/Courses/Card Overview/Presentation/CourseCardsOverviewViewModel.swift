@@ -32,9 +32,9 @@ public final class CourseCardsOverviewViewModel: ObservableObject {
     // MARK: - Private
     
     private var bag = Set<AnyCancellable>()
-    private let getCoursesUseCase: GetCoursesForLoggedInUserUseCaseType
+    private let getCoursesUseCase: GetActiveCoursesForLoggedInUserUseCaseType
     
-    public init(getCoursesUseCase: GetCoursesForLoggedInUserUseCaseType) {
+    public init(getCoursesUseCase: GetActiveCoursesForLoggedInUserUseCaseType) {
         self.getCoursesUseCase = getCoursesUseCase
         self.classCardTap = classCardTapSubject.eraseToAnyPublisher()
         self.addClassButtonTap = adddClassSubject.eraseToAnyPublisher()

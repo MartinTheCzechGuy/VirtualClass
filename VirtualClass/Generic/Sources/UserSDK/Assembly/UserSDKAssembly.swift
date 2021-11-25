@@ -42,7 +42,7 @@ public class UserSDKAssembly: Assembly {
         
         // MARK: - Courses
         
-        container.autoregister(GetCoursesForLoggedInUserUseCaseType.self, initializer: GetCoursesForLoggedInUserUseCase.init)
+        container.autoregister(GetActiveCoursesForLoggedInUserUseCaseType.self, initializer: GetActiveCoursesForLoggedInUserUseCase.init)
         container.autoregister(RemoveCourseFromStudiedUseCaseType.self, initializer: RemoveCourseFromStudiedUseCase.init)
         container.autoregister(MarkCourseCompleteUseCaseType.self, initializer: MarkCourseCompleteUseCase.init)
         container.autoregister(GetCoursesToEnrollUseCaseType.self, initializer: GetCoursesToEnrollUseCase.init)

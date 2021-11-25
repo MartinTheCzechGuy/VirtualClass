@@ -29,9 +29,9 @@ public protocol GetLecturesUseCaseType {
 }
 
 final class GetLecturesUseCase {
-    private let coursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType
+    private let coursesForLoggedInUserUseCase: GetActiveCoursesForLoggedInUserUseCaseType
     
-    init(coursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType) {
+    init(coursesForLoggedInUserUseCase: GetActiveCoursesForLoggedInUserUseCaseType) {
         self.coursesForLoggedInUserUseCase = coursesForLoggedInUserUseCase
     }
 }

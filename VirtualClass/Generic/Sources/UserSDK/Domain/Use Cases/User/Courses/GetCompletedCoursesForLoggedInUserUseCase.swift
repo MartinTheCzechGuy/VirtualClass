@@ -44,7 +44,7 @@ extension GetCompletedCoursesForLoggedInUserUseCase: GetCompletedCoursesForLogge
                 .eraseToAnyPublisher()
         }
         
-        return getCoursesUseCase.courses(forUser: email)
+        return getCoursesUseCase.courses(userWithEmail: email)
             .mapError {  GetCompletedCoursesError(cause: .errorLoadingCourses, underlyingError: $0) }
             .eraseToAnyPublisher()
     }

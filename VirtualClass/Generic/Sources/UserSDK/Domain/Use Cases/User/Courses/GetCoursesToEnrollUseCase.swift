@@ -30,9 +30,9 @@ public protocol GetCoursesToEnrollUseCaseType {
 
 final class GetCoursesToEnrollUseCase {
     private let studentRepository: StudentRepositoryType
-    private let getCoursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType
+    private let getCoursesForLoggedInUserUseCase: GetActiveCoursesForLoggedInUserUseCaseType
     
-    init(studentRepository: StudentRepositoryType, getCoursesForLoggedInUserUseCase: GetCoursesForLoggedInUserUseCaseType) {
+    init(studentRepository: StudentRepositoryType, getCoursesForLoggedInUserUseCase: GetActiveCoursesForLoggedInUserUseCaseType) {
         self.studentRepository = studentRepository
         self.getCoursesForLoggedInUserUseCase = getCoursesForLoggedInUserUseCase
     }
