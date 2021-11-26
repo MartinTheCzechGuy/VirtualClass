@@ -5,11 +5,9 @@
 //  Created by Martin on 12.11.2021.
 //
 
-import BasicLocalStorage
 import Combine
 import Database
 import Foundation
-import SecureStorage
 import SwiftUI
 
 public enum UserRepositoryError: Error {
@@ -20,17 +18,9 @@ public enum UserRepositoryError: Error {
 final class StudentRepository {
     
     private let database: DatabaseInteracting
-    private let keyValueLocalStorage: LocalKeyValueStorage
-    private let secureStorage: SecureStorage
     
-    init(
-        database: DatabaseInteracting,
-        keyValueLocalStorage: LocalKeyValueStorage,
-        secureStorage: SecureStorage
-    ) {
+    init(database: DatabaseInteracting) {
         self.database = database
-        self.keyValueLocalStorage = keyValueLocalStorage
-        self.secureStorage = secureStorage
     }
 }
 
@@ -160,6 +150,18 @@ public func mapToDomainnn(student: Student?) -> GenericStudent? {
             )
         }
         
+        var faculty: GenericFaculty
+        switch $0.faculty {
+        case .facultyOfEconomics:
+            faculty = .facultyOfEconomics
+        case .facultyOfInformatics:
+            faculty = .facultyOfInformatics
+        case .facultyOfAccounting:
+            faculty = .facultyOfAccounting
+        case .facultyOfManagement:
+            faculty = .facultyOfManagement
+        }
+        
         activeCourses.insert(
             GenericCourse(
                 ident: $0.id,
@@ -168,7 +170,7 @@ public func mapToDomainnn(student: Student?) -> GenericStudent? {
                 credits: $0.credits,
                 lessons: $0.lessons,
                 classRoom: GenericClassRoom(id: $0.classRoom.id, name: $0.classRoom.name),
-                faculty: .facultyOfEconomics,
+                faculty: faculty,
                 teachers: teachers
             )
         )
@@ -178,6 +180,18 @@ public func mapToDomainnn(student: Student?) -> GenericStudent? {
     
     domainModel.completedCourses.forEach {
         var teachers: Set<GenericTeacher> = []
+        
+        var faculty: GenericFaculty
+        switch $0.faculty {
+        case .facultyOfEconomics:
+            faculty = .facultyOfEconomics
+        case .facultyOfInformatics:
+            faculty = .facultyOfInformatics
+        case .facultyOfAccounting:
+            faculty = .facultyOfAccounting
+        case .facultyOfManagement:
+            faculty = .facultyOfManagement
+        }
         
         $0.teachers.forEach { externalTeacher in
             teachers.insert(
@@ -196,7 +210,7 @@ public func mapToDomainnn(student: Student?) -> GenericStudent? {
                 credits: $0.credits,
                 lessons: $0.lessons,
                 classRoom: GenericClassRoom(id: $0.classRoom.id, name: $0.classRoom.name),
-                faculty: .facultyOfEconomics,
+                faculty: faculty,
                 teachers: teachers
             )
         )

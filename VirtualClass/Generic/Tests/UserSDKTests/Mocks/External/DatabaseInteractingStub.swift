@@ -14,7 +14,6 @@ import Foundation
 final class DatabaseInteractingStub {
     struct ResultBundle {
         let createResult: AnyPublisher<Void, DatabaseError>
-        let createOrUpdateResult: Result<Void, DatabaseError>
         let updateResult: AnyPublisher<Void, DatabaseError>
         let loadByIdResult: AnyPublisher<Student?, DatabaseError>
         let loadByEmailResult: AnyPublisher<Student?, DatabaseError>
@@ -26,21 +25,19 @@ final class DatabaseInteractingStub {
         let addCoursesAmongActiveResult: AnyPublisher<Void, DatabaseError>
         
         static func mock(
-            createResult: AnyPublisher<Void, DatabaseError>,
-            createOrUpdateResult: Result<Void, DatabaseError>,
-            updateResult: AnyPublisher<Void, DatabaseError>,
-            loadByIdResult: AnyPublisher<Student?, DatabaseError>,
-            loadByEmailResult: AnyPublisher<Student?, DatabaseError>,
-            loadStudentsResult: AnyPublisher<[Student], DatabaseError>,
-            loadCoursesResult: AnyPublisher<Set<Course>, DatabaseError>,
-            deleteResult: AnyPublisher<Void, DatabaseError>,
-            removeCourseResult: AnyPublisher<Void, DatabaseError>,
-            markCompleteResult: AnyPublisher<Void, DatabaseError>,
-            addCoursesAmongActiveResult: AnyPublisher<Void, DatabaseError>
+            createResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            updateResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            loadByIdResult: AnyPublisher<Student?, DatabaseError> = Just(nil).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            loadByEmailResult: AnyPublisher<Student?, DatabaseError> = Just(nil).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            loadStudentsResult: AnyPublisher<[Student], DatabaseError> = Just([]).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            loadCoursesResult: AnyPublisher<Set<Course>, DatabaseError> = Just([]).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            deleteResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            removeCourseResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            markCompleteResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher(),
+            addCoursesAmongActiveResult: AnyPublisher<Void, DatabaseError> = Just(()).setFailureType(to: DatabaseError.self).eraseToAnyPublisher()
         ) -> ResultBundle {
             .init(
                 createResult: createResult,
-                createOrUpdateResult: createOrUpdateResult,
                 updateResult: updateResult,
                 loadByIdResult: loadByIdResult,
                 loadByEmailResult: loadByEmailResult,
@@ -64,10 +61,6 @@ final class DatabaseInteractingStub {
 extension DatabaseInteractingStub: DatabaseInteracting {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
         results.createResult
-    }
-    
-    func createOrUpdate(domainModel: Student) -> Result<Void, DatabaseError> {
-        results.createOrUpdateResult
     }
     
     func update(_ domainModel: Student) -> AnyPublisher<Void, DatabaseError> {

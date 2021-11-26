@@ -26,7 +26,7 @@ public struct DatabaseError: ErrorReportable {
         case objectConversionError
     }
     
-    init(cause: ErrorCause, underlyingError: Error? = nil) {
+    public init(cause: ErrorCause, underlyingError: Error? = nil) {
         self.cause = cause
         self.underlyingError = underlyingError
     }

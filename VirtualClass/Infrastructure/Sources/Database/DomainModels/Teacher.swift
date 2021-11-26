@@ -13,7 +13,7 @@ public struct Teacher {
 //    public let email: String
 //    public private(set) var courses: Set<Course>
     
-    init(id: UUID, name: String
+    public init(id: UUID, name: String
 //         email: String
 //         courses: Set<Course>
     ) {

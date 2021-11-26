@@ -11,7 +11,6 @@ import Foundation
 public protocol DatabaseInteracting {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError>
 
-    func createOrUpdate(domainModel: Student) -> Result<Void, DatabaseError>
     func update(_ domainModel: Student) -> AnyPublisher<Void, DatabaseError>
 
     func load(withID id: UUID) -> AnyPublisher<Student?, DatabaseError>
