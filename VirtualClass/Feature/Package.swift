@@ -79,7 +79,7 @@ let package = Package(
         ),
         .testTarget(
             name: "FeatureTests",
-            dependencies: ["Auth"]
+            dependencies: ["Auth", "Calendar", "Courses", "Dashboard", "UserAccount"]
         ),
     ]
 )

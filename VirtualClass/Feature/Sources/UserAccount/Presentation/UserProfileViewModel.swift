@@ -45,7 +45,6 @@ public final class UserProfileViewModel: ObservableObject {
         self.navigateToCompletedCourses = showCompletedCoursesTap.eraseToAnyPublisher()
         
         reloadProfileSubject
-//            .prepend(())
             .flatMap { [weak self] _ -> AnyPublisher<GenericStudent?, Never> in
                 guard let self = self else {
                     return Empty<GenericStudent?, Never>().eraseToAnyPublisher()

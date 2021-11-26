@@ -15,7 +15,7 @@ public struct GetCoursesForUserError: ErrorReportable {
         case errorLoadingCourses(forEmail: String)
     }
     
-    init(cause: ErrorCause, underlyingError: Error? = nil) {
+    public init(cause: ErrorCause, underlyingError: Error? = nil) {
         self.cause = cause
         self.underlyingError = underlyingError
     }

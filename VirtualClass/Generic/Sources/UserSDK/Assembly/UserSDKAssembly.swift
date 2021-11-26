@@ -22,8 +22,8 @@ public class UserSDKAssembly: Assembly {
         
         container.autoregister(CheckValidPasswordUseCaseType.self, initializer: CheckValidPasswordUseCase.init)
         container.autoregister(CheckValidEmailUseCaseType.self, initializer: CheckValidEmailUseCase.init)
-        container.autoregister(HandleUserLoginUseCaseType.self, initializer: HandleUserLoginUseCase.init)
-        container.autoregister(HandleUserRegistrationUseCaseType.self, initializer: HandleUserRegistrationUseCase.init)
+        container.autoregister(HandleLoginUseCaseType.self, initializer: HandleLoginUseCase.init)
+        container.autoregister(HandleRegistrationUseCaseType.self, initializer: HandleRegistrationUseCase.init)
         container.autoregister(HandleLogOutUseCaseType.self, initializer: HandleLogOutUseCase.init)
         container.autoregister(IsEmailUsedUseCaseType.self, initializer: IsEmailUsedUseCase.init)
         container.autoregister(IsUserLoggedInUseCaseType.self, initializer: IsUserLoggedInUseCase.init)

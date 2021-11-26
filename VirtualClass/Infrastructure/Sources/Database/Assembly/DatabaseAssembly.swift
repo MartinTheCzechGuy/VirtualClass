@@ -16,5 +16,13 @@ public class DatabaseAssembly: Assembly {
         container.autoregister(SQLDBManaging.self, initializer: SQLDBManager.init)
         
         container.autoregister(DatabaseInteracting.self, initializer: CourseDBRepository.init)
+            
+        container.register(TeacherConverter.self) { _ in
+            TeacherConverter.live()
+        }
+        
+        container.register(ClassRoomConverter.self) { _ in
+            ClassRoomConverter.live()
+        }
     }
 }

@@ -41,7 +41,7 @@ public struct LoginView: View {
                 )
                 .padding(.top, 5)
                                 
-                if let status = viewModel.registrationInvalidStatus {
+                if let status = viewModel.loginInvalidStatus {
                     TextFieldErrorCaptionView(status: status)
                 }
                 

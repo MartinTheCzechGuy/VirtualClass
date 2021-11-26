@@ -12,27 +12,34 @@ import UserSDK
 
 public final class RegistrationViewModel: ObservableObject {
     
+    // MARK: - View Model to View
+    
     @Published var registrationInvalidStatus: TextFieldErrorCaptionView.Status? = nil
+    
+    // MARK: - View to View Model
     
     let goBackTap = PassthroughSubject<Void, Never>()
     let registerTap = PassthroughSubject<RegistrationData, Never>()
     let alreadyHaveAccountTap = PassthroughSubject<Void, Never>()
     
+    // MARK: - View Model to Coordinator
+    
     public let navigateToDashboard: AnyPublisher<Void, Never>
     public let navigateToWelcomeScreen: AnyPublisher<Void, Never>
     public let navigateToSignIn: AnyPublisher<Void, Never>
     
-    private let tada = PassthroughSubject<Void, Never>()
+    // MARK: - Private
     
+    private let registrationSuccesfullSubject = PassthroughSubject<Void, Never>()
     private var bag = Set<AnyCancellable>()
 
-    private let handleRegistrationUseCase: HandleUserRegistrationUseCaseType
+    private let handleRegistrationUseCase: HandleRegistrationUseCaseType
     
-    public init(handleRegistrationUseCase: HandleUserRegistrationUseCaseType) {
+    public init(handleRegistrationUseCase: HandleRegistrationUseCaseType) {
         self.handleRegistrationUseCase = handleRegistrationUseCase
         self.navigateToWelcomeScreen = goBackTap.eraseToAnyPublisher()
         self.navigateToSignIn = alreadyHaveAccountTap.eraseToAnyPublisher()
-        self.navigateToDashboard = tada.eraseToAnyPublisher()
+        self.navigateToDashboard = registrationSuccesfullSubject.eraseToAnyPublisher()
         
         let registrationResult = registerTap
             .flatMap { [weak self] registrationForm -> AnyPublisher<RegistrationValidationResult, Never> in
@@ -78,7 +85,7 @@ public final class RegistrationViewModel: ObservableObject {
                 return ()
             }
             .sink(receiveValue: { [weak self] _ in
-                self?.tada.send()
+                self?.registrationSuccesfullSubject.send()
             })
             .store(in: &bag)
     }

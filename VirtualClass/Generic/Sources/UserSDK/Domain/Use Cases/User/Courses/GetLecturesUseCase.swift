@@ -14,7 +14,7 @@ public struct GetLecturesError: ErrorReportable {
         case errorLoadingCourses
     }
     
-    init(cause: ErrorCause, underlyingError: Error? = nil) {
+    public init(cause: ErrorCause, underlyingError: Error? = nil) {
         self.cause = cause
         self.underlyingError = underlyingError
     }

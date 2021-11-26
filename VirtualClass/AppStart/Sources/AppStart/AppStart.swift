@@ -20,7 +20,7 @@ let instanceProvider: InstanceProvider = {
         DatabaseAssembly(),
         BasicStorageAssembly(),
         SecureStorageAssembly(),
-        ClassesAssembly(),
+        CoursesAssembly(),
         CalendarAssembly(),
         DashboardAssembly(),
         UserAccountAssembly()

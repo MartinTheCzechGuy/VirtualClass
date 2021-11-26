@@ -1,5 +1,5 @@
 //
-//  HandleUserRegistrationUseCase.swift
+//  HandleRegistrationUseCase.swift
 //  
 //
 //  Created by Martin on 13.11.2021.
@@ -10,11 +10,11 @@ import CombineExt
 import Common
 import Foundation
 
-public protocol HandleUserRegistrationUseCaseType {
+public protocol HandleRegistrationUseCaseType {
     func register(form: RegistrationFormData) -> AnyPublisher<RegistrationValidationResult, Never>
 }
 
-final class HandleUserRegistrationUseCase {
+final class HandleRegistrationUseCase {
     
     private let checkValidEmailUseCase: CheckValidEmailUseCaseType
     private let checkValidPasswordUseCase: CheckValidPasswordUseCaseType
@@ -37,7 +37,7 @@ final class HandleUserRegistrationUseCase {
     }
 }
 
-extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
+extension HandleRegistrationUseCase: HandleRegistrationUseCaseType {
     
     func register(form: RegistrationFormData) -> AnyPublisher<RegistrationValidationResult, Never> {
         guard form.password1 == form.password2 else {

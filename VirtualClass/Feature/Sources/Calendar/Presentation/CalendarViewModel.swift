@@ -31,7 +31,7 @@ public final class CalendarViewModel: ObservableObject {
     private let getLecturesUseCase: GetLecturesUseCaseType
     private var bag: Set<AnyCancellable> = []
     
-    init(getLecturesUseCase: GetLecturesUseCaseType) {
+    public init(getLecturesUseCase: GetLecturesUseCaseType) {
         self.getLecturesUseCase = getLecturesUseCase
         
         setupBindings()

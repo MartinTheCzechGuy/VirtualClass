@@ -1,5 +1,5 @@
 //
-//  HandleUserLoginUseCase.swift
+//  HandleLoginUseCase.swift
 //  
 //
 //  Created by Martin on 13.11.2021.
@@ -16,11 +16,11 @@ enum HandleLoginError: Error {
     case invalidCredentials
 }
 
-public protocol HandleUserLoginUseCaseType {
+public protocol HandleLoginUseCaseType {
     func login(email: String, password: String) -> AnyPublisher<LoginValidationResult, Never>
 }
 
-final class HandleUserLoginUseCase {
+final class HandleLoginUseCase {
     
     private let checkValidEmailUseCase: CheckValidEmailUseCaseType
     private let checkValidPasswordUseCase: CheckValidPasswordUseCaseType
@@ -37,7 +37,7 @@ final class HandleUserLoginUseCase {
     }
 }
 
-extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
+extension HandleLoginUseCase: HandleLoginUseCaseType {
     func login(email: String, password: String) -> AnyPublisher<LoginValidationResult, Never> {
         guard checkValidPasswordUseCase.isValid(password: password) else {
             return Just(.invalidPassword).eraseToAnyPublisher()

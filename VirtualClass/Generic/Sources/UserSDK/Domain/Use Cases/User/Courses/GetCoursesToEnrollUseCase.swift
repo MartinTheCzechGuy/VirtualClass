@@ -14,7 +14,7 @@ public struct GetCoursesToEnrollError: ErrorReportable {
         case errorLoadingActiveCourses
     }
     
-    init(cause: ErrorCause, underlyingError: Error? = nil) {
+    public init(cause: ErrorCause, underlyingError: Error? = nil) {
         self.cause = cause
         self.underlyingError = underlyingError
     }

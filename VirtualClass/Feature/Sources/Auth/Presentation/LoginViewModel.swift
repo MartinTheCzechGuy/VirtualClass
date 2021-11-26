@@ -14,7 +14,7 @@ public final class LoginViewModel: ObservableObject {
     
     @Published var email: String = ""
     @Published var password: String = ""
-    @Published var registrationInvalidStatus: TextFieldErrorCaptionView.Status? = nil
+    @Published var loginInvalidStatus: TextFieldErrorCaptionView.Status? = nil
     
     let registerNewAccountTap = PassthroughSubject<Void, Never>()
     let loginTap = PassthroughSubject<(email: String, password: String), Never>()
@@ -26,15 +26,15 @@ public final class LoginViewModel: ObservableObject {
     public let navigateToDashboard: AnyPublisher<Void, Never>
     public let navigateToRegistration: AnyPublisher<Void, Never>
     
-    private let tada = PassthroughSubject<Void, Never>()
+    private let loginSuccessfulSubject = PassthroughSubject<Void, Never>()
     
-    private let handleLoginUseCase: HandleUserLoginUseCaseType
+    private let handleLoginUseCase: HandleLoginUseCaseType
     
-    public init(handleLoginUseCase: HandleUserLoginUseCaseType) {
+    public init(handleLoginUseCase: HandleLoginUseCaseType) {
         self.handleLoginUseCase = handleLoginUseCase
         self.navigateToWelcomeScreen = goBackTap.eraseToAnyPublisher()
         self.navigateToRegistration = registerNewAccountTap.eraseToAnyPublisher()
-        self.navigateToDashboard = tada.eraseToAnyPublisher()
+        self.navigateToDashboard = loginSuccessfulSubject.eraseToAnyPublisher()
 
         let loginEvaluation = loginTap
             .flatMap { [weak self] email, password -> AnyPublisher<LoginValidationResult, Never> in
@@ -52,7 +52,7 @@ public final class LoginViewModel: ObservableObject {
             }
             .sink(
                 receiveValue: { [weak self] _ in
-                    self?.tada.send()
+                    self?.loginSuccessfulSubject.send()
                 }
             )
             .store(in: &bag)
@@ -74,7 +74,7 @@ public final class LoginViewModel: ObservableObject {
                     return .unknownEmail
                 }
             }
-            .assign(to: \.registrationInvalidStatus, on: self)
+            .assign(to: \.loginInvalidStatus, on: self)
             .store(in: &bag)
     }
 }

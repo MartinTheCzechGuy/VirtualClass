@@ -1,5 +1,5 @@
 //
-//  ClassesAssembly.swift
+//  CoursesAssembly.swift
 //  
 //
 //  Created by Martin on 12.11.2021.
@@ -8,7 +8,7 @@
 import Swinject
 import SwinjectAutoregistration
 
-public class ClassesAssembly: Assembly {
+public class CoursesAssembly: Assembly {
     
     public init() { }
     

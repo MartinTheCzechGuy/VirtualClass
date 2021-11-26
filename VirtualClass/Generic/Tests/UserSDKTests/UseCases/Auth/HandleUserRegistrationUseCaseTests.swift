@@ -29,7 +29,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Just(false).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
         let profileCreatedPublisher = Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -71,7 +71,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Just(false).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
         let profileCreatedPublisher = Fail<Void, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -114,7 +114,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Just(false).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -155,7 +155,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Just(true).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -196,7 +196,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Fail<Bool, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -237,7 +237,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Empty<Bool, UserRepositoryError>().eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: false),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -278,7 +278,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Empty<Bool, UserRepositoryError>().eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: false),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: false),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),
@@ -319,7 +319,7 @@ final class HandleUserRegistrationUseCaseTests: XCTestCase {
         let isEmailUsedPublisher = Empty<Bool, UserRepositoryError>().eraseToAnyPublisher()
         let profileCreatedPublisher = Empty<Void, UserRepositoryError>().eraseToAnyPublisher()
         
-        let sut = HandleUserRegistrationUseCase(
+        let sut = HandleRegistrationUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: false),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: false),
             isEmailUsedUseCase: IsEmailUsedUseCaseStub(result: isEmailUsedPublisher),

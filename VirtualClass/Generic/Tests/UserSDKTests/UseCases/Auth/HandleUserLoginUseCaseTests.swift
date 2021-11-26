@@ -30,7 +30,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -62,7 +62,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -94,7 +94,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -125,7 +125,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -154,7 +154,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             results: .mock()
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: false),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -183,7 +183,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             results: .mock()
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: false),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: false),
             userAuthRepository: authRepository
@@ -215,7 +215,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -246,7 +246,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository
@@ -278,7 +278,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
             )
         )
         
-        let sut = HandleUserLoginUseCase(
+        let sut = HandleLoginUseCase(
             checkValidEmailUseCase: CheckValidEmailUseCaseStub(isValid: true),
             checkValidPasswordUseCase: CheckValidPasswordUseCaseStub(isValid: true),
             userAuthRepository: authRepository

@@ -17,7 +17,7 @@ struct StudentEntity: DatabaseQueryable {
     var email: String
     
     static let studiedActiveCourses = hasMany(CoursesStudiedBy.self)
-    static let activecourses = hasMany(
+    static let activeCourses = hasMany(
         CourseEntity.self,
         through: studiedActiveCourses,
         using: CoursesStudiedBy.course
