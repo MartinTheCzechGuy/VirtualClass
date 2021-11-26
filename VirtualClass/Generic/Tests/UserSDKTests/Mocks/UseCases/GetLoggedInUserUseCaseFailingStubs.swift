@@ -7,7 +7,6 @@
 
 @testable import UserSDK
 
-
 final class GetLoggedInUserUseCaseStub: GetLoggedInUserUseCaseType {
     var email: String? {
         "e@mail.cz"

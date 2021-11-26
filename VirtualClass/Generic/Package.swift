@@ -14,6 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Infrastructure"),
+        .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -23,6 +24,7 @@ let package = Package(
                 .product(name: "Database", package: "Infrastructure"),
                 .product(name: "SecureStorage", package: "Infrastructure"),
                 .product(name: "BasicLocalStorage", package: "Infrastructure"),
+                "CombineExt"
             ]
         ),
         .testTarget(

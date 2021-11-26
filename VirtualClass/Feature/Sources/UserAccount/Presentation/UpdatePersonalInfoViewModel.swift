@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import UserSDK
 import Foundation
 
@@ -101,8 +102,8 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
                     .eraseToAnyPublisher()
             }
             .mapToResult()
-            .share()
-        
+            .share(replay: 1)
+
         updateProfileResult
             .compactMap(\.success)
             .receive(on: DispatchQueue.main)

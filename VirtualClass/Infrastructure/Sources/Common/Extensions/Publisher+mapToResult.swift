@@ -7,11 +7,11 @@
 
 import Combine
 
-public extension Publisher {
-    func mapToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
-        self
-            .map(Result.success)
-            .catch { Just(Result.failure($0)) }
-            .eraseToAnyPublisher()
-    }
-}
+//public extension Publisher {
+//    func mapToResult() -> AnyPublisher<Result<Output, Failure>, Never> {
+//        self
+//            .map(Result.success)
+//            .catch { Just(Result.failure($0)) }
+//            .eraseToAnyPublisher()
+//    }
+//}

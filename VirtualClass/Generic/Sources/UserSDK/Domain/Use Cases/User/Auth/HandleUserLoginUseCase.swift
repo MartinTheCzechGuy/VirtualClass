@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Common
 import Foundation
 
@@ -48,7 +49,7 @@ extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
                 
         let isExistingUser = userAuthRepository.isExistingUser(withEmail: email)
             .replaceError(with: false)
-            .share()
+            .share(replay: 1)
         
         let userDoesNotExists = isExistingUser
             .filter { !$0 }
@@ -65,8 +66,8 @@ extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
                     .replaceError(with: nil)
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         let passwordNotFound = hasStoredPassword
             .filter { optionalPassword in
                 optionalPassword == nil
@@ -78,8 +79,8 @@ extension HandleUserLoginUseCase: HandleUserLoginUseCaseType {
             .map { storedPassword in
                 storedPassword == password
             }
-            .share()
-        
+            .share(replay: 1)
+
         let passwordDoesntMatch = checkPassword
             .filter { !$0 }
             .map { _ in LoginValidationResult.invalidCredentials }

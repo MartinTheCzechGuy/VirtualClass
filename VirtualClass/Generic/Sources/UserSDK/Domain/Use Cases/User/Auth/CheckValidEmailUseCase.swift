@@ -11,9 +11,7 @@ protocol CheckValidEmailUseCaseType {
     func isValid(email: String) -> Bool
 }
 
-final class CheckValidEmailUseCase {
-    
-}
+final class CheckValidEmailUseCase {}
 
 extension CheckValidEmailUseCase: CheckValidEmailUseCaseType {
     func isValid(email: String) -> Bool {

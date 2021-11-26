@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Foundation
 import UserSDK
 
@@ -46,8 +47,8 @@ public final class RegistrationViewModel: ObservableObject {
                     )
                 )
             }
-            .share()
-        
+            .share(replay: 1)
+
         registrationResult
             .compactMap { evaluationResult -> TextFieldErrorCaptionView.Status? in
                 switch evaluationResult {

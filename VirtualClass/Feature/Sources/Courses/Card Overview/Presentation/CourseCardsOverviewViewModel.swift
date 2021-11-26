@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Common
 import Foundation
 import UserSDK
@@ -51,7 +52,7 @@ public final class CourseCardsOverviewViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
+            .share(replay: 1)
         
         loadingDataResult
             .compactMap(\.success)

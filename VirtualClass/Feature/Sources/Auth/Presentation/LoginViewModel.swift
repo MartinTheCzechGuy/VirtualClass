@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Foundation
 import UserSDK
 
@@ -43,7 +44,7 @@ public final class LoginViewModel: ObservableObject {
                 
                 return self.handleLoginUseCase.login(email: email, password: password)                
             }
-            .share()
+            .share(replay: 1)
         
         loginEvaluation
             .compactMap { validationResult -> Void? in

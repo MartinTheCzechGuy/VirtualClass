@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Foundation
 import UserSDK
 
@@ -40,9 +41,8 @@ public final class CalendarViewModel: ObservableObject {
         let dayChangeTap = dayCapsuleTap
             .compactMap { !$0.isSelected ? $0.wholeDate : nil }
             .prepend(Date())
-            .share()
-        
-        #warning("TODO BUG - ta hodnota z dayChangeTap se nasharuje a ten prepend sem NEpritece")
+            .share(replay: 1)
+
         let lecturesOnTheDate = dayChangeTap
             .flatMap { [weak self] date -> AnyPublisher<Result<[Lecture], CalendarError>, Never> in
                 guard let self = self else {
@@ -55,8 +55,8 @@ public final class CalendarViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         dayChangeTap
             .compactMap { [weak self] date -> [Day]? in
                 self?.sevenDaysInterval(from: date)

@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Foundation
 import UserSDK
 
@@ -50,8 +51,8 @@ public final class CompletedCoursesViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         loadDataResult
             .compactMap(\.success)
             .map(Array.init)

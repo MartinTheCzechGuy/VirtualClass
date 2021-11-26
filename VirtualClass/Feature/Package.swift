@@ -31,6 +31,7 @@ let package = Package(
     dependencies: [
         .package(path: "../Infrastructure"),
         .package(path: "../Generic"),
+        .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -47,6 +48,7 @@ let package = Package(
                 .product(name: "InstanceProvider", package: "Infrastructure"),
                 .product(name: "Common", package: "Infrastructure"),
                 .product(name: "UserSDK", package: "Generic"),
+                "CombineExt"
             ]
         ),
         .target(

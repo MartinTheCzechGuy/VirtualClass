@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Foundation
 import UserSDK
 
@@ -77,8 +78,8 @@ public final class CourseSearchViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         availableCourses
             .compactMap(\.success)
             .mapElement {
@@ -113,8 +114,8 @@ public final class CourseSearchViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         foundCourses
             .compactMap(\.success)
             .mapElement {
@@ -154,8 +155,8 @@ public final class CourseSearchViewModel: ObservableObject {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .share()
-        
+            .share(replay: 1)
+
         addClassesResult
             .compactMap(\.success)
             .sink(receiveValue: { [weak self] _ in

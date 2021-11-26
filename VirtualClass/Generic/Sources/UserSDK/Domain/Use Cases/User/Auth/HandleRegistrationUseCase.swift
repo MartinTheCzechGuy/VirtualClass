@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineExt
 import Common
 import Foundation
 
@@ -17,22 +18,19 @@ final class HandleUserRegistrationUseCase {
     
     private let checkValidEmailUseCase: CheckValidEmailUseCaseType
     private let checkValidPasswordUseCase: CheckValidPasswordUseCaseType
-    private let checkEmailTakenUseCase: CheckEmailTakenUseCaseType
-    private let isEmailUsedUseCase: IsEmailUsedUseCasetype
+    private let isEmailUsedUseCase: IsEmailUsedUseCaseType
     private let userAuthRepository: UserAuthRepositoryType
     private let createUserProfileUseCase: CreateStudentProfileUseCaseType
     
     init(
         checkValidEmailUseCase: CheckValidEmailUseCaseType,
         checkValidPasswordUseCase: CheckValidPasswordUseCaseType,
-        checkEmailTakenUseCase: CheckEmailTakenUseCaseType,
-        isEmailUsedUseCase: IsEmailUsedUseCasetype,
+        isEmailUsedUseCase: IsEmailUsedUseCaseType,
         userAuthRepository: UserAuthRepositoryType,
         createUserProfileUseCase: CreateStudentProfileUseCaseType
     ) {
         self.checkValidEmailUseCase = checkValidEmailUseCase
         self.checkValidPasswordUseCase = checkValidPasswordUseCase
-        self.checkEmailTakenUseCase = checkEmailTakenUseCase
         self.isEmailUsedUseCase = isEmailUsedUseCase
         self.userAuthRepository = userAuthRepository
         self.createUserProfileUseCase = createUserProfileUseCase
@@ -56,7 +54,6 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
         
         let isEmailUsed = isEmailUsedUseCase.isAlreadyUsed(form.email)
             .mapToResult()
-            .share()
         
         // TOTO bude zahrnuty v result mergi
         let emailIsUsed = isEmailUsed
@@ -80,8 +77,7 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
                     .mapToResult()
                     .eraseToAnyPublisher()
             }
-            .eraseToAnyPublisher()
-        
+
         let errorStoringCredentials = storeCredentialsResult
             .compactMap(\.failure)
             .map { _ in RegistrationValidationResult.errorStoringCredentials }
@@ -104,6 +100,7 @@ extension HandleUserRegistrationUseCase: HandleUserRegistrationUseCaseType {
             .merge(with: errorLoadingUsedEmail)
             .merge(with: errorLoadingUsedEmail)
             .merge(with: emailIsUsed)
+            .first()
             .eraseToAnyPublisher()
     }
 }
