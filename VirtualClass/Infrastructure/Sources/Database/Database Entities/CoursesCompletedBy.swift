@@ -10,7 +10,7 @@ import GRDB
 
 struct CoursesCompletedBy: Codable, FetchableRecord, PersistableRecord  {
     
-    static var databaseTableName: String = DatabaseTable.coursesStudiedBy
+    static var databaseTableName: String = DatabaseTable.coursesCompletedBy
     static let databaseUUIDEncodingStrategy: DatabaseUUIDEncodingStrategy = .uppercaseString
     
     var id: UUID

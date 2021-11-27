@@ -1,5 +1,5 @@
 //
-//  UserDBRepositoryTests.swift
+//  CourseDBRepositoryTests.swift
 //  
 //
 //  Created by Martin on 11.11.2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import Database
 
-final class UserDBRepositoryTests: XCTestCase {
+final class CourseDBRepositoryTests: XCTestCase {
     
     func testSaveGenericPassword() {
         let sut = try? UserDBRepository(name: "DataModel", bundle: .module, inMemory: true)

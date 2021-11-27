@@ -5,22 +5,38 @@
 //  Created by Martin on 25.11.2021.
 //
 
+import Foundation
 import GRDB
 
 // Helper struct just for fetching
 struct StudentWithCoursesEntity: FetchableRecord, Decodable {
-    var student: StudentEntity
-    var activeCourse: CourseEntity
-    var activeClassRoom: ClassRoomEntity
-    var activeFaculty: FacultyEntity
-    var activeTeachers: [TeacherEntity]
-    var activeStudents: [StudentEntity]
-    var completedCourse: CourseEntity
-    var completedClassRoom: ClassRoomEntity
-    var completedFaculty: FacultyEntity
-    var completedTeachers: [TeacherEntity]
-    var completedStudents: [StudentEntity]
-//    var activeCourses: [CompleteCourseEntity]
-//    var completedCourses: [CompleteCourseEntity]
+    
+    static func all() -> QueryInterfaceRequest<StudentWithCoursesEntity> {
+        StudentEntity
+            .including(all: StudentEntity.activeCourses.forKey(CodingKeys.activeCourses))
+            .including(all: StudentEntity.completedCourses.forKey(CodingKeys.completedCourses))
+            .asRequest(of: StudentWithCoursesEntity.self)
+    }
+    
+    static func with(id: UUID) -> QueryInterfaceRequest<StudentWithCoursesEntity> {
+        StudentEntity
+            .filter(Column(StudentTableRow.id) == id)
+            .including(all: StudentEntity.activeCourses.forKey(CodingKeys.activeCourses))
+            .including(all: StudentEntity.completedCourses.forKey(CodingKeys.completedCourses))
+            .asRequest(of: StudentWithCoursesEntity.self)
+    }
+    
+    static func with(email: String) -> QueryInterfaceRequest<StudentWithCoursesEntity> {
+        StudentEntity
+            .filter(Column(StudentTableRow.email) == email)
+            .including(all: StudentEntity.activeCourses.forKey(CodingKeys.activeCourses))
+            .including(all: StudentEntity.completedCourses.forKey(CodingKeys.completedCourses))
+            .asRequest(of: StudentWithCoursesEntity.self)
+    }
+    
+    var profile: StudentEntity
+    var activeCourses: [CourseEntity]
+    var completedCourses: [CourseEntity]
 }
+
 

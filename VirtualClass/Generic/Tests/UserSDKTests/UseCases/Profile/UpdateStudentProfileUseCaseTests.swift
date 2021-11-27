@@ -21,12 +21,10 @@ final class UpdateStudentProfileUseCaseTests: XCTestCase {
     }
     
     func test_user_profile_updated() {
-        let student = GenericStudent(
+        let student = GenericUserProfile(
             id: UUID(),
             name: "name",
-            email: "email1",
-            activeCourses: [],
-            completedCourses: []
+            email: "email1"
         )
         
         let updateResultPublisher = Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
@@ -61,14 +59,11 @@ final class UpdateStudentProfileUseCaseTests: XCTestCase {
     }
     
     func test_error_updating_user_profile() {
-        let student = GenericStudent(
+        let student = GenericUserProfile(
             id: UUID(),
             name: "name",
-            email: "email1",
-            activeCourses: [],
-            completedCourses: []
+            email: "email1"
         )
-        
         let updateResultPublisher = Fail<Void, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(

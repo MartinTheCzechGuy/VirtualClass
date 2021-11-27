@@ -91,12 +91,10 @@ final class StudentRepositoryTests: XCTestCase {
         
         let sut = StudentRepository(database: database)
            
-        let student = GenericStudent(
+        let student = GenericUserProfile(
             id: UUID(),
             name: "",
-            email: "",
-            activeCourses: [],
-            completedCourses: []
+            email: ""
         )
         
         let expectation = expectation(description: "Should have update the profile")
@@ -128,12 +126,10 @@ final class StudentRepositoryTests: XCTestCase {
         
         let sut = StudentRepository(database: database)
            
-        let student = GenericStudent(
+        let student = GenericUserProfile(
             id: UUID(),
             name: "",
-            email: "",
-            activeCourses: [],
-            completedCourses: []
+            email: ""
         )
         
         let expectation = expectation(description: "Should have received an error")

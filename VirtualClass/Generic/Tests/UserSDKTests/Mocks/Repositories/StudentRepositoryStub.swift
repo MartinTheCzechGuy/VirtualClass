@@ -10,7 +10,7 @@ import Foundation
 @testable import UserSDK
 
 final class StudentRepositoryStub: StudentRepositoryType {
-    
+
     struct ResultBundle {
         let createResult: AnyPublisher<Void, UserRepositoryError>
         let updateResult: AnyPublisher<Void, UserRepositoryError>
@@ -54,7 +54,7 @@ final class StudentRepositoryStub: StudentRepositoryType {
         results.createResult
     }
     
-    func update(_ user: GenericStudent) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
         results.updateResult
     }
     

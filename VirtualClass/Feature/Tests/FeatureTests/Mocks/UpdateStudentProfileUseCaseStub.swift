@@ -16,7 +16,7 @@ final class UpdateStudentProfileUseCaseStub: UpdateStudentProfileUseCaseType {
         self.result = result
     }
     
-    func update(_ profile: GenericStudent) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ profile: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
         result
     }
 }

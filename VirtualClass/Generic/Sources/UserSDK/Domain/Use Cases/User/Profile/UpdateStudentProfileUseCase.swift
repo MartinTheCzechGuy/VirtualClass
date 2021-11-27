@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 public protocol UpdateStudentProfileUseCaseType {
-    func update(_ profile: GenericStudent) -> AnyPublisher<Void, UserRepositoryError>
+    func update(_ profile: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError>
 }
 
 final class UpdateStudentProfileUseCase {
@@ -22,7 +22,7 @@ final class UpdateStudentProfileUseCase {
 }
 
 extension UpdateStudentProfileUseCase: UpdateStudentProfileUseCaseType {
-    func update(_ profile : GenericStudent) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ profile : GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
         userRepository.update(profile)
     }
 }

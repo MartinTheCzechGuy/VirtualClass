@@ -16,6 +16,7 @@ enum UpdatePersonalInfoError: Error {
 }
 
 struct UserPersonalInfo {
+    let id: UUID
     var name: String
     var email: String
 }
@@ -23,7 +24,7 @@ struct UserPersonalInfo {
 public final class UpdatePersonalInfoViewModel: ObservableObject {
     
     // MARK: - Inputs
-    @Published var userInfo: UserPersonalInfo = UserPersonalInfo(name: "", email: "")
+    @Published var userInfo: UserPersonalInfo = UserPersonalInfo(id: UUID(), name: "", email: "")
     @Published var errorUpdatingProfile: String? = nil
     
     // MARK: - Outputs
@@ -66,34 +67,22 @@ public final class UpdatePersonalInfoViewModel: ObservableObject {
                     .eraseToAnyPublisher()
             }
             .compactMap { $0 }
-            .map { UserPersonalInfo(name: $0.name, email: $0.email) }
+            .map { UserPersonalInfo(id: $0.id, name: $0.name, email: $0.email) }
             .receive(on: DispatchQueue.main)
             .assign(to: \.userInfo, on: self)
             .store(in: &bag)
 
         let updateProfileResult = saveChangesTap
-            .flatMap { [weak self] _ -> AnyPublisher<GenericStudent?, UpdatePersonalInfoError> in
+            .flatMap { [weak self] _ -> AnyPublisher<Result<Void, UpdatePersonalInfoError>, Never> in
                 guard let self = self else {
-                    return Fail(error: UpdatePersonalInfoError.errorLoadingProfile)
-                        .eraseToAnyPublisher()
-                }
-                
-                return self.getUserProfileUseCase.userProfile
-                    .mapError { _ in UpdatePersonalInfoError.errorLoadingProfile }
-                    .eraseToAnyPublisher()
-            }
-            .flatMap { [weak self] nonUpdatedProfile -> AnyPublisher<Result<Void, UpdatePersonalInfoError>, Never> in
-                guard let self = self, let nonUpdatedProfile = nonUpdatedProfile else {
                     return Just(.failure(UpdatePersonalInfoError.errorLoadingProfile))
                         .eraseToAnyPublisher()
                 }
                 
-                let updatedProfile = GenericStudent(
-                    id: nonUpdatedProfile.id,
+                let updatedProfile = GenericUserProfile(
+                    id: self.userInfo.id,
                     name: self.userInfo.name,
-                    email: self.userInfo.email,
-                    activeCourses: nonUpdatedProfile.activeCourses,
-                    completedCourses: nonUpdatedProfile.completedCourses
+                    email: self.userInfo.email
                 )
                 
                 return self.updateStudentProfileUseCase.update(updatedProfile)

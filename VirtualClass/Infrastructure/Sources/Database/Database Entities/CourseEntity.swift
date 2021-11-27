@@ -41,6 +41,13 @@ struct CourseEntity: DatabaseQueryable {
         using: CoursesStudiedBy.student
     )
     
+    static let graduated = hasMany(CoursesCompletedBy.self)
+    static let graduates = hasMany(
+        StudentEntity.self,
+        through: graduated,
+        using: CoursesCompletedBy.student
+    )
+    
     static let faculty = belongsTo(FacultyEntity.self)
     static let classRoom = belongsTo(ClassRoomEntity.self)
 }

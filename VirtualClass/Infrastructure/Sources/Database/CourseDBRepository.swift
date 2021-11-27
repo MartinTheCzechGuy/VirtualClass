@@ -44,7 +44,7 @@ extension CourseDBRepository: DatabaseInteracting {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
         databaseConnection!.writePublisher { db in
             try StudentEntity(id: domainModel.id, name: domainModel.name, email: domainModel.email).save(db)
-            
+                        
             try domainModel.activeCourses.forEach {
                 try CoursesStudiedBy(
                     id: UUID(),
@@ -55,7 +55,7 @@ extension CourseDBRepository: DatabaseInteracting {
             }
             
             try domainModel.completedCourses.forEach {
-                try CoursesStudiedBy(
+                try CoursesCompletedBy(
                     id: UUID(),
                     courseIdent: $0.ident,
                     studentId: domainModel.id
@@ -71,11 +71,7 @@ extension CourseDBRepository: DatabaseInteracting {
     
     // MARK: - Update
     
-    func createOrUpdate(domainModel: Student) -> Result<Void, DatabaseError> {
-        .success(())
-    }
-    
-    func update(_ domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
+    func update(_ domainModel: UserProfile) -> AnyPublisher<Void, DatabaseError> {
         databaseConnection!.writePublisher { db -> Void in
             guard var entity = try? StudentEntity.filter(id: domainModel.id).fetchOne(db) else {
                 throw DatabaseError(cause: .loadingEntityError, underlyingError: nil)
@@ -152,92 +148,114 @@ extension CourseDBRepository: DatabaseInteracting {
     // MARK: - Read
     
     func load(withID id: UUID) -> AnyPublisher<Student?, DatabaseError> {
-        databaseConnection!.readPublisher { db -> StudentWithCoursesEntity? in
-            let request = StudentEntity
-                .filter(id: id)
-                .including(required: StudentEntity.activecourses)
-                .including(
-                    required: StudentEntity.completedCourses
-                        .including(required: CourseEntity.faculty)
-                        .including(required: CourseEntity.classRoom)
-                        .including(required: CourseEntity.teachers)
-                        .including(required: CourseEntity.students)
-                )
+        databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
+            guard let student = try StudentWithCoursesEntity.with(id: id)
+                    .fetchOne(db) else {
+                        throw DatabaseError(cause: .deletingEntityError)
+                    }
             
-            return try StudentWithCoursesEntity.fetchOne(db, request)
+            let activeCourses = try student
+                .activeCourses
+                .map(\.ident)
+                .compactMap {
+                    try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                }
+            
+            let completedCourses = try student
+                .completedCourses
+                .map(\.ident)
+                .compactMap {
+                    try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                }
+            
+            return CompleteStudentEntity(
+                id: student.profile.id,
+                name: student.profile.name,
+                email: student.profile.email,
+                activeCourses: activeCourses,
+                completedCourses: completedCourses
+            )
         }
         .tryMap { [weak self] entity in
             guard let self = self, let entity = entity else {
                 throw DatabaseError(cause: .objectConversionError, underlyingError: nil)
             }
             
-            return Student(
-                id: entity.student.id,
-                name: entity.student.name,
-                email: entity.student.email,
-                activeCourses: self.mapToDomain(entity.activeCourses),
-                completedCourses: self.mapToDomain(entity.completedCourses)
-            )
+            return self.mapToDomain(entity)
         }
         .mapError { DatabaseError(cause: .savingEntityError, underlyingError: $0) }
         .eraseToAnyPublisher()
     }
     
     func load(withEmail email: String) -> AnyPublisher<Student?, DatabaseError> {
-        databaseConnection!.readPublisher { db -> StudentWithCoursesEntity? in
-            let request = StudentEntity
-                .filter(Column("email") == email)
-                .including(required: StudentEntity.activecourses)
-                .including(
-                    required: StudentEntity.completedCourses
-                        .including(required: CourseEntity.faculty)
-                        .including(required: CourseEntity.classRoom)
-                        .including(required: CourseEntity.teachers)
-                        .including(required: CourseEntity.students)
-                )
+        databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
+            guard let student = try StudentWithCoursesEntity.with(email: email)
+                    .fetchOne(db) else {
+                        throw DatabaseError(cause: .deletingEntityError)
+                    }
             
-            return try StudentWithCoursesEntity.fetchOne(db, request)
+            let activeCourses = try student
+                .activeCourses
+                .map(\.ident)
+                .compactMap {
+                    try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                }
+            
+            let completedCourses = try student
+                .completedCourses
+                .map(\.ident)
+                .compactMap {
+                    try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                }
+            
+            return CompleteStudentEntity(
+                id: student.profile.id,
+                name: student.profile.name,
+                email: student.profile.email,
+                activeCourses: activeCourses,
+                completedCourses: completedCourses
+            )
         }
         .tryMap { [weak self] entity in
             guard let self = self, let entity = entity else {
                 throw DatabaseError(cause: .objectConversionError, underlyingError: nil)
             }
             
-            return Student(
-                id: entity.student.id,
-                name: entity.student.name,
-                email: entity.student.email,
-                activeCourses: self.mapToDomain(entity.activeCourses),
-                completedCourses: self.mapToDomain(entity.completedCourses)
-            )
+            return self.mapToDomain(entity)
         }
         .mapError { DatabaseError(cause: .savingEntityError, underlyingError: $0) }
         .eraseToAnyPublisher()
     }
     
     func loadStudents() -> AnyPublisher<[Student], DatabaseError> {
-        databaseConnection!.readPublisher { db -> [StudentWithCoursesEntity] in
-            let request = StudentEntity
-                .including(required: StudentEntity.activecourses)
-                .including(
-                    required: StudentEntity.completedCourses
-                        .including(required: CourseEntity.faculty)
-                        .including(required: CourseEntity.classRoom)
-                        .including(required: CourseEntity.teachers)
-                        .including(required: CourseEntity.students)
-                )
+        databaseConnection!.readPublisher { db -> [CompleteStudentEntity] in
+            let students = try StudentWithCoursesEntity.all().fetchAll(db)
             
-            return try StudentWithCoursesEntity.fetchAll(db, request)
+            return try students.map { student in
+                let activeCourses = try student
+                    .activeCourses
+                    .map(\.ident)
+                    .compactMap {
+                        try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                    }
+                
+                let completedCourses = try student
+                    .completedCourses
+                    .map(\.ident)
+                    .compactMap {
+                        try CompleteCourseEntity.with(ident: $0).fetchOne(db)
+                    }
+                
+                return CompleteStudentEntity(
+                    id: student.profile.id,
+                    name: student.profile.name,
+                    email: student.profile.email,
+                    activeCourses: activeCourses,
+                    completedCourses: completedCourses
+                )
+            }
         }
-        .mapElement { entity in
-            Student(
-                id: entity.student.id,
-                name: entity.student.name,
-                email: entity.student.email,
-                activeCourses: self.mapToDomain(entity.activeCourses),
-                completedCourses: self.mapToDomain(entity.completedCourses)
-            )
-        }
+        .mapElement(mapToDomain)
         .mapError { DatabaseError(cause: .loadingEntityError, underlyingError: $0) }
         .eraseToAnyPublisher()
     }
@@ -273,6 +291,16 @@ extension CourseDBRepository: DatabaseInteracting {
 // MARK: - Helper mappers
 
 extension CourseDBRepository {
+    private func mapToDomain(_ entity: CompleteStudentEntity) -> Student {
+        Student(
+            id: entity.id,
+            name: entity.name,
+            email: entity.email,
+            activeCourses: mapToDomain(entity.activeCourses),
+            completedCourses: mapToDomain(entity.completedCourses)
+        )
+    }
+    
     private func mapToDomain(_ entities: [CompleteCourseEntity]) -> Set<Course> {
         Set(
             entities.map { entity in

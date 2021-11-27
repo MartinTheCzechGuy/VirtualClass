@@ -12,9 +12,9 @@ protocol StudentRepositoryType {
     // Create new student entity
     func create(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError>
     // Update student entity
-    func update(_ user: GenericStudent) -> AnyPublisher<Void, UserRepositoryError>
+    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError>
     // Returns student with specified ID
-    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, UserRepositoryError>
+//    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, UserRepositoryError>
     // Returns student with specified email address
     func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, UserRepositoryError>
     // Returns all students

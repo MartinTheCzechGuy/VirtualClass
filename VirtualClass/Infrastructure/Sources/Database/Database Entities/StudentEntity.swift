@@ -23,11 +23,11 @@ struct StudentEntity: DatabaseQueryable {
         using: CoursesStudiedBy.course
     )
     
-    static let studiedCompletedCourses = hasMany(CoursesStudiedBy.self)
+    static let studiedCompletedCourses = hasMany(CoursesCompletedBy.self)
     static let completedCourses = hasMany(
         CourseEntity.self,
         through: studiedCompletedCourses,
-        using: CoursesStudiedBy.course
+        using: CoursesCompletedBy.course
     )
 }
 

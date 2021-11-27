@@ -32,61 +32,24 @@ extension StudentRepository: StudentRepositoryType {
             .eraseToAnyPublisher()
     }
     
-    func update(_ user: GenericStudent) -> AnyPublisher<Void, UserRepositoryError> {
-        var courses = Set<Course>()
-        
-#warning("TODO 😉 - proč je tady nějaký custom mapování")
-        
-        user.activeCourses.forEach { courses.insert(
-            Course(
-                ident: $0.ident,
-                name: $0.name,
-                description: $0.description,
-                credits: $0.credits,
-                lessons: [],
-                classRoom: .init(id: UUID(), name: "tada"),
-                faculty: .facultyOfEconomics,
-                teachers: [],
-                students: []
-            )
-        )
-        }
-        
-        var completedCourses = Set<Course>()
-        user.completedCourses.forEach { completedCourses.insert(
-            Course(
-                ident: $0.ident,
-                name: $0.name,
-                description: $0.description,
-                credits: $0.credits,
-                lessons: [],
-                classRoom: .init(id: UUID(), name: "tada"),
-                faculty: .facultyOfEconomics,
-                teachers: [],
-                students: []
-            )
-        )
-        }
-        
-        return database.update(
-            Student(
+    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
+        database.update(
+            UserProfile(
                 id: user.id,
                 name: user.name,
-                email: user.email,
-                activeCourses: courses,
-                completedCourses: completedCourses
+                email: user.email
             )
         )
             .mapError(UserRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
-        database.load(withID: id)
-            .mapToDomain()
-            .mapError(UserRepositoryError.databaseError)
-            .eraseToAnyPublisher()
-    }
+//    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
+//        database.load(withID: id)
+//            .mapToDomain()
+//            .mapError(UserRepositoryError.databaseError)
+//            .eraseToAnyPublisher()
+//    }
     
     func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
         database.load(withEmail: email)
@@ -225,12 +188,6 @@ public func mapToDomainnn(student: Student?) -> GenericStudent? {
     )
 }
 
-extension Result where Success == Student? {
-    func mapUserToDomain() -> Result<GenericStudent?, Failure> {
-        map(mapToDomainnn(student:))
-    }
-}
-
 extension Publisher where Output == Student? {
     func mapToDomain() -> AnyPublisher<GenericStudent?, Failure> {
         map(mapToDomainnn(student:))
@@ -281,58 +238,5 @@ extension Publisher where Output == Set<Course> {
             )
         }
         .eraseToAnyPublisher()
-    }
-}
-
-
-extension Result where Success == [Student] {
-    func mapUsersToDomain() -> Result<[GenericStudent], Failure> {
-        map {
-            $0.map { domainModel in
-                var courses = Set<GenericCourse>()
-                //                $0.classes.forEach { classes.insert(Class(id: $0.id, name: $0.name)) }
-                
-                return GenericStudent(
-                    id: domainModel.id,
-                    name: domainModel.name,
-                    email: domainModel.email,
-                    activeCourses: [],
-                    completedCourses: []
-                )
-            }
-        }
-    }
-}
-
-extension Result where Success == Set<Course> {
-    func mapToDomain() -> Result<Set<GenericCourse>, Failure> {
-        map { externalCourses in
-            var courses = Set<GenericCourse>()
-            
-            externalCourses.forEach {
-                var teachers = Set<GenericTeacher>()
-                
-                $0.teachers.forEach {
-                    teachers.insert(
-                        GenericTeacher(id: $0.id, name: $0.name)
-                    )
-                }
-                
-                courses.insert(
-                    GenericCourse(
-                        ident: $0.ident,
-                        name: $0.name,
-                        description: $0.description,
-                        credits: $0.credits,
-                        lessons: $0.lessons,
-                        classRoom: GenericClassRoom(id: $0.classRoom.id, name: $0.classRoom.name),
-                        faculty: .facultyOfEconomics,
-                        teachers: teachers
-                    )
-                )
-            }
-            
-            return courses
-        }
     }
 }

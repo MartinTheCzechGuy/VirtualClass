@@ -58,12 +58,12 @@ final class DatabaseInteractingStub {
     }
 }
 
-extension DatabaseInteractingStub: DatabaseInteracting {
+extension DatabaseInteractingStub: DatabaseInteracting {    
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
         results.createResult
     }
     
-    func update(_ domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
+    func update(_ domainModel: UserProfile) -> AnyPublisher<Void, DatabaseError> {
         results.updateResult
     }
     
