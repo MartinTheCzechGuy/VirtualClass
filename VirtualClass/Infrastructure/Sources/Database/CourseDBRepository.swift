@@ -44,7 +44,7 @@ extension CourseDBRepository: DatabaseInteracting {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
         databaseConnection!.writePublisher { db in
             try StudentEntity(id: domainModel.id, name: domainModel.name, email: domainModel.email).save(db)
-                        
+            
             try domainModel.activeCourses.forEach {
                 try CoursesStudiedBy(
                     id: UUID(),
@@ -149,10 +149,9 @@ extension CourseDBRepository: DatabaseInteracting {
     
     func load(withID id: UUID) -> AnyPublisher<Student?, DatabaseError> {
         databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
-            guard let student = try StudentWithCoursesEntity.with(id: id)
-                    .fetchOne(db) else {
-                        throw DatabaseError(cause: .deletingEntityError)
-                    }
+            guard let student = try StudentWithCoursesEntity.with(id: id).fetchOne(db) else {
+                throw DatabaseError(cause: .deletingEntityError)
+            }
             
             let activeCourses = try student
                 .activeCourses
@@ -189,8 +188,7 @@ extension CourseDBRepository: DatabaseInteracting {
     
     func load(withEmail email: String) -> AnyPublisher<Student?, DatabaseError> {
         databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
-            guard let student = try StudentWithCoursesEntity.with(email: email)
-                    .fetchOne(db) else {
+            guard let student = try StudentWithCoursesEntity.with(email: email).fetchOne(db) else {
                         throw DatabaseError(cause: .deletingEntityError)
                     }
             
@@ -262,13 +260,9 @@ extension CourseDBRepository: DatabaseInteracting {
     
     func loadCourses() -> AnyPublisher<Set<Course>, DatabaseError> {
         databaseConnection!.readPublisher { db -> [CompleteCourseEntity] in
-            let request = CourseEntity
-                .including(required: CourseEntity.faculty)
-                .including(required: CourseEntity.classRoom)
-                .including(required: CourseEntity.teachers)
-                .including(required: CourseEntity.students)
-            
-            return try CompleteCourseEntity.fetchAll(db, request)
+            try CompleteCourseEntity
+                .all()
+                .fetchAll(db)
         }
         .map(mapToDomain(_:))
         .mapError { DatabaseError(cause: .loadingEntityError, underlyingError: $0) }
