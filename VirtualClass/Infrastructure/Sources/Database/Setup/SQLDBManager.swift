@@ -9,14 +9,14 @@ import Foundation
 import GRDB
 
 protocol SQLDBManaging {
-    func databasePool(setup: SQLDBSetup, completion: @escaping (Result<DatabasePool, DatabaseError>) -> Void)
+    func databasePool(setup: DatabaseSetup, completion: @escaping (Result<DatabasePool, DatabaseError>) -> Void)
     func removeDatabase(completion: @escaping (Result<Void, DatabaseError>) -> Void)
 }
 
 final class SQLDBManager: SQLDBManaging {
     private let fileManager: FileManager = .default
     
-    func databasePool(setup: SQLDBSetup, completion: @escaping (Result<DatabasePool, DatabaseError>) -> Void) {
+    func databasePool(setup: DatabaseSetup, completion: @escaping (Result<DatabasePool, DatabaseError>) -> Void) {
         let dbURL: URL
         let coordinator = NSFileCoordinator()
         var coordinatorError: NSError?

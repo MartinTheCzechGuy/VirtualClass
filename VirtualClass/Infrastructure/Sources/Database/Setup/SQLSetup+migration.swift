@@ -7,7 +7,7 @@
 
 import GRDB
 
-extension SQLDBSetup {
+extension DatabaseSetup {
     static func databaMigration(database db: Database) throws -> Void {
         do {
             try db.create(table: DatabaseTable.course) { table in
@@ -87,8 +87,6 @@ extension SQLDBSetup {
                     .notNull()
                     .references(DatabaseTable.course, onDelete: .cascade)
             }
-            
-            try populateMockData(database: db)            
         } catch {
             throw DatabaseError(cause: .migrationError, underlyingError: error)
         }

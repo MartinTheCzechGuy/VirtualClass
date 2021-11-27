@@ -17,9 +17,9 @@ public enum UserRepositoryError: Error {
 
 final class StudentRepository {
     
-    private let database: DatabaseInteracting
+    private let database: CourseDBRepositoryType
     
-    init(database: DatabaseInteracting) {
+    init(database: CourseDBRepositoryType) {
         self.database = database
     }
 }

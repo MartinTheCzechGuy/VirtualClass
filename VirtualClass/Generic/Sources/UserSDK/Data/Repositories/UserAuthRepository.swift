@@ -17,12 +17,12 @@ public enum UserAuthRepositoryError: Error {
 
 final class UserAuthRepository {
 
-    private let database: DatabaseInteracting
+    private let database: CourseDBRepositoryType
     private let keyValueLocalStorage: LocalKeyValueStorage
     private let secureStorage: SecureStorage
     
     init(
-        database: DatabaseInteracting,
+        database: CourseDBRepositoryType,
         keyValueLocalStorage: LocalKeyValueStorage,
         secureStorage: SecureStorage
     ) {

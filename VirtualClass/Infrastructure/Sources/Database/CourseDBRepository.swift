@@ -10,34 +10,23 @@ import Foundation
 import GRDB
 
 final class CourseDBRepository {
-    private var databaseConnection: DatabasePool?
     
-    private let dbManager: SQLDBManaging
-    
+    private var databaseConnection: DatabaseWriter?
     private let classRoomConverter: ClassRoomConverter
     private let teacherConverter: TeacherConverter
     
     init(
-        dbManager: SQLDBManaging,
+        databaseInteractor: DatabaseInteracting,
         classRoomConverter: ClassRoomConverter,
         teacherConverter: TeacherConverter
     ) {
-        self.dbManager = dbManager
         self.classRoomConverter = classRoomConverter
         self.teacherConverter = teacherConverter
-        
-        dbManager.databasePool(setup: SQLDBSetup()) { result in
-            switch result {
-            case .success(let databasePool):
-                self.databaseConnection = databasePool
-            case .failure(let error):
-                fatalError("Failed to initialize the database: \(error)")
-            }
-        }
+        self.databaseConnection = databaseInteractor.databaseConnection
     }
 }
 
-extension CourseDBRepository: DatabaseInteracting {
+extension CourseDBRepository: CourseDBRepositoryType {
     
     // MARK: - Create
     

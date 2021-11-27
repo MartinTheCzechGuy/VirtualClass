@@ -1,30 +1,27 @@
 //
-//  DatabaseInteracting.swift
+//  DatabaseInteractorMock.swift
 //  
 //
 //  Created by Martin on 27.11.2021.
 //
 
-import GRDB
+import protocol GRDB.DatabaseWriter
 
-protocol DatabaseInteracting {
-    var databaseConnection: DatabaseWriter? { get }
-}
+@testable import Database
 
-final class DatabaseInteractor: DatabaseInteracting {
-    
-    private(set) var databaseConnection: DatabaseWriter?
-    private let dbManager: SQLDBManaging
+final class DatabaseInteractorMock: DatabaseInteracting {
+    var databaseConnection: DatabaseWriter?
+    private let dbManager: SQLDBTesting
     private let setup: DatabaseSetup
     
     init(
-        dbManager: SQLDBManaging,
+        dbManager: SQLDBTesting,
         databaseSetup: DatabaseSetup
     ) {
         self.dbManager = dbManager
         self.setup = databaseSetup
         
-        dbManager.databasePool(setup: setup) { result in
+        dbManager.databaseQueue(setup: setup) { result in
             switch result {
             case .success(let databaseConnection):
                 self.databaseConnection = databaseConnection
