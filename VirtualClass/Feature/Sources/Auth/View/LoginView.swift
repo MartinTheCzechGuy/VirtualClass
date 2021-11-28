@@ -11,7 +11,7 @@ import SwiftUI
 public struct LoginView: View {
     
     @ObservedObject var viewModel: LoginViewModel
-        
+    
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
     }
@@ -26,21 +26,24 @@ public struct LoginView: View {
                 
                 Spacer(minLength: 0)
                 
-                AppTextField(
-                    imageSystemName: "envelope",
-                    title: "EMAIL",
-                    fieldType: .text,
-                    value: $viewModel.email
-                )
+                Group {
+                    AppTextField(
+                        imageSystemName: "envelope",
+                        title: "Email",
+                        fieldType: .text,
+                        value: $viewModel.email
+                    )
+                    
+                    AppTextField(
+                        imageSystemName: "lock",
+                        title: "Password",
+                        fieldType: .secure,
+                        value: $viewModel.password
+                    )
+                        .padding(.top, 5)
+                }
+                .padding(.horizontal, 50)
                 
-                AppTextField(
-                    imageSystemName: "lock",
-                    title: "PASSWORD",
-                    fieldType: .secure,
-                    value: $viewModel.password
-                )
-                .padding(.top, 5)
-                                
                 if let status = viewModel.loginInvalidStatus {
                     TextFieldErrorCaptionView(status: status)
                 }
@@ -85,7 +88,7 @@ public struct LoginView: View {
                 }
                 .padding()
             }
-            .padding(.horizontal, 70)
+            .padding(.horizontal)
             .preferredColorScheme(.dark)
         }
     }

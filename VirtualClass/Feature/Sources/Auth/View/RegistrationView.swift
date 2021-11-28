@@ -36,32 +36,33 @@ public struct RegistrationView: View {
                     VStack(spacing: 5) {
                         AppTextField(
                             imageSystemName: "person",
-                            title: "FULL NAME",
+                            title: "Full name",
                             fieldType: .text,
                             value: $name
                         )
                         
                         AppTextField(
                             imageSystemName: "envelope",
-                            title: "EMAIL",
+                            title: "Email",
                             fieldType: .text,
                             value: $email
                         )
                         
                         AppTextField(
                             imageSystemName: "lock",
-                            title: "PASSWORD",
+                            title: "Password",
                             fieldType: .secure,
                             value: $password
                         )
                         
                         AppTextField(
                             imageSystemName: "lock",
-                            title: "PASSWORD AGAIN",
+                            title: "Password again",
                             fieldType: .secure,
                             value: $repeatedPassword
                         )
                     }
+                    .padding(.horizontal, 10)
                     
                     if let status = viewModel.registrationInvalidStatus {
                         TextFieldErrorCaptionView(status: status)
@@ -110,7 +111,7 @@ public struct RegistrationView: View {
                 .padding()
                 .padding(.horizontal)
             }
-            .padding(.horizontal, 50)
+            .padding()
         }
         .preferredColorScheme(.dark)
     }

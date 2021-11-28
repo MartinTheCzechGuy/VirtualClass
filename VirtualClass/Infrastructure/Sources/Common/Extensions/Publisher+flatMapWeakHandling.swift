@@ -7,8 +7,6 @@
 
 import Combine
 
-#warning("TODO - začít používat jakmile bude vše fungovat bez toho (nechci teď, aby vše nefungovalo kvůli tomuhle)")
-
 extension Publisher {
     public func flatMap<A: AnyObject, Output>(
         weak obj: A,

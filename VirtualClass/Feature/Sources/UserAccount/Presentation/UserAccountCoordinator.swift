@@ -33,7 +33,7 @@ public final class UserAccountCoordinator: ObservableObject {
     public let navigateToUserProfile: AnyPublisher<Void, Never>
     
     // Private
-    #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
+
     @Published var userProfileViewModel: UserProfileViewModel
     @Published private var classSearchViewModel: CourseSearchViewModel?
     @Published private var personalInfoViewModel: UpdatePersonalInfoViewModel?

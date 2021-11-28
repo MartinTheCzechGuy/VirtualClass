@@ -11,7 +11,6 @@ import SwiftUI
 
 public struct MainView: View {
     
-    @Environment(\.scenePhase) var scenePhase
     @ObservedObject var mainCoordinator: MainCoordinator
     
     init(mainCoordinator: MainCoordinator) {
@@ -22,14 +21,6 @@ public struct MainView: View {
         switch mainCoordinator.activeScreen {
         case .dashboard:
             instanceProvider.resolve(DashboardView.self)
-                .onChange(of: scenePhase) { phase in
-                    switch phase {
-                    case .background:
-                        print("[APP STATE] - going into background")
-                    default:
-                        return
-                    }
-                }
         case .auth:
             instanceProvider.resolve(AuthView.self)
                 .preferredColorScheme(.dark)

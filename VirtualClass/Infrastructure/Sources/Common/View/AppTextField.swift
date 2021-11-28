@@ -66,16 +66,3 @@ public struct AppTextField: View {
         .padding(.horizontal)
     }
 }
-
-struct AppTextField_Previews: PreviewProvider {
-    @Namespace static var animation
-    
-    static var previews: some View {
-        AppTextField(
-            imageSystemName: "person",
-            title: "Title",
-            fieldType: .text,
-            value: .init(get: { return "value" }, set: { _, _ in return })
-        )
-    }
-}

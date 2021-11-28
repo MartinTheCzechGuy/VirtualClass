@@ -30,7 +30,6 @@ public final class AuthCoordinator: ObservableObject {
     
     // MARK: - Private
     
-#warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var welcomeViewModel: WelcomeViewModel
     @Published private var loginViewModel: LoginViewModel?
     @Published private var registrationViewModel: RegistrationViewModel?

@@ -24,7 +24,6 @@ public final class MainCoordinator: ObservableObject  {
     
     // MARK: Private
     
-    #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var authCoordinator: AuthCoordinator
     @Published private var dashboardCoordinator: DashboardCoordinator
     
