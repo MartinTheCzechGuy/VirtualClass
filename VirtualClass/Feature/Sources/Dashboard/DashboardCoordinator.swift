@@ -40,7 +40,11 @@ public final class DashboardCoordinator: ObservableObject {
     private func setupBindings() {
         userAccountCoordinator.didLogout
             .sink(receiveValue: { [weak self] in
-                self?.didLogoutSubject.send()
+                guard let self = self else {
+                    return
+                }
+                
+                self.didLogoutSubject.send()
             })
             .store(in: &bag)
     }

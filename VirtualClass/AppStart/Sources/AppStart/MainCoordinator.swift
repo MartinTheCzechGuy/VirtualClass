@@ -26,15 +26,19 @@ public final class MainCoordinator: ObservableObject  {
     
     #warning("TODO - vytvořit vlastní wrapper, který bude dělat to samé (poskytovat publisher for free), ale nebude ho myšlený na vystavování ven")
     @Published private var authCoordinator: AuthCoordinator
-    @Published private var dashboardCoordinator: DashboardCoordinator?
+    @Published private var dashboardCoordinator: DashboardCoordinator
     
     private var bag = Set<AnyCancellable>()
-    private var dashboardBag = Set<AnyCancellable>()
     
     private let isUserLoggedInUseCase: IsUserLoggedInUseCaseType
     
-    init(authCoordinator: AuthCoordinator, isUserLoggedInUseCase: IsUserLoggedInUseCaseType) {
+    init(
+        authCoordinator: AuthCoordinator,
+        dashboardCoordinator: DashboardCoordinator,
+        isUserLoggedInUseCase: IsUserLoggedInUseCaseType
+    ) {
         self.authCoordinator = authCoordinator
+        self.dashboardCoordinator = dashboardCoordinator
         self.isUserLoggedInUseCase = isUserLoggedInUseCase
         self.activeScreen = isUserLoggedInUseCase.isUserLogged ? .dashboard : .auth
         
@@ -43,34 +47,13 @@ public final class MainCoordinator: ObservableObject  {
     
     private func setupBindings() {
         authCoordinator.authSuccessful
-            .sink(
-                receiveValue: { [weak self] viewModel in
-                    guard let self = self else { return }
-                    
-                    self.dashboardCoordinator = instanceProvider.resolve(DashboardCoordinator.self)
-                    self.activeScreen = .dashboard
-                }
-            )
+            .map { ActiveScreen.dashboard }
+            .assign(to: \.activeScreen, on: self)
             .store(in: &bag)
         
-        $dashboardCoordinator
-            .compactMap { $0 }
-            .sink(
-                receiveValue: { [weak self] dashboardCoordinator in
-                    guard let self = self else { return }
-                    
-                    self.dashboardBag.removeAll()
-                    
-                    dashboardCoordinator.didLogout
-                        .sink(receiveValue: { [weak self] _ in
-                            guard let self = self else { return }
-                            
-                            self.dashboardCoordinator = nil
-                            self.activeScreen = .auth
-                        })
-                        .store(in: &self.dashboardBag)
-                }
-            )
+        dashboardCoordinator.didLogout
+            .map { ActiveScreen.auth }
+            .assign(to: \.activeScreen, on: self)
             .store(in: &bag)
     }
 }
