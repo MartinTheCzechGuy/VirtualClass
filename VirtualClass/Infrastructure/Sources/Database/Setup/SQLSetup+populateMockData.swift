@@ -8,7 +8,7 @@
 import Foundation
 import GRDB
 
-extension SQLDBSetup {
+extension DatabaseSetup {
     static func populateMockData(database db: Database) throws -> Void {
         let classRoom1 = try ClassRoomEntity(id: UUID(), name: "1TR101").inserted(db)
         let classRoom2 = try ClassRoomEntity(id: UUID(), name: "1TR102").inserted(db)

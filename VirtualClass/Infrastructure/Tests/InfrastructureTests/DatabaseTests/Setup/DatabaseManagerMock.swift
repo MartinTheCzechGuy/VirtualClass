@@ -20,7 +20,14 @@ final class DatabaseManagerMock: SQLDBTesting {
     }
     
     func databaseQueue(setup: DatabaseSetup, completion: @escaping (Result<DatabaseQueue, DatabaseError>) -> Void) {
-        DatabaseQueue()
+        do {
+            let databaseQueue = DatabaseQueue()
+            try setup.migrator.migrate(databaseQueue)
+            
+            completion(.success(databaseQueue))
+        } catch {
+            completion(.failure(DatabaseError(cause: .errorEstabilishingDBConnection, underlyingError: error)))
+        }
     }
     
     func removeDatabase(completion: @escaping (Result<Void, DatabaseError>) -> Void) {

@@ -20,7 +20,8 @@ struct SQLDBSetupStub: DatabaseSetup {
     
     func registerMigration(migrator: inout DatabaseMigrator) {
         migrator.registerMigration("1.0.0") { db in
-            try SQLDBSetup.databaMigration(database: db)
+            try SQLDBSetupStub.databaMigration(database: db)
+            try SQLDBSetupStub.populateMockData(database: db)
         }
     }
 }

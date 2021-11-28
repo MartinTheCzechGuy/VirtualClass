@@ -86,7 +86,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
             }
             
             return try CoursesStudiedBy
-                .filter(Column(CoursesStudiedByTableRow.courseId) == ident && Column(CoursesStudiedByTableRow.studentId) == studentId)
+                .filter(Column(CoursesStudiedByTableRow.courseId) == ident && Column(CoursesStudiedByTableRow.studentId) == studentId.uuidString)
                 .deleteAll(db)
         }
         .map { _ in return }
@@ -105,7 +105,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
             }
             
             try CoursesStudiedBy
-                .filter(Column(CoursesStudiedByTableRow.courseId) == ident && Column(CoursesStudiedByTableRow.studentId) == studentId)
+                .filter(Column(CoursesStudiedByTableRow.courseId) == ident && Column(CoursesStudiedByTableRow.studentId) == studentId.uuidString)
                 .deleteAll(db)
             
             return try CoursesCompletedBy(id: UUID(), courseIdent: ident, studentId: studentId).inserted(db)
@@ -139,7 +139,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
     func load(withID id: UUID) -> AnyPublisher<Student?, DatabaseError> {
         databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
             guard let student = try StudentWithCoursesEntity.with(id: id).fetchOne(db) else {
-                throw DatabaseError(cause: .deletingEntityError)
+                return nil
             }
             
             let activeCourses = try student
@@ -178,8 +178,8 @@ extension CourseDBRepository: CourseDBRepositoryType {
     func load(withEmail email: String) -> AnyPublisher<Student?, DatabaseError> {
         databaseConnection!.readPublisher { db -> CompleteStudentEntity? in
             guard let student = try StudentWithCoursesEntity.with(email: email).fetchOne(db) else {
-                        throw DatabaseError(cause: .deletingEntityError)
-                    }
+                return nil
+            }
             
             let activeCourses = try student
                 .activeCourses
@@ -204,7 +204,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
             )
         }
         .tryMap { [weak self] entity in
-            guard let self = self, let entity = entity else {
+            guard let self = self else {
                 throw DatabaseError(cause: .objectConversionError, underlyingError: nil)
             }
             
@@ -242,7 +242,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
                 )
             }
         }
-        .mapElement(mapToDomain)
+        .mapOptionalElement(mapToDomain)
         .mapError { DatabaseError(cause: .loadingEntityError, underlyingError: $0) }
         .eraseToAnyPublisher()
     }
@@ -274,8 +274,10 @@ extension CourseDBRepository: CourseDBRepositoryType {
 // MARK: - Helper mappers
 
 extension CourseDBRepository {
-    private func mapToDomain(_ entity: CompleteStudentEntity) -> Student {
-        Student(
+    private func mapToDomain(_ entity: CompleteStudentEntity?) -> Student? {
+        guard let entity = entity else { return nil }
+        
+        return Student(
             id: entity.id,
             name: entity.name,
             email: entity.email,

@@ -20,7 +20,7 @@ struct StudentWithCoursesEntity: FetchableRecord, Decodable {
     
     static func with(id: UUID) -> QueryInterfaceRequest<StudentWithCoursesEntity> {
         StudentEntity
-            .filter(Column(StudentTableRow.id) == id)
+            .filter(Column(StudentTableRow.id) == id.uuidString)
             .including(all: StudentEntity.activeCourses.forKey(CodingKeys.activeCourses))
             .including(all: StudentEntity.completedCourses.forKey(CodingKeys.completedCourses))
             .asRequest(of: StudentWithCoursesEntity.self)

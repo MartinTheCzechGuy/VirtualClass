@@ -12,10 +12,7 @@ import GRDB
 struct CompleteCourseEntity: FetchableRecord, Decodable {
     
     static func all() -> QueryInterfaceRequest<CompleteCourseEntity> {
-        
-        CourseEntity
-            .joining(required: CourseEntity.students)
-        
+        CourseEntity        
             .including(all: CourseEntity.teachers.forKey(CodingKeys.teachers))
             .including(all: CourseEntity.students.forKey(CodingKeys.students))
             .including(required: CourseEntity.faculty.forKey(CodingKeys.faculty))
