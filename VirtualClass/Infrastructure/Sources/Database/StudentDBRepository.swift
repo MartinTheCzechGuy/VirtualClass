@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import GRDB
 
-final class CourseDBRepository {
+final class StudentDBRepository {
     
     private var databaseConnection: DatabaseWriter?
     private let classRoomConverter: ClassRoomConverter
@@ -26,7 +26,7 @@ final class CourseDBRepository {
     }
 }
 
-extension CourseDBRepository: CourseDBRepositoryType {
+extension StudentDBRepository: StudentDBRepositoryType {
     
     // MARK: - Create
     
@@ -273,7 +273,7 @@ extension CourseDBRepository: CourseDBRepositoryType {
 
 // MARK: - Helper mappers
 
-extension CourseDBRepository {
+extension StudentDBRepository {
     private func mapToDomain(_ entity: CompleteStudentEntity?) -> Student? {
         guard let entity = entity else { return nil }
         

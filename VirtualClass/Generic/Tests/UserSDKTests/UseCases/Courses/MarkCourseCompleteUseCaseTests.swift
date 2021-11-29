@@ -21,7 +21,7 @@ final class MarkCourseCompleteUseCaseTests: XCTestCase {
     }
     
     func test_course_marked_complete_success() {
-        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()))
+        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Just(()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()))
         
         let sut = MarkCourseCompleteUseCase(
             studentRepository: studentRepository,
@@ -47,7 +47,7 @@ final class MarkCourseCompleteUseCaseTests: XCTestCase {
     }
     
     func test_error_marking_the_course_propagated() {
-        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()))
+        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()))
         
         let sut = MarkCourseCompleteUseCase(
             studentRepository: studentRepository,
@@ -76,7 +76,7 @@ final class MarkCourseCompleteUseCaseTests: XCTestCase {
     }
     
     func test_error_loading_email_propagated() {
-        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()))
+        let studentRepository = StudentRepositoryStub(results: .mock(markCompleteResult: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()))
         
         let sut = MarkCourseCompleteUseCase(
             studentRepository: studentRepository,

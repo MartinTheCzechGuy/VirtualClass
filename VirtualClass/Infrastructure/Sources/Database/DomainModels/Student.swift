@@ -11,8 +11,8 @@ public struct Student {
     public let id: UUID
     public let name: String
     public let email: String
-    public private(set) var activeCourses: Set<Course>
-    public private(set) var completedCourses: Set<Course>
+    public let activeCourses: Set<Course>
+    public let completedCourses: Set<Course>
 
     public init(
         id: UUID,
@@ -26,20 +26,6 @@ public struct Student {
         self.email = email
         self.activeCourses = activeCourses
         self.completedCourses = completedCourses
-    }
-    
-    mutating func add(course: Course) {
-        if !activeCourses.contains(course) {
-            activeCourses.insert(course)
-        }
-    }
-    
-    mutating func complete(course: Course) {
-        guard let removedCourse = activeCourses.remove(course) else {
-            return
-        }
-
-        completedCourses.insert(removedCourse)
     }
 }
 

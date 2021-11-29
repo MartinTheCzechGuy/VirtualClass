@@ -23,7 +23,7 @@ final class AddToUserActiveCoursesUseCaseTests: XCTestCase {
     func test_course_added_success_propagated() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                addCourseResult: Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                addCourseResult: Just(()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             )
         )
         let sut = AddToUserActiveCoursesUseCase(
@@ -50,7 +50,7 @@ final class AddToUserActiveCoursesUseCaseTests: XCTestCase {
     func test_error_adding_courses_propagated() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                addCourseResult: Fail(error: UserRepositoryError.databaseError(nil)).eraseToAnyPublisher()
+                addCourseResult: Fail(error: StudentRepositoryError.databaseError(nil)).eraseToAnyPublisher()
             )
         )
         let sut = AddToUserActiveCoursesUseCase(

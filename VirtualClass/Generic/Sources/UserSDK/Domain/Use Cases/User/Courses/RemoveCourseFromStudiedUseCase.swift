@@ -8,7 +8,7 @@
 import Combine
 
 public protocol RemoveCourseFromStudiedUseCaseType {
-    func remove(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError>
+    func remove(courseIdent ident: String) -> AnyPublisher<Void, StudentRepositoryError>
 }
 
 final class RemoveCourseFromStudiedUseCase {
@@ -25,9 +25,9 @@ final class RemoveCourseFromStudiedUseCase {
 }
 
 extension RemoveCourseFromStudiedUseCase: RemoveCourseFromStudiedUseCaseType {
-    func remove(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func remove(courseIdent ident: String) -> AnyPublisher<Void, StudentRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
+            return Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.remove(courseIdent: ident, forUserWithEmail: email)

@@ -10,13 +10,13 @@ import Combine
 
 final class CreateStudentProfileUseCaseStub: CreateStudentProfileUseCaseType {
     
-    private let result: AnyPublisher<Void, UserRepositoryError>
+    private let result: AnyPublisher<Void, StudentRepositoryError>
     
-    init(result: AnyPublisher<Void, UserRepositoryError>) {
+    init(result: AnyPublisher<Void, StudentRepositoryError>) {
         self.result = result
     }
     
-    func register(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func register(name: String, email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         result
     }
 }

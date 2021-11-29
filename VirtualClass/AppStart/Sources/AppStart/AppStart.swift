@@ -37,27 +37,6 @@ public struct AppStart {
     public init() {}
         
     func startApp() {
-        print("tada")
-        
+        // some setup could take place in here
     }
 }
-
-//public struct AppStart {
-//
-//    private var appAssemblies: [Assembly] = [
-//        LoggerAssembly(),
-//        InstanceProviderAssembly(),
-//        CounterAssembly(),
-//        CounterSelectionAssembly(),
-//        CounterPreferencesAssembly()
-//    ]
-//
-//    public init() { }
-//
-//    public func startApp<Instance>() -> Instance {
-//        let assembler = Assembler()
-//        assembler.apply(assemblies: appAssemblies)
-//        return assembler.resolver.resolve(Instance.self)!
-//    }
-//}
-

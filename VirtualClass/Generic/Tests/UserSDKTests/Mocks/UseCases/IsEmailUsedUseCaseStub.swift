@@ -9,13 +9,13 @@ import Combine
 @testable import UserSDK
 
 final class IsEmailUsedUseCaseStub: IsEmailUsedUseCaseType {
-    private let result: AnyPublisher<Bool, UserRepositoryError>
+    private let result: AnyPublisher<Bool, StudentRepositoryError>
     
-    init(result: AnyPublisher<Bool, UserRepositoryError>) {
+    init(result: AnyPublisher<Bool, StudentRepositoryError>) {
         self.result = result
     }
     
-    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, UserRepositoryError> {
+    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, StudentRepositoryError> {
         result
     }
 }

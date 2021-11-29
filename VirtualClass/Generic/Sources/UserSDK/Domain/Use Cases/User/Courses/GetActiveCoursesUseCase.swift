@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 public protocol GetActiveCoursesUseCaseType {
-    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError>
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError>
 }
 
 final class GetActiveCoursesUseCase {
@@ -21,7 +21,7 @@ final class GetActiveCoursesUseCase {
 }
 
 extension GetActiveCoursesUseCase: GetActiveCoursesUseCaseType {
-    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError> {
         repository.load(userWithEmail: email)
             .map { optionalProfile in
                 optionalProfile?.activeCourses ?? []

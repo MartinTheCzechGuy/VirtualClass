@@ -10,29 +10,29 @@ import Database
 import Foundation
 import SwiftUI
 
-public enum UserRepositoryError: Error {
+public enum StudentRepositoryError: Error {
     case storageError(Error?)
     case databaseError(Error?)
 }
 
 final class StudentRepository {
     
-    private let database: CourseDBRepositoryType
+    private let database: StudentDBRepositoryType
     
-    init(database: CourseDBRepositoryType) {
+    init(database: StudentDBRepositoryType) {
         self.database = database
     }
 }
 
 extension StudentRepository: StudentRepositoryType {
     
-    func create(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func create(name: String, email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         database.create(domainModel: Student(id: UUID(), name: name, email: email, activeCourses: [], completedCourses: []))
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, StudentRepositoryError> {
         database.update(
             UserProfile(
                 id: user.id,
@@ -40,46 +40,53 @@ extension StudentRepository: StudentRepositoryType {
                 email: user.email
             )
         )
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
+    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, StudentRepositoryError> {
+        database.load(withID: id)
+            .map(mapToDomain(student:))
+            .mapError(StudentRepositoryError.databaseError)
+            .eraseToAnyPublisher()
+    }
+    
+    func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, StudentRepositoryError> {
         database.load(withEmail: email)
             .map(mapToDomain(student:))
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func loadAll() -> AnyPublisher<[GenericStudent], UserRepositoryError> {
+    func loadAll() -> AnyPublisher<[GenericStudent], StudentRepositoryError> {
         database.loadStudents()
             .mapOptionalElement(mapToDomain(student:))
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func remove(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func remove(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         database.removeCourse(forUserWithEmail: email, courseIdent: ident)
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func markComplete(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func markComplete(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         database.markComplete(courseIdent: ident, forUserWithEmail: email)
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func activeCourses() -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
+    func activeCourses() -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError> {
         database.loadCourses()
             .map(mapToDomain(courses:))
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
     
-    func addCourses(_ idents: [String], forStudentWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func addCourses(_ idents: [String], forStudentWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         database.addCoursesAmongActive(idents: idents, forStudentWithEmail: email)
-            .mapError(UserRepositoryError.databaseError)
+            .mapError(StudentRepositoryError.databaseError)
             .eraseToAnyPublisher()
     }
 }

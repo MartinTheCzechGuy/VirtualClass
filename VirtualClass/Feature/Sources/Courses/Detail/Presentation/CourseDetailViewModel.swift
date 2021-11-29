@@ -42,10 +42,10 @@ final class CourseDetailViewModel: ObservableObject {
         self.goBackTap = goBackSubject.eraseToAnyPublisher()
         
         removeCourseTap
-            .flatMap { [weak self] ident -> AnyPublisher<Result<Void, UserRepositoryError>, Never> in
+            .flatMap { [weak self] ident -> AnyPublisher<Result<Void, StudentRepositoryError>, Never> in
                 guard let self = self else {
                     return Empty()
-                        .setFailureType(to: UserRepositoryError.self)
+                        .setFailureType(to: StudentRepositoryError.self)
                         .mapToResult()
                         .eraseToAnyPublisher()
                 }
@@ -67,10 +67,10 @@ final class CourseDetailViewModel: ObservableObject {
             .store(in: &bag)
         
         markCourseCompleteTap
-            .flatMap { [weak self] ident -> AnyPublisher<Result<Void, UserRepositoryError>, Never> in
+            .flatMap { [weak self] ident -> AnyPublisher<Result<Void, StudentRepositoryError>, Never> in
                 guard let self = self else {
                     return Empty()
-                        .setFailureType(to: UserRepositoryError.self)
+                        .setFailureType(to: StudentRepositoryError.self)
                         .mapToResult()
                         .eraseToAnyPublisher()
                 }

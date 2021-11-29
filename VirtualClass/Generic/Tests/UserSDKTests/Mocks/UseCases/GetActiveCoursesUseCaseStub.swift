@@ -10,13 +10,13 @@ import Combine
 
 final class GetActiveCoursesUseCaseStub: GetActiveCoursesUseCaseType {
     
-    private let courses: AnyPublisher<Set<GenericCourse>, UserRepositoryError>
+    private let courses: AnyPublisher<Set<GenericCourse>, StudentRepositoryError>
     
-    init(courses: AnyPublisher<Set<GenericCourse>, UserRepositoryError>) {
+    init(courses: AnyPublisher<Set<GenericCourse>, StudentRepositoryError>) {
         self.courses = courses
     }
     
-    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
+    func courses(forUserWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError> {
         courses
     }
 }

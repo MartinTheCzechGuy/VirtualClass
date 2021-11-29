@@ -42,7 +42,7 @@ final class GetCompletedCoursesUseCaseTests: XCTestCase {
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Just(student).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                loadStudentResult: Just(student).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             )
         )
         
@@ -70,7 +70,7 @@ final class GetCompletedCoursesUseCaseTests: XCTestCase {
     func test_fetching_courses_error_propagated() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
+                loadStudentResult: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()
             )
         )
         

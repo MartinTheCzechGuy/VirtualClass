@@ -12,24 +12,24 @@ import Foundation
 final class StudentRepositoryStub: StudentRepositoryType {
 
     struct ResultBundle {
-        let createResult: AnyPublisher<Void, UserRepositoryError>
-        let updateResult: AnyPublisher<Void, UserRepositoryError>
-        let loadStudentResult: AnyPublisher<GenericStudent?, UserRepositoryError>
-        let loadStudentsResult: AnyPublisher<[GenericStudent], UserRepositoryError>
-        let removeCourseResult: AnyPublisher<Void, UserRepositoryError>
-        let markCompleteResult: AnyPublisher<Void, UserRepositoryError>
-        let addCourseResult: AnyPublisher<Void, UserRepositoryError>
-        let activeCoursesResult: AnyPublisher<Set<GenericCourse>, UserRepositoryError>
+        let createResult: AnyPublisher<Void, StudentRepositoryError>
+        let updateResult: AnyPublisher<Void, StudentRepositoryError>
+        let loadStudentResult: AnyPublisher<GenericStudent?, StudentRepositoryError>
+        let loadStudentsResult: AnyPublisher<[GenericStudent], StudentRepositoryError>
+        let removeCourseResult: AnyPublisher<Void, StudentRepositoryError>
+        let markCompleteResult: AnyPublisher<Void, StudentRepositoryError>
+        let addCourseResult: AnyPublisher<Void, StudentRepositoryError>
+        let activeCoursesResult: AnyPublisher<Set<GenericCourse>, StudentRepositoryError>
         
         static func mock(
-            createResult: AnyPublisher<Void, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            updateResult: AnyPublisher<Void, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            loadStudentResult: AnyPublisher<GenericStudent?, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            loadStudentsResult: AnyPublisher<[GenericStudent], UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            removeCourseResult: AnyPublisher<Void, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            markCompleteResult: AnyPublisher<Void, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            addCourseResult: AnyPublisher<Void, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
-            activeCoursesResult: AnyPublisher<Set<GenericCourse>, UserRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher()
+            createResult: AnyPublisher<Void, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            updateResult: AnyPublisher<Void, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            loadStudentResult: AnyPublisher<GenericStudent?, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            loadStudentsResult: AnyPublisher<[GenericStudent], StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            removeCourseResult: AnyPublisher<Void, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            markCompleteResult: AnyPublisher<Void, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            addCourseResult: AnyPublisher<Void, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            activeCoursesResult: AnyPublisher<Set<GenericCourse>, StudentRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher()
         ) -> ResultBundle {
             .init(
                 createResult: createResult,
@@ -50,39 +50,39 @@ final class StudentRepositoryStub: StudentRepositoryType {
         self.results = results
     }
     
-    func create(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func create(name: String, email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         results.createResult
     }
     
-    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ user: GenericUserProfile) -> AnyPublisher<Void, StudentRepositoryError> {
         results.updateResult
     }
     
-    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
+    func load(userWithID id: UUID) -> AnyPublisher<GenericStudent?, StudentRepositoryError> {
         results.loadStudentResult
     }
     
-    func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, UserRepositoryError> {
+    func load(userWithEmail email: String) -> AnyPublisher<GenericStudent?, StudentRepositoryError> {
         results.loadStudentResult
     }
     
-    func loadAll() -> AnyPublisher<[GenericStudent], UserRepositoryError> {
+    func loadAll() -> AnyPublisher<[GenericStudent], StudentRepositoryError> {
         results.loadStudentsResult
     }
     
-    func remove(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func remove(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         results.removeCourseResult
     }
     
-    func markComplete(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func markComplete(courseIdent ident: String, forUserWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         results.markCompleteResult
     }
     
-    func activeCourses() -> AnyPublisher<Set<GenericCourse>, UserRepositoryError> {
+    func activeCourses() -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError> {
         results.activeCoursesResult
     }
     
-    func addCourses(_ idents: [String], forStudentWithEmail email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func addCourses(_ idents: [String], forStudentWithEmail email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         results.addCourseResult
     }
 }

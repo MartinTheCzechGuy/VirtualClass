@@ -12,9 +12,9 @@ public protocol IsUserLoggedInUseCaseType {
 }
 
 final class IsUserLoggedInUseCase {
-    private let authRepository: UserAuthRepositoryType
+    private let authRepository: AuthRepositoryType
     
-    init(authRepository: UserAuthRepositoryType) {
+    init(authRepository: AuthRepositoryType) {
         self.authRepository = authRepository
     }
 }

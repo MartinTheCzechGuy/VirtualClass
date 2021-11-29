@@ -10,9 +10,9 @@ public protocol HandleLogOutUseCaseType {
 }
 
 final class HandleLogOutUseCase {
-    private let userAuthRepository: UserAuthRepositoryType
+    private let userAuthRepository: AuthRepositoryType
     
-    init(userAuthRepository: UserAuthRepositoryType) {
+    init(userAuthRepository: AuthRepositoryType) {
         self.userAuthRepository = userAuthRepository
     }
 }

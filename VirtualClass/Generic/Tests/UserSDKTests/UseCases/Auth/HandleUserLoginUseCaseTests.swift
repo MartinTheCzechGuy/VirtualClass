@@ -25,7 +25,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
 
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(true).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher(),
+                isExistingUserResult: Just(true).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher(),
                 storedPasswordResult: .success(password)
             )
         )
@@ -57,7 +57,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_passwords_does_not_match() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(true).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher(),
+                isExistingUserResult: Just(true).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher(),
                 storedPasswordResult: .success("password1")
             )
         )
@@ -89,7 +89,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_password_not_found() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(true).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher(),
+                isExistingUserResult: Just(true).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher(),
                 storedPasswordResult: .success(nil)
             )
         )
@@ -121,7 +121,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_account_not_found() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(false).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher()
+                isExistingUserResult: Just(false).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher()
             )
         )
         
@@ -210,7 +210,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_no_stored_password_found() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(true).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher(),
+                isExistingUserResult: Just(true).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher(),
                 storedPasswordResult: .success(nil)
             )
         )
@@ -242,7 +242,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_error_checking_existing_user() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Fail(error: UserAuthRepositoryError.storageError(nil)).eraseToAnyPublisher()
+                isExistingUserResult: Fail(error: AuthRepositoryError.storageError(nil)).eraseToAnyPublisher()
             )
         )
         
@@ -273,7 +273,7 @@ final class HandleUserLoginUseCaseTests: XCTestCase {
     func test_error_loading_stored_password() {
         let authRepository = UserAuthRepositoryStub(
             results: .mock(
-                isExistingUserResult: Just(true).setFailureType(to: UserAuthRepositoryError.self).eraseToAnyPublisher(),
+                isExistingUserResult: Just(true).setFailureType(to: AuthRepositoryError.self).eraseToAnyPublisher(),
                 storedPasswordResult: .failure(.storageError(nil))
             )
         )

@@ -26,7 +26,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -65,7 +65,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -142,7 +142,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -205,7 +205,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -268,7 +268,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -300,7 +300,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -334,7 +334,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -409,7 +409,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -496,7 +496,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -577,7 +577,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()
@@ -662,7 +662,7 @@ final class CourseDBRepositoryTests: XCTestCase {
             dbManager: DatabaseManagerMock(),
             databaseSetup: SQLDBSetupStub()
         )
-        let sut = CourseDBRepository(
+        let sut = StudentDBRepository(
             databaseInteractor: databaseInteractor,
             classRoomConverter: ClassRoomConverter.live(),
             teacherConverter: TeacherConverter.live()

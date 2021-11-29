@@ -8,7 +8,7 @@
 import Combine
 
 public protocol MarkCourseCompleteUseCaseType {
-    func complete(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError>
+    func complete(courseIdent ident: String) -> AnyPublisher<Void, StudentRepositoryError>
 }
 
 final class MarkCourseCompleteUseCase {
@@ -25,9 +25,9 @@ final class MarkCourseCompleteUseCase {
 }
 
 extension MarkCourseCompleteUseCase: MarkCourseCompleteUseCaseType {
-    func complete(courseIdent ident: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func complete(courseIdent ident: String) -> AnyPublisher<Void, StudentRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
+            return Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.markComplete(courseIdent: ident, forUserWithEmail: email)

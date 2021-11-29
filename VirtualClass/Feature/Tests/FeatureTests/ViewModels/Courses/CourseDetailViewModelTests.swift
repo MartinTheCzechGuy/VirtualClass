@@ -21,10 +21,10 @@ final class CourseDetailViewModelTests: XCTestCase {
     }
     
     func test_remove_course_success() {
-        let completeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let completeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
         let removeCoursePublisher = Just(())
-            .setFailureType(to: UserRepositoryError.self)
+            .setFailureType(to: StudentRepositoryError.self)
             .eraseToAnyPublisher()
         let removeCourseUseCase = RemoveCourseFromStudiedUseCaseStub(result: removeCoursePublisher)
         let completeCourseUseCase = MarkCourseCompleteUseCaseStub(result: completeCoursePublisher)
@@ -55,9 +55,9 @@ final class CourseDetailViewModelTests: XCTestCase {
     }
     
     func test_remove_course_failure() {
-        let completeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let completeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
-        let removeCoursePublisher = Fail<Void, UserRepositoryError>(error: .databaseError(nil))
+        let removeCoursePublisher = Fail<Void, StudentRepositoryError>(error: .databaseError(nil))
             .eraseToAnyPublisher()
         let removeCourseUseCase = RemoveCourseFromStudiedUseCaseStub(result: removeCoursePublisher)
         let completeCourseUseCase = MarkCourseCompleteUseCaseStub(result: completeCoursePublisher)
@@ -90,9 +90,9 @@ final class CourseDetailViewModelTests: XCTestCase {
     
     func test_mark_course_complete_success() {
         let completeCoursePublisher = Just(())
-            .setFailureType(to: UserRepositoryError.self)
+            .setFailureType(to: StudentRepositoryError.self)
             .eraseToAnyPublisher()
-        let removeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let removeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
         let removeCourseUseCase = RemoveCourseFromStudiedUseCaseStub(result: removeCoursePublisher)
         let completeCourseUseCase = MarkCourseCompleteUseCaseStub(result: completeCoursePublisher)
@@ -123,9 +123,9 @@ final class CourseDetailViewModelTests: XCTestCase {
     }
     
     func test_mark_course_complete_failure() {
-        let completeCoursePublisher = Fail<Void, UserRepositoryError>(error: .databaseError(nil))
+        let completeCoursePublisher = Fail<Void, StudentRepositoryError>(error: .databaseError(nil))
             .eraseToAnyPublisher()
-        let removeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let removeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
         let removeCourseUseCase = RemoveCourseFromStudiedUseCaseStub(result: removeCoursePublisher)
         let completeCourseUseCase = MarkCourseCompleteUseCaseStub(result: completeCoursePublisher)
@@ -157,9 +157,9 @@ final class CourseDetailViewModelTests: XCTestCase {
     }
     
     func test_back_tap_handled() {
-        let completeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let completeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
-        let removeCoursePublisher = Empty<Void, UserRepositoryError>()
+        let removeCoursePublisher = Empty<Void, StudentRepositoryError>()
             .eraseToAnyPublisher()
         let removeCourseUseCase = RemoveCourseFromStudiedUseCaseStub(result: removeCoursePublisher)
         let completeCourseUseCase = MarkCourseCompleteUseCaseStub(result: completeCoursePublisher)

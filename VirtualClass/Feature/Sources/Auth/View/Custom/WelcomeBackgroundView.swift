@@ -15,7 +15,6 @@ struct WelcomeBackgroundView: View {
             Image("background")
                 .resizable()
                 .scaledToFill()
-                .clipped()
                 .opacity(0.6)
         }
         .ignoresSafeArea()

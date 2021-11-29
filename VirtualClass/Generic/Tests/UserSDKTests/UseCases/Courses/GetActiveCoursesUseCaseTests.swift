@@ -41,7 +41,7 @@ final class GetActiveCoursesUseCaseTests: XCTestCase {
         )
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Just(student).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                loadStudentResult: Just(student).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             )
         )
         
@@ -78,7 +78,7 @@ final class GetActiveCoursesUseCaseTests: XCTestCase {
     func test_no_user_found_mapped_into_empty_array() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Just(nil).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                loadStudentResult: Just(nil).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             )
         )
         let sut = GetActiveCoursesUseCase(repository: studentRepository)
@@ -105,7 +105,7 @@ final class GetActiveCoursesUseCaseTests: XCTestCase {
     func test_fetching_user_error_propagated() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
+                loadStudentResult: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()
             )
         )
         let sut = GetActiveCoursesUseCase(repository: studentRepository)

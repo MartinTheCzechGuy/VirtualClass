@@ -10,13 +10,13 @@ import UserSDK
 
 final class UpdateStudentProfileUseCaseStub: UpdateStudentProfileUseCaseType {
     
-    private let result: AnyPublisher<Void, UserRepositoryError>
+    private let result: AnyPublisher<Void, StudentRepositoryError>
     
-    init(result: AnyPublisher<Void, UserRepositoryError>) {
+    init(result: AnyPublisher<Void, StudentRepositoryError>) {
         self.result = result
     }
     
-    func update(_ profile: GenericUserProfile) -> AnyPublisher<Void, UserRepositoryError> {
+    func update(_ profile: GenericUserProfile) -> AnyPublisher<Void, StudentRepositoryError> {
         result
     }
 }

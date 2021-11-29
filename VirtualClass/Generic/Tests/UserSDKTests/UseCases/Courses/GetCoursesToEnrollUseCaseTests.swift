@@ -50,7 +50,7 @@ final class GetCoursesToEnrollUseCaseTests: XCTestCase {
             sharedCourse
         ]
         
-        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         let userCoursesPublisher = Just(userCourses).setFailureType(to: GetCoursesForUserError.self).eraseToAnyPublisher()
 
         let sut = GetCoursesToEnrollUseCase(
@@ -79,7 +79,7 @@ final class GetCoursesToEnrollUseCaseTests: XCTestCase {
     }
     
     func test_load_all_available_courses_error_propagated() {
-        let activeCoursesPublisher = Fail<Set<GenericCourse>, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+        let activeCoursesPublisher = Fail<Set<GenericCourse>, StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         let userCoursesPublisher = Empty<Set<GenericCourse>, GetCoursesForUserError>().eraseToAnyPublisher()
 
         let sut = GetCoursesToEnrollUseCase(
@@ -109,7 +109,7 @@ final class GetCoursesToEnrollUseCaseTests: XCTestCase {
     }
     
     func test_load_active_courses_error_propagated() {
-        let activeCoursesPublisher = Just(Set<GenericCourse>()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let activeCoursesPublisher = Just(Set<GenericCourse>()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         let userCoursesPublisher = Fail<Set<GenericCourse>, GetCoursesForUserError>(error: .init(cause: .emailNotFound)).eraseToAnyPublisher()
 
         let sut = GetCoursesToEnrollUseCase(
@@ -178,7 +178,7 @@ final class GetCoursesToEnrollUseCaseTests: XCTestCase {
             sharedCourse
         ]
         
-        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         let userCoursesPublisher = Just(userCourses).setFailureType(to: GetCoursesForUserError.self).eraseToAnyPublisher()
 
         let sut = GetCoursesToEnrollUseCase(
@@ -226,7 +226,7 @@ final class GetCoursesToEnrollUseCaseTests: XCTestCase {
             sharedCourse
         ]
         
-        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let activeCoursesPublisher = Just(activeCourses).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         let userCoursesPublisher = Just(userCourses).setFailureType(to: GetCoursesForUserError.self).eraseToAnyPublisher()
 
         let sut = GetCoursesToEnrollUseCase(

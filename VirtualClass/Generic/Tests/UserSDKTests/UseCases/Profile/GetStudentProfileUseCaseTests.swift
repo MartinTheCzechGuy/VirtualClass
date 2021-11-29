@@ -41,7 +41,7 @@ final class GetStudentProfileUseCaseTests: XCTestCase {
         )
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Just(student).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                loadStudentResult: Just(student).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             )
         )
         let sut = GetStudentProfileUseCase(
@@ -74,7 +74,7 @@ final class GetStudentProfileUseCaseTests: XCTestCase {
     func test_error_fetching_profile() {
         let studentRepository = StudentRepositoryStub(
             results: .mock(
-                loadStudentResult: Fail<GenericStudent?, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+                loadStudentResult: Fail<GenericStudent?, StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
             )
         )
         let sut = GetStudentProfileUseCase(

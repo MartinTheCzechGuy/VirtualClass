@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AuthRepository.swift
 //  
 //
 //  Created by Martin on 13.11.2021.
@@ -10,19 +10,19 @@ import Combine
 import Database
 import SecureStorage
 
-public enum UserAuthRepositoryError: Error {
+public enum AuthRepositoryError: Error {
     case storageError(Error?)
     case databaseError(Error?)
 }
 
-final class UserAuthRepository {
+final class AuthRepository {
 
-    private let database: CourseDBRepositoryType
+    private let database: StudentDBRepositoryType
     private let keyValueLocalStorage: LocalKeyValueStorage
     private let secureStorage: SecureStorage
     
     init(
-        database: CourseDBRepositoryType,
+        database: StudentDBRepositoryType,
         keyValueLocalStorage: LocalKeyValueStorage,
         secureStorage: SecureStorage
     ) {
@@ -32,14 +32,14 @@ final class UserAuthRepository {
     }
 }
 
-extension UserAuthRepository: UserAuthRepositoryType {
+extension AuthRepository: AuthRepositoryType {
     
-    func isExistingUser(withEmail email: String) -> AnyPublisher<Bool, UserAuthRepositoryError> {
+    func isExistingUser(withEmail email: String) -> AnyPublisher<Bool, AuthRepositoryError> {
         database.load(withEmail: email)
             .map { optionalUser in
                 optionalUser?.email != nil
             }
-            .mapError(UserAuthRepositoryError.storageError)
+            .mapError(AuthRepositoryError.storageError)
             .eraseToAnyPublisher()
     }
     
@@ -47,16 +47,16 @@ extension UserAuthRepository: UserAuthRepositoryType {
         keyValueLocalStorage.read(objectForKey: .userEmail)
     }
     
-    func store(credentials: Credentials) -> Result<Void, UserAuthRepositoryError> {
+    func store(credentials: Credentials) -> Result<Void, AuthRepositoryError> {
         keyValueLocalStorage.set(credentials.email, for: .userEmail)
         
         return secureStorage.setValue(credentials.password, for: credentials.email)
-            .mapError(UserAuthRepositoryError.storageError)
+            .mapError(AuthRepositoryError.storageError)
     }
     
-    func storedPassword(for email: String) -> Result<String?, UserAuthRepositoryError> {
+    func storedPassword(for email: String) -> Result<String?, AuthRepositoryError> {
         secureStorage.getValue(for: email)
-            .mapError(UserAuthRepositoryError.storageError)
+            .mapError(AuthRepositoryError.storageError)
     }
     
     func storeLoggedInUser(_ email: String) {

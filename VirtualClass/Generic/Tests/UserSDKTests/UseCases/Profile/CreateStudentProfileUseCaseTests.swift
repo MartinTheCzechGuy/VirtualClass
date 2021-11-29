@@ -21,7 +21,7 @@ final class CreateStudentProfileUseCaseTests: XCTestCase {
     }
     
     func test_create_profile_success() {
-        let createPubsliher = Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let createPubsliher = Just(()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         let studentRepository = StudentRepositoryStub(
             results: .mock(
                 createResult: createPubsliher
@@ -50,7 +50,7 @@ final class CreateStudentProfileUseCaseTests: XCTestCase {
     }
     
     func test_create_profile_failure() {
-        let createPubsliher = Fail<Void, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+        let createPubsliher = Fail<Void, StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         let studentRepository = StudentRepositoryStub(
             results: .mock(
                 createResult: createPubsliher

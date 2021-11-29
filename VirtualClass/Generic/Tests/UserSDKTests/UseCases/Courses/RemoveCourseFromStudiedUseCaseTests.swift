@@ -21,7 +21,7 @@ final class RemoveCourseFromStudiedUseCaseTests: XCTestCase {
     }
     
     func test_remove_course_from_studied_success() {
-        let studentRepository = StudentRepositoryStub(results: .mock(removeCourseResult: Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()))
+        let studentRepository = StudentRepositoryStub(results: .mock(removeCourseResult: Just(()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()))
         let sut = RemoveCourseFromStudiedUseCase(
             studentRepository: studentRepository,
             getLoggedInUserUseCase: GetLoggedInUserUseCaseStub()
@@ -46,7 +46,7 @@ final class RemoveCourseFromStudiedUseCaseTests: XCTestCase {
     }
     
     func test_error_removing_course_propagated() {
-        let studentRepository = StudentRepositoryStub(results: .mock(removeCourseResult: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()))
+        let studentRepository = StudentRepositoryStub(results: .mock(removeCourseResult: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()))
         let sut = RemoveCourseFromStudiedUseCase(
             studentRepository: studentRepository,
             getLoggedInUserUseCase: GetLoggedInUserUseCaseStub()

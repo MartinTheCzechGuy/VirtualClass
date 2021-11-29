@@ -14,26 +14,23 @@ struct CourseCardView: View {
     private let name: String
     private let room: String
     private let nextClass: String
-    private let faculty: GenericFaculty
     
     init(
         ident: String,
         name: String,
         room: String,
-        nextClass: String,
-        faculty: GenericFaculty
+        nextClass: String
     ) {
         self.name = name
         self.ident = ident
         self.nextClass = nextClass
         self.room = room
-        self.faculty = faculty
     }
     
     var body: some View {
         
         ZStack {
-            faculty.background
+            Color(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, opacity: 1)
             
             VStack(spacing: 10) {
                 VStack(alignment: .center, spacing: 10) {

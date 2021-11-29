@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-public protocol CourseDBRepositoryType {
+public protocol StudentDBRepositoryType {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError>
 
     func update(_ domainModel: UserProfile) -> AnyPublisher<Void, DatabaseError>

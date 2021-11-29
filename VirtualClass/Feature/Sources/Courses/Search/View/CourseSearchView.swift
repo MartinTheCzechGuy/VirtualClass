@@ -41,34 +41,40 @@ public struct CourseSearchView: View {
             
             Spacer()
                 .frame(height: 40)
-                        
-            ForEach($viewModel.searchResult) { $classData in
-                HStack {
-                    Toggle(isOn: $classData.isSelected) {
-                        Text("\(classData.ident) - \(classData.name)")
+            
+            ScrollView(.vertical, showsIndicators: false){
+                VStack(spacing: 10) {
+                    ForEach($viewModel.searchResult) { $classData in
+                        HStack {
+                            Toggle(isOn: $classData.isSelected) {
+                                Text("\(classData.ident) - \(classData.name)")
+                            }
+                            .toggleStyle(CheckToggleStyle())
+                            
+                            Spacer(minLength: 0)
+                        }
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
                     }
-                    .toggleStyle(CheckToggleStyle())
-                    
+               
+                
                     Spacer(minLength: 0)
+                
+                    Button(
+                        action: { viewModel.addSelectedTapSubject.send() },
+                        label: {
+                            Text("Add selected")
+                        }
+                    )
+                        .buttonStyle(AppGoldenButtonStyle())
                 }
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray))
             }
-            
-            Spacer(minLength: 0)
-            
-            Button(
-                action: { viewModel.addSelectedTapSubject.send() },
-                label: {
-                    Text("Add selected")
-                }
-            )
-                .buttonStyle(AppGoldenButtonStyle())
         }
         .onAppear {
             viewModel.reloadDataSubject.send()
         }
         .padding()
+        .ignoresSafeArea(.container, edges: .bottom)
         .alert(item: $viewModel.showError) { errorMessage in
             Alert(
                 title: Text(errorMessage.rawValue),

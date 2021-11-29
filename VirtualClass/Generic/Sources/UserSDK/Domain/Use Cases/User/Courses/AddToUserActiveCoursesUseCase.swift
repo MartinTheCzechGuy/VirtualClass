@@ -8,7 +8,7 @@
 import Combine
 
 public protocol AddToUserActiveCoursesUseCaseType {
-    func add(idents: [String]) -> AnyPublisher<Void, UserRepositoryError>
+    func add(idents: [String]) -> AnyPublisher<Void, StudentRepositoryError>
 }
 
 final class AddToUserActiveCoursesUseCase {
@@ -22,9 +22,9 @@ final class AddToUserActiveCoursesUseCase {
 }
 
 extension AddToUserActiveCoursesUseCase: AddToUserActiveCoursesUseCaseType {
-    func add(idents: [String]) -> AnyPublisher<Void, UserRepositoryError> {
+    func add(idents: [String]) -> AnyPublisher<Void, StudentRepositoryError> {
         guard let email = getLoggedInUserUseCase.email else {
-            return Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()
+            return Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()
         }
         
         return studentRepository.addCourses(idents, forStudentWithEmail: email)

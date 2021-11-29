@@ -27,7 +27,7 @@ final class UpdateStudentProfileUseCaseTests: XCTestCase {
             email: "email1"
         )
         
-        let updateResultPublisher = Just(()).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let updateResultPublisher = Just(()).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(
@@ -64,7 +64,7 @@ final class UpdateStudentProfileUseCaseTests: XCTestCase {
             name: "name",
             email: "email1"
         )
-        let updateResultPublisher = Fail<Void, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+        let updateResultPublisher = Fail<Void, StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(

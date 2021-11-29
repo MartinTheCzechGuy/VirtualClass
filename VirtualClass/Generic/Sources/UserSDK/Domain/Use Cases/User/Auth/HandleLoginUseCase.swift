@@ -24,12 +24,12 @@ final class HandleLoginUseCase {
     
     private let checkValidEmailUseCase: CheckValidEmailUseCaseType
     private let checkValidPasswordUseCase: CheckValidPasswordUseCaseType
-    private let userAuthRepository: UserAuthRepositoryType
+    private let userAuthRepository: AuthRepositoryType
     
     init(
         checkValidEmailUseCase: CheckValidEmailUseCaseType,
         checkValidPasswordUseCase: CheckValidPasswordUseCaseType,
-        userAuthRepository: UserAuthRepositoryType
+        userAuthRepository: AuthRepositoryType
     ) {
         self.checkValidEmailUseCase = checkValidEmailUseCase
         self.checkValidPasswordUseCase = checkValidPasswordUseCase

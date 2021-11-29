@@ -8,19 +8,19 @@
 import Combine
 @testable import UserSDK
 
-final class UserAuthRepositoryStub: UserAuthRepositoryType {
+final class UserAuthRepositoryStub: AuthRepositoryType {
     
     struct ResultBundle {
-        let storeResult: Result<Void, UserAuthRepositoryError>
-        let isExistingUserResult: AnyPublisher<Bool, UserAuthRepositoryError>
+        let storeResult: Result<Void, AuthRepositoryError>
+        let isExistingUserResult: AnyPublisher<Bool, AuthRepositoryError>
         let loggedInUserEmail: String?
-        let storedPasswordResult: Result<String?, UserAuthRepositoryError>
+        let storedPasswordResult: Result<String?, AuthRepositoryError>
         
         static func mock(
-            storeResult: Result<Void, UserAuthRepositoryError> = .success(()),
-            isExistingUserResult: AnyPublisher<Bool, UserAuthRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
+            storeResult: Result<Void, AuthRepositoryError> = .success(()),
+            isExistingUserResult: AnyPublisher<Bool, AuthRepositoryError> = Empty(completeImmediately: false).eraseToAnyPublisher(),
             loggedInUserEmail: String? = nil,
-            storedPasswordResult: Result<String?, UserAuthRepositoryError> = .success(nil)
+            storedPasswordResult: Result<String?, AuthRepositoryError> = .success(nil)
         ) -> ResultBundle {
             .init(
                 storeResult: storeResult,
@@ -37,11 +37,11 @@ final class UserAuthRepositoryStub: UserAuthRepositoryType {
         self.results = results
     }
     
-    func store(credentials: Credentials) -> Result<Void, UserAuthRepositoryError> {
+    func store(credentials: Credentials) -> Result<Void, AuthRepositoryError> {
         results.storeResult
     }
     
-    func isExistingUser(withEmail email: String) -> AnyPublisher<Bool, UserAuthRepositoryError> {
+    func isExistingUser(withEmail email: String) -> AnyPublisher<Bool, AuthRepositoryError> {
         results.isExistingUserResult
     }
     
@@ -49,7 +49,7 @@ final class UserAuthRepositoryStub: UserAuthRepositoryType {
         results.loggedInUserEmail
     }
     
-    func storedPassword(for email: String) -> Result<String?, UserAuthRepositoryError> {
+    func storedPassword(for email: String) -> Result<String?, AuthRepositoryError> {
         results.storedPasswordResult
     }
     

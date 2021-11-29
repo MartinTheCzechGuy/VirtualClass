@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 protocol CreateStudentProfileUseCaseType {
-    func register(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError>
+    func register(name: String, email: String) -> AnyPublisher<Void, StudentRepositoryError>
 }
 
 final class CreateStudentProfileUseCase {
@@ -21,7 +21,7 @@ final class CreateStudentProfileUseCase {
 }
 
 extension CreateStudentProfileUseCase: CreateStudentProfileUseCaseType {
-    func register(name: String, email: String) -> AnyPublisher<Void, UserRepositoryError> {
+    func register(name: String, email: String) -> AnyPublisher<Void, StudentRepositoryError> {
         userProfileRepository.create(name: name, email: email)
     }
 }

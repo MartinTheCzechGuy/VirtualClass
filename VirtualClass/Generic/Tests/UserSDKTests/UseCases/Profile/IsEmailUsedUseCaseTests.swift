@@ -38,7 +38,7 @@ final class IsEmailUsedUseCaseTests: XCTestCase {
             )
         ]
         
-        let studentsPublisher = Just(students).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let studentsPublisher = Just(students).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(
@@ -92,7 +92,7 @@ final class IsEmailUsedUseCaseTests: XCTestCase {
             )
         ]
         
-        let studentsPublisher = Just(students).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let studentsPublisher = Just(students).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(
@@ -129,7 +129,7 @@ final class IsEmailUsedUseCaseTests: XCTestCase {
     }
     
     func test_error_propagated() {
-        let studentsPublisher = Fail<[GenericStudent], UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+        let studentsPublisher = Fail<[GenericStudent], StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         
         let studentRepository = StudentRepositoryStub(
             results: .mock(

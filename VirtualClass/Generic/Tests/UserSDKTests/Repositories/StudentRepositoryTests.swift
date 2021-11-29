@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 import XCTest
 @testable import UserSDK
 import Database
@@ -21,7 +22,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_create_student_profile() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 createResult: Just(())
                     .setFailureType(to: DatabaseError.self)
@@ -50,7 +51,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_creating_student_profile() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 createResult: Fail<Void, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -81,7 +82,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_update_student_profile() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 updateResult: Just(())
                     .setFailureType(to: DatabaseError.self)
@@ -118,7 +119,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_updating_student_profile() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 updateResult: Fail<Void, DatabaseError>(error: .init(cause: .deletingEntityError)).eraseToAnyPublisher()
             )
@@ -194,7 +195,7 @@ final class StudentRepositoryTests: XCTestCase {
             ]
         )
         
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadByIdResult: Just(student)
                     .setFailureType(to: DatabaseError.self)
@@ -256,7 +257,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_loading_student_profile() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadByIdResult: Fail<Student?, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -327,7 +328,7 @@ final class StudentRepositoryTests: XCTestCase {
             ]
         )
         
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadByEmailResult: Just(student)
                     .setFailureType(to: DatabaseError.self)
@@ -389,7 +390,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_loading_student_profile_by_email() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadByEmailResult: Fail<Student?, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -462,7 +463,7 @@ final class StudentRepositoryTests: XCTestCase {
             )
         ]
         
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadStudentsResult: Just(students)
                     .setFailureType(to: DatabaseError.self)
@@ -519,7 +520,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_loading_all_students() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadStudentsResult: Fail<[Student], DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -550,7 +551,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_remove_active_course() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 removeCourseResult: Just(())
                     .setFailureType(to: DatabaseError.self)
@@ -579,7 +580,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_removing_active_course() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 removeCourseResult: Fail<Void, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -610,7 +611,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_mark_course_complete() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 markCompleteResult: Just(())
                     .setFailureType(to: DatabaseError.self)
@@ -639,7 +640,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_marking_course_complete() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 markCompleteResult: Fail<Void, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -688,7 +689,7 @@ final class StudentRepositoryTests: XCTestCase {
             )
         ]
         
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadCoursesResult: Just(courses)
                     .setFailureType(to: DatabaseError.self)
@@ -726,7 +727,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_load_all_courses_error() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 loadCoursesResult: Fail<Set<Course>, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()
@@ -757,7 +758,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_load_active_courses() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 addCoursesAmongActiveResult: Just(())
                     .setFailureType(to: DatabaseError.self)
@@ -786,7 +787,7 @@ final class StudentRepositoryTests: XCTestCase {
     }
     
     func test_error_adding_course_to_active() {
-        let database = DatabaseInteractingStub(
+        let database = StudentDBRepositoryStub(
             results: .mock(
                 addCoursesAmongActiveResult: Fail<Void, DatabaseError>(error: .init(cause: .deletingEntityError))
                     .eraseToAnyPublisher()

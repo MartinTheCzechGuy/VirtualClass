@@ -17,7 +17,7 @@ public class UserSDKAssembly: Assembly {
     
         // MARK: - User Auth
         
-        container.autoregister(UserAuthRepositoryType.self, initializer: UserAuthRepository.init)
+        container.autoregister(AuthRepositoryType.self, initializer: AuthRepository.init)
             .inObjectScope(.container)
         
         container.autoregister(CheckValidPasswordUseCaseType.self, initializer: CheckValidPasswordUseCase.init)

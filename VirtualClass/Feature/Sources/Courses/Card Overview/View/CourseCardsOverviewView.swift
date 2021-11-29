@@ -36,8 +36,7 @@ public struct CourseCardsOverviewView: View {
                                     ident: data.ident,
                                     name: data.name,
                                     room: data.classRoom.name,
-                                    nextClass: data.lessons.closestDate ?? "",
-                                    faculty: data.faculty
+                                    nextClass: data.lessons.closestDate ?? ""
                                 )
                                     .onTapGesture {
                                         withAnimation {

@@ -8,7 +8,7 @@
 import Combine
 
 protocol IsEmailUsedUseCaseType {
-    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, UserRepositoryError>
+    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, StudentRepositoryError>
 }
 
 final class IsEmailUsedUseCase {
@@ -20,7 +20,7 @@ final class IsEmailUsedUseCase {
 }
 
 extension IsEmailUsedUseCase: IsEmailUsedUseCaseType {
-    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, UserRepositoryError> {
+    func isAlreadyUsed(_ email: String) -> AnyPublisher<Bool, StudentRepositoryError> {
         userRepository.loadAll()
             .mapElement(\.email)
             .map { $0.contains(email) }

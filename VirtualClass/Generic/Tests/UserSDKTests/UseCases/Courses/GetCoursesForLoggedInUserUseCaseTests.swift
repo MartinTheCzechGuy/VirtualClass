@@ -34,7 +34,7 @@ final class GetCoursesForLoggedInUserUseCaseTests: XCTestCase {
             )
         ]
         
-        let coursesPublisher = Just(courses).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let coursesPublisher = Just(courses).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         
         let sut = GetActiveCoursesForLoggedInUserUseCase(
             getCoursesUseCase: GetActiveCoursesUseCaseStub(courses: coursesPublisher),
@@ -61,7 +61,7 @@ final class GetCoursesForLoggedInUserUseCaseTests: XCTestCase {
     }
     
     func test_fetching_courses_error_propagated() {
-        let coursesPublisher = Fail<Set<GenericCourse>, UserRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
+        let coursesPublisher = Fail<Set<GenericCourse>, StudentRepositoryError>(error: .storageError(nil)).eraseToAnyPublisher()
         
         let sut = GetActiveCoursesForLoggedInUserUseCase(
             getCoursesUseCase: GetActiveCoursesUseCaseStub(courses: coursesPublisher),
@@ -90,7 +90,7 @@ final class GetCoursesForLoggedInUserUseCaseTests: XCTestCase {
     }
     
     func test_no_email_found_error_propagated() {
-        let coursesPublisher = Empty<Set<GenericCourse>, UserRepositoryError>().eraseToAnyPublisher()
+        let coursesPublisher = Empty<Set<GenericCourse>, StudentRepositoryError>().eraseToAnyPublisher()
         
         let sut = GetActiveCoursesForLoggedInUserUseCase(
             getCoursesUseCase: GetActiveCoursesUseCaseStub(courses: coursesPublisher),

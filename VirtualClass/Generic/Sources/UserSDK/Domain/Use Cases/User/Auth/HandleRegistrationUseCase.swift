@@ -19,14 +19,14 @@ final class HandleRegistrationUseCase {
     private let checkValidEmailUseCase: CheckValidEmailUseCaseType
     private let checkValidPasswordUseCase: CheckValidPasswordUseCaseType
     private let isEmailUsedUseCase: IsEmailUsedUseCaseType
-    private let userAuthRepository: UserAuthRepositoryType
+    private let userAuthRepository: AuthRepositoryType
     private let createUserProfileUseCase: CreateStudentProfileUseCaseType
     
     init(
         checkValidEmailUseCase: CheckValidEmailUseCaseType,
         checkValidPasswordUseCase: CheckValidPasswordUseCaseType,
         isEmailUsedUseCase: IsEmailUsedUseCaseType,
-        userAuthRepository: UserAuthRepositoryType,
+        userAuthRepository: AuthRepositoryType,
         createUserProfileUseCase: CreateStudentProfileUseCaseType
     ) {
         self.checkValidEmailUseCase = checkValidEmailUseCase
@@ -68,9 +68,9 @@ extension HandleRegistrationUseCase: HandleRegistrationUseCaseType {
         let storeCredentialsResult = isEmailUsed
             .compactMap(\.success)
             .filter { !$0 }
-            .flatMap { [weak self] _ -> AnyPublisher<Result<Void, UserAuthRepositoryError>, Never> in
+            .flatMap { [weak self] _ -> AnyPublisher<Result<Void, AuthRepositoryError>, Never> in
                 guard let self = self else {
-                    return Just(.failure(UserAuthRepositoryError.storageError(nil))).eraseToAnyPublisher()
+                    return Just(.failure(AuthRepositoryError.storageError(nil))).eraseToAnyPublisher()
                 }
                 
                 return self.userAuthRepository.store(credentials: .init(email: form.email, password: form.password1)).publisher

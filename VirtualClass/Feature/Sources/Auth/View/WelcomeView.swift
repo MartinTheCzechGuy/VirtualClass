@@ -20,47 +20,46 @@ public struct WelcomeView: View {
     }
     
     public var body: some View {
-        ZStack {
-            WelcomeBackgroundView()
-            
-            VStack {
-                LogoView()
-                    .padding(.top, titlePadding)
-                    .animation(.easeIn(duration: 0.8))
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100)) {
-                            titlePadding = 125
-                        }
-                    }
-                
-                Spacer(minLength: 0)
-                
-                VStack(spacing: 20) {
-                    Button(
-                        action: { viewModel.signInTap.send(()) },
-                        label: {
-                            Text("Sign In")
-                        }
-                    )
-                        .buttonStyle(AppGoldenButtonStyle())
-                    
-                    Button(
-                        action: { viewModel.signUpTap.send(()) },
-                        label: {
-                            Text("Sign up")
-                        }
-                    )
-                        .buttonStyle(AppGoldenButtonStyle())
-                }
-                .padding(.bottom, buttonStackPadding)
-                .animation(.easeInOut(duration: 0.8))
+        VStack {
+            LogoView()
+                .padding(.top, titlePadding)
+                .animation(.easeIn(duration: 0.8))
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100)) {
-                        buttonStackPadding = 60
+                        titlePadding = 125
                     }
+                }
+            
+            Spacer(minLength: 0)
+            
+            VStack(spacing: 15) {
+                Button(
+                    action: { viewModel.signInTap.send(()) },
+                    label: {
+                        Text("Sign In")
+                    }
+                )
+                    .buttonStyle(AppGoldenButtonStyle())
+                
+                Button(
+                    action: { viewModel.signUpTap.send(()) },
+                    label: {
+                        Text("Sign up")
+                    }
+                )
+                    .buttonStyle(AppGoldenButtonStyle())
+            }
+            .padding(.bottom, buttonStackPadding)
+            .animation(.easeInOut(duration: 0.8))
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100)) {
+                    buttonStackPadding = 60
                 }
             }
         }
         .preferredColorScheme(.dark)
+        .background(
+            WelcomeBackgroundView()
+        )
     }
 }

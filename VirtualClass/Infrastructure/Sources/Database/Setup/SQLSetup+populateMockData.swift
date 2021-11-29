@@ -30,11 +30,9 @@ extension DatabaseSetup {
             name: "Mathematics I.",
             description: "This course provides students with understanding of basic mathematical concepts.",
             credits: 4,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: 0, to: Date() + 10000)!.generateDates()
+            ,
             facultyId: facultyOfInformatics.id,
             classRoomId: classRoom1.id
         )
@@ -45,11 +43,9 @@ extension DatabaseSetup {
             name: "Mathematics II.",
             description: "This course provides students with understanding of intermediate mathematical concepts.",
             credits: 6,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: 3, to: Date() + 2000)!.generateDates()
+            ,
             facultyId: facultyOfInformatics.id,
             classRoomId: classRoom5.id
         )
@@ -60,11 +56,9 @@ extension DatabaseSetup {
             name: "Insurance Mathematics",
             description: "This course introduces basic terms, principles and calculations used in insurance mathematics.",
             credits: 6,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: 3, to: Date() + 7500)!.generateDates()
+            ,
             facultyId: facultyOfAccounting.id,
             classRoomId: classRoom2.id
         )
@@ -75,11 +69,9 @@ extension DatabaseSetup {
             name: "Business and law",
             description: "This course provides students with knowledge of legal relations arising from enterpreneurial activities.",
             credits: 5,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: 2, to: Date() - 5000)!.generateDates()
+            ,
             facultyId: facultyOfEconomics.id,
             classRoomId: classRoom7.id
         )
@@ -90,11 +82,9 @@ extension DatabaseSetup {
             name: "English Intermediate I.",
             description: "This course is the first part of a serie of courses aming to improve students language skills and prepare them for the Cambridge exams.",
             credits: 3,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: 1, to: Date() - 3500)!.generateDates()
+            ,
             facultyId: facultyOfEconomics.id,
             classRoomId: classRoom9.id
         )
@@ -105,11 +95,9 @@ extension DatabaseSetup {
             name: "English Intermediate II.",
             description: "This course is the second part of a serie of courses aming to improve students language skills and prepare them for the Cambridge exams.",
             credits: 3,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: -3, to: Date() - 3000)!.generateDates()
+            ,
             facultyId: facultyOfEconomics.id,
             classRoomId: classRoom9.id
         )
@@ -120,11 +108,9 @@ extension DatabaseSetup {
             name: "Project Management",
             description: "This course provides students with basic knowledge and skills from the project management field. The main part of this course is a case study illustrating daily operations on a project.",
             credits: 3,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: -2, to: Date() + 4500)!.generateDates()
+            ,
             facultyId: facultyOfManagement.id,
             classRoomId: classRoom3.id
         )
@@ -135,11 +121,9 @@ extension DatabaseSetup {
             name: "Programming in Swift language",
             description: "This course provides basic knowledge of programming in the Swift language. Part of the focus is on iOS platform.",
             credits: 6,
-            lectures: [
-                Date(),
-                Calendar.current.date(byAdding: .day, value: 1, to: Date())!,
-                Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-            ],
+            lectures:
+                Calendar.current.date(byAdding: .day, value: -1, to: Date() + 3000)!.generateDates()
+            ,
             facultyId: facultyOfInformatics.id,
             classRoomId: classRoom4.id
         )
@@ -201,5 +185,18 @@ extension DatabaseSetup {
         try CoursesCompletedBy(id: UUID(), courseIdent: english1.ident, studentId: graftonStudent.id).insert(db)
         try CoursesCompletedBy(id: UUID(), courseIdent: math1.ident, studentId: dillyStudent.id).insert(db)
         try CoursesCompletedBy(id: UUID(), courseIdent: math1.ident, studentId: royStudent.id).insert(db)
+    }
+}
+
+private extension Date {
+    func generateDates() -> [Date] {
+        var dates: [Date] = []
+        (0...15).forEach { value in
+            dates.append(
+                Calendar.current.date(byAdding: .weekOfYear, value: value - 6, to: self)!
+            )
+        }
+        
+        return dates
     }
 }

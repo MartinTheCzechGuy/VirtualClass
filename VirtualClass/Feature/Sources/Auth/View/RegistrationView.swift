@@ -16,104 +16,95 @@ public struct RegistrationView: View {
     @State var email = ""
     @State var password = ""
     @State var repeatedPassword = ""
-    
-    @Namespace var animation
-    
+        
     public init(viewModel: RegistrationViewModel) {
         self.viewModel = viewModel
     }
     
     public var body: some View {
-        ZStack {
-            WelcomeBackgroundView()
+        ScrollView(.vertical, showsIndicators: false) {
             
-            ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 30) {
+                LogoView()
+                    .padding(.top, 125)
                 
-                VStack(spacing: 30) {
-                    LogoView()
-                        .padding(.top, 125)
-                                        
-                    VStack(spacing: 5) {
-                        AppTextField(
-                            imageSystemName: "person",
-                            title: "Full name",
-                            fieldType: .text,
-                            value: $name
-                        )
-                        
-                        AppTextField(
-                            imageSystemName: "envelope",
-                            title: "Email",
-                            fieldType: .text,
-                            value: $email
-                        )
-                        
-                        AppTextField(
-                            imageSystemName: "lock",
-                            title: "Password",
-                            fieldType: .secure,
-                            value: $password
-                        )
-                        
-                        AppTextField(
-                            imageSystemName: "lock",
-                            title: "Password again",
-                            fieldType: .secure,
-                            value: $repeatedPassword
-                        )
-                    }
-                    .padding(.horizontal, 10)
+                VStack(spacing: 5) {
+                    AppTextField(
+                        imageSystemName: "person",
+                        title: "Full name",
+                        fieldType: .text,
+                        value: $name
+                    )
                     
-                    if let status = viewModel.registrationInvalidStatus {
-                        TextFieldErrorCaptionView(status: status)
-                    }
-                                        
-                    VStack(spacing: 20) {
-                        Button(
-                            action: { viewModel.registerTap.send(.init(email: email, password1: password, password2: repeatedPassword, name: name)) },
-                            label: {
-                                Text("Login")
-                            }
-                        )
-                            .buttonStyle(AppGoldenButtonStyle())
-                        
-                        Button(
-                            action: { viewModel.goBackTap.send() },
-                            label: {
-                                Text("Go back")
-                            }
-                        )
-                            .buttonStyle(AppGoldenButtonStyle())
-                    }
-                    .padding()
-                    .padding(.top, 10)
-                    .padding(.trailing)
+                    AppTextField(
+                        imageSystemName: "envelope",
+                        title: "Email",
+                        fieldType: .text,
+                        value: $email
+                    )
                     
-                    HStack {
-                        Text("Already have an account?")
-                            .fontWeight(.heavy)
-                            .foregroundColor(.white)
-                        
-                        Button(
-                            action: {
-                                viewModel.alreadyHaveAccountTap.send()
-                            },
-                            label: {
-                                Text("Sign in")
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(.golden)
-                            }
-                        )
-                    }
-                    .padding()
-                    .padding(.bottom, 10)
+                    AppTextField(
+                        imageSystemName: "lock",
+                        title: "Password",
+                        fieldType: .secure,
+                        value: $password
+                    )
+                    
+                    AppTextField(
+                        imageSystemName: "lock",
+                        title: "Password again",
+                        fieldType: .secure,
+                        value: $repeatedPassword
+                    )
+                }
+                
+                if let status = viewModel.registrationInvalidStatus {
+                    TextFieldErrorCaptionView(status: status)
+                }
+                
+                VStack(spacing: 15) {
+                    Button(
+                        action: { viewModel.registerTap.send(.init(email: email, password1: password, password2: repeatedPassword, name: name)) },
+                        label: {
+                            Text("Login")
+                        }
+                    )
+                        .buttonStyle(AppGoldenButtonStyle())
+                    
+                    Button(
+                        action: { viewModel.goBackTap.send() },
+                        label: {
+                            Text("Go back")
+                        }
+                    )
+                        .buttonStyle(AppGoldenButtonStyle())
                 }
                 .padding()
-                .padding(.horizontal)
+                
+                HStack {
+                    Text("Already have an account?")
+                        .fontWeight(.heavy)
+                        .foregroundColor(.white)
+                    
+                    Button(
+                        action: {
+                            viewModel.alreadyHaveAccountTap.send()
+                        },
+                        label: {
+                            Text("Sign in")
+                                .fontWeight(.heavy)
+                                .foregroundColor(.golden)
+                        }
+                    )
+                }
+                .padding()
             }
             .padding()
         }
         .preferredColorScheme(.dark)
+        .background(
+            WelcomeBackgroundView()
+        )
     }
 }
 

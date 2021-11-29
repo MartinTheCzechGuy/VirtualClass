@@ -34,7 +34,7 @@ final class GetCompletedCoursesForLoggedInUserUseCaseTests: XCTestCase {
             )
         ]
         
-        let coursesPublisher = Just(courses).setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+        let coursesPublisher = Just(courses).setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
         
         let sut = GetCompletedCoursesForLoggedInUserUseCase(
             getCoursesUseCase: GetCompletedCoursesUseCaseStub(courses: coursesPublisher),
@@ -62,7 +62,7 @@ final class GetCompletedCoursesForLoggedInUserUseCaseTests: XCTestCase {
 
     func test_fetching_courses_error_propagated() {
         let sut = GetCompletedCoursesForLoggedInUserUseCase(
-            getCoursesUseCase: GetCompletedCoursesUseCaseStub(courses: Fail(error: UserRepositoryError.storageError(nil)).eraseToAnyPublisher()),
+            getCoursesUseCase: GetCompletedCoursesUseCaseStub(courses: Fail(error: StudentRepositoryError.storageError(nil)).eraseToAnyPublisher()),
             getLogedInUserUseCase: GetLoggedInUserUseCaseStub()
         )
         
@@ -90,7 +90,7 @@ final class GetCompletedCoursesForLoggedInUserUseCaseTests: XCTestCase {
     func test_no_email_found_error_propagated() {
         let sut = GetCompletedCoursesForLoggedInUserUseCase(
             getCoursesUseCase: GetCompletedCoursesUseCaseStub(
-                courses: Empty().setFailureType(to: UserRepositoryError.self).eraseToAnyPublisher()
+                courses: Empty().setFailureType(to: StudentRepositoryError.self).eraseToAnyPublisher()
             ),
             getLogedInUserUseCase: GetLoggedInUserUseCaseFailingStub()
         )

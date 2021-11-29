@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ClassesRepositoryType {
-    func courses(on date: Date) -> Result<[GenericCourse], UserRepositoryError>
+    func courses(on date: Date) -> Result<[GenericCourse], StudentRepositoryError>
 }

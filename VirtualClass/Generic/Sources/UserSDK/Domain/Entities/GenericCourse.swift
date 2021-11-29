@@ -16,7 +16,6 @@ public struct GenericCourse {
     public let classRoom: GenericClassRoom
     public let faculty: GenericFaculty
     public let teachers: Set<GenericTeacher>
-//    public let students: Set<GenericStudent>
     
     public init(
         ident: String,
@@ -27,7 +26,6 @@ public struct GenericCourse {
         classRoom: GenericClassRoom,
         faculty: GenericFaculty,
         teachers: Set<GenericTeacher>
-//        students: Set<GenericStudent>
     ) {
         self.ident = ident
         self.name = name
@@ -37,7 +35,6 @@ public struct GenericCourse {
         self.classRoom = classRoom
         self.faculty = faculty
         self.teachers = teachers
-//        self.students = students
     }
 }
 

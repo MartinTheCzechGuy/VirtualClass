@@ -10,13 +10,13 @@ import UserSDK
 
 final class AddToUserActiveCoursesUseCaseStub: AddToUserActiveCoursesUseCaseType {
 
-    private let result: AnyPublisher<Void, UserRepositoryError>
+    private let result: AnyPublisher<Void, StudentRepositoryError>
     
-    init(result: AnyPublisher<Void, UserRepositoryError>) {
+    init(result: AnyPublisher<Void, StudentRepositoryError>) {
         self.result = result
     }
     
-    func add(idents: [String]) -> AnyPublisher<Void, UserRepositoryError> {
+    func add(idents: [String]) -> AnyPublisher<Void, StudentRepositoryError> {
         result
     }
 }

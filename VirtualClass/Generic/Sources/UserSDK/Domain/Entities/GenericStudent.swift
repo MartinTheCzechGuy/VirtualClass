@@ -11,8 +11,8 @@ public struct GenericStudent {
     public let id: UUID
     public let name: String
     public let email: String
-    public private(set) var activeCourses: Set<GenericCourse>
-    public private(set) var completedCourses: Set<GenericCourse>
+    public let activeCourses: Set<GenericCourse>
+    public let completedCourses: Set<GenericCourse>
 
     public init(
         id: UUID,
@@ -26,20 +26,6 @@ public struct GenericStudent {
         self.email = email
         self.activeCourses = activeCourses
         self.completedCourses = completedCourses
-    }
-    
-    mutating func add(course: GenericCourse) {
-        if !activeCourses.contains(course) {
-            activeCourses.insert(course)
-        }
-    }
-    
-    mutating func complete(course: GenericCourse) {
-        guard let removedCourse = activeCourses.remove(course) else {
-            return
-        }
-
-        completedCourses.insert(removedCourse)
     }
 }
 

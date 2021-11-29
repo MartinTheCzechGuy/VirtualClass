@@ -11,7 +11,7 @@ import Foundation
 
 @testable import UserSDK
 
-final class DatabaseInteractingStub {
+final class StudentDBRepositoryStub {
     struct ResultBundle {
         let createResult: AnyPublisher<Void, DatabaseError>
         let updateResult: AnyPublisher<Void, DatabaseError>
@@ -58,7 +58,7 @@ final class DatabaseInteractingStub {
     }
 }
 
-extension DatabaseInteractingStub: DatabaseInteracting {    
+extension StudentDBRepositoryStub: StudentDBRepositoryType {
     func create(domainModel: Student) -> AnyPublisher<Void, DatabaseError> {
         results.createResult
     }
