@@ -13,7 +13,7 @@ import SwiftUI
 
 public struct DashboardView: View {
     
-    @ObservedObject var coordinator: DashboardCoordinator
+    @ObservedObject private var coordinator: DashboardCoordinator
 
     private let instanceProvider: InstanceProvider
     

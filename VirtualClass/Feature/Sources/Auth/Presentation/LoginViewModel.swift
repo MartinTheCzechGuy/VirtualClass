@@ -20,14 +20,12 @@ public final class LoginViewModel: ObservableObject {
     let loginTap = PassthroughSubject<(email: String, password: String), Never>()
     let goBackTap = PassthroughSubject<Void, Never>()
     
-    private var bag = Set<AnyCancellable>()
-    
     public let navigateToWelcomeScreen: AnyPublisher<Void, Never>
     public let navigateToDashboard: AnyPublisher<Void, Never>
     public let navigateToRegistration: AnyPublisher<Void, Never>
     
     private let loginSuccessfulSubject = PassthroughSubject<Void, Never>()
-    
+    private var bag = Set<AnyCancellable>()
     private let handleLoginUseCase: HandleLoginUseCaseType
     
     public init(handleLoginUseCase: HandleLoginUseCaseType) {

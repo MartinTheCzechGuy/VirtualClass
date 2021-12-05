@@ -11,7 +11,7 @@ import SwiftUI
 
 public struct AuthView: View {
     
-    @ObservedObject var coordinator: AuthCoordinator
+    @ObservedObject private var coordinator: AuthCoordinator
     
     private let instanceProvider: InstanceProvider
     

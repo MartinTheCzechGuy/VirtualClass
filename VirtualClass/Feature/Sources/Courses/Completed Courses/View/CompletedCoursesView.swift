@@ -9,7 +9,11 @@ import SwiftUI
 
 public struct CompletedCoursesView: View {
     
-    @ObservedObject var viewModel: CompletedCoursesViewModel
+    @ObservedObject private var viewModel: CompletedCoursesViewModel
+    
+    init(viewModel: CompletedCoursesViewModel) {
+        self.viewModel = viewModel
+    }
     
     public var body: some View {
         VStack {

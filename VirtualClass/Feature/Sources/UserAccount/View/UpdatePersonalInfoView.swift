@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct UpdatePersonalInfoView: View {
     
-    @ObservedObject var viewModel: UpdatePersonalInfoViewModel
+    @ObservedObject private var viewModel: UpdatePersonalInfoViewModel
     
     public init(viewModel: UpdatePersonalInfoViewModel) {
         self.viewModel = viewModel

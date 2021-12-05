@@ -10,10 +10,10 @@ import SwiftUI
 
 public struct WelcomeView: View {
     
-    @ObservedObject var viewModel: WelcomeViewModel
+    @ObservedObject private var viewModel: WelcomeViewModel
     
-    @State var titlePadding: CGFloat = 0
-    @State var buttonStackPadding: CGFloat = 0
+    @State private var titlePadding: CGFloat = 0
+    @State private  var buttonStackPadding: CGFloat = 0
     
     public init(viewModel: WelcomeViewModel) {
         self.viewModel = viewModel

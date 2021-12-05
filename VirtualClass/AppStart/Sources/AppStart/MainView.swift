@@ -11,7 +11,7 @@ import SwiftUI
 
 public struct MainView: View {
     
-    @ObservedObject var mainCoordinator: MainCoordinator
+    @ObservedObject private var mainCoordinator: MainCoordinator
     
     init(mainCoordinator: MainCoordinator) {
         self.mainCoordinator = mainCoordinator

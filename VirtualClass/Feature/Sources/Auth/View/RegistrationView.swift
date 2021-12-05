@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct RegistrationView: View {
     
-    @ObservedObject var viewModel: RegistrationViewModel
+    @ObservedObject private var viewModel: RegistrationViewModel
     
     @State var name = ""
     @State var email = ""

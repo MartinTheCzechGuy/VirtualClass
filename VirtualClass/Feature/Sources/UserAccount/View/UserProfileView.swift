@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct UserProfileView: View {
     
-    @ObservedObject var viewModel: UserProfileViewModel
+    @ObservedObject private var viewModel: UserProfileViewModel
     
     init(viewModel: UserProfileViewModel) {
         self.viewModel = viewModel

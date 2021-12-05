@@ -13,15 +13,15 @@ protocol GetLoggedInUserUseCaseType {
 }
 
 final class GetLoggedInUserUseCase {
-    private let userDefaults: LocalKeyValueStorage
+    private let authRepository: AuthRepositoryType
     
-    init(userDefaults: LocalKeyValueStorage) {
-        self.userDefaults = userDefaults
+    init(authRepository: AuthRepositoryType) {
+        self.authRepository = authRepository
     }
 }
 
 extension GetLoggedInUserUseCase: GetLoggedInUserUseCaseType {
     var email: String? {
-        userDefaults.read(objectForKey: .userEmail)
+        authRepository.loggedInUserEmail
     }
 }

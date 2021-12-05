@@ -11,7 +11,7 @@ import SwiftUI
 
 public struct UserAccountView: View {
     
-    @ObservedObject var coordinator: UserAccountCoordinator
+    @ObservedObject private var coordinator: UserAccountCoordinator
     
     private let instanceProvider: InstanceProvider
     

@@ -10,7 +10,11 @@ import SwiftUI
 
 struct CourseDetailView: View {
     
-    @ObservedObject var viewModel: CourseDetailViewModel
+    @ObservedObject private var viewModel: CourseDetailViewModel
+    
+    init(viewModel: CourseDetailViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack(spacing: 15) {

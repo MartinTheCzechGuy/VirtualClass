@@ -11,7 +11,7 @@ import UserSDK
 
 public struct HomeView: View {
     
-    @ObservedObject var coordinator: HomeCoordinator
+    @ObservedObject private var coordinator: HomeCoordinator
     
     private let instanceProvider: InstanceProvider
     

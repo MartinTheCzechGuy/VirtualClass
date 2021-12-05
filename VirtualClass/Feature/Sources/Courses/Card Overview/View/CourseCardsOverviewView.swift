@@ -10,7 +10,7 @@ import InstanceProvider
 
 public struct CourseCardsOverviewView: View {
         
-    @ObservedObject var viewModel: CourseCardsOverviewViewModel
+    @ObservedObject private var viewModel: CourseCardsOverviewViewModel
         
     init(viewModel: CourseCardsOverviewViewModel) {
         self.viewModel = viewModel
@@ -75,7 +75,7 @@ public struct CourseCardsOverviewView: View {
     }
 }
 
-extension Set where Element == Date {
+private extension Set where Element == Date {
     var closestDate: String? {
         guard let closestDate = self.sorted().first else {
             return nil

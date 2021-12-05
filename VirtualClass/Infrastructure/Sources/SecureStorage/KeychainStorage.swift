@@ -9,7 +9,7 @@ import Foundation
 
 public final class KeychainStorage {
     
-    let secureStoreQueryable: SecureStorageQueryable
+    private let secureStoreQueryable: SecureStorageQueryable
     
     public init(secureStoreQueryable: SecureStorageQueryable) {
       self.secureStoreQueryable = secureStoreQueryable

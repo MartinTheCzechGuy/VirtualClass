@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct CalendarView: View {
     
-    @ObservedObject var viewModel: CalendarViewModel
+    @ObservedObject private var viewModel: CalendarViewModel
     
     init(viewModel: CalendarViewModel) {
         self.viewModel = viewModel

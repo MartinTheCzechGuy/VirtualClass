@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-public protocol GetCompletedCoursesUseCaseType {
+protocol GetCompletedCoursesUseCaseType {
     func courses(userWithEmail email: String) -> AnyPublisher<Set<GenericCourse>, StudentRepositoryError>
 }
 

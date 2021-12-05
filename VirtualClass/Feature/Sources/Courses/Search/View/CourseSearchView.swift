@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct CourseSearchView: View {
     
-    @ObservedObject var viewModel: CourseSearchViewModel
+    @ObservedObject private var viewModel: CourseSearchViewModel
         
     public init(viewModel: CourseSearchViewModel) {
         self.viewModel = viewModel

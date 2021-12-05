@@ -35,7 +35,7 @@ public final class UserAccountCoordinator: ObservableObject {
     // Private
 
     @Published var userProfileViewModel: UserProfileViewModel
-    @Published private var classSearchViewModel: CourseSearchViewModel?
+    @Published private var classSearchViewModel:CourseSearchViewModel?
     @Published private var personalInfoViewModel: UpdatePersonalInfoViewModel?
     @Published private var completedCoursesViewModel: CompletedCoursesViewModel?
 
