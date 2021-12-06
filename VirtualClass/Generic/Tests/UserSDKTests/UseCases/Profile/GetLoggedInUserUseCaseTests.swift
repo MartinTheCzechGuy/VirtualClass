@@ -1,6 +1,6 @@
 //
 //  GetLoggedInUserUseCaseTests.swift
-//  
+//
 //
 //  Created by Martin on 26.11.2021.
 //
@@ -22,13 +22,25 @@ final class GetLoggedInUserUseCaseTests: XCTestCase {
     
     func test_load_existing_user_email() {
         let email = "email"
-        let sut = GetLoggedInUserUseCase(userDefaults: LocalKeyValueStorageStub(value: email))
+        let authRepository = UserAuthRepositoryStub(
+            results: .mock(
+                loggedInUserEmail: "email"
+            )
+        )
+       
+        let sut = GetLoggedInUserUseCase(authRepository: authRepository)
         
         XCTAssertEqual(sut.email, email)
     }
     
     func test_load_nil_for_non_existing_user() {
-        let sut = GetLoggedInUserUseCase(userDefaults: LocalKeyValueStorageStub(value: nil))
+        let authRepository = UserAuthRepositoryStub(
+            results: .mock(
+                loggedInUserEmail: nil
+            )
+        )
+       
+        let sut = GetLoggedInUserUseCase(authRepository: authRepository)
         
         XCTAssertNil(sut.email)
     }
